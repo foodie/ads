@@ -4,7 +4,7 @@ SHELL=/bin/sh
 IF_PATH=./if
 CORE_PATH=./include/core
 
-INCLUDES=-I. -I./include -I./hashtable -I${IF_PATH}/ -I${CORE_PATH}/
+INCLUDES=-I. -I./include -I./include/hashtable -I${IF_PATH}/ -I${CORE_PATH}/
 LIB_PATH=-L./lib
 
 IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
