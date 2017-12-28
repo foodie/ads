@@ -203,7 +203,7 @@ int main(int argc, char **argv)
     }
 
     FLAGS_flagfile = "./conf/gflags.conf";
-    ret = google::ParseCommandLineFlags(&argc, &argv, true);
+    ret = gflags::ParseCommandLineFlags(&argc, &argv, true);
     if (!ret){
         FATAL("use gflags to parse commandline failed");
         return -1;
