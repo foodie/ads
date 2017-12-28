@@ -32,7 +32,7 @@ void AdsMysql::close()
 {
 	if ( connetion == Connected ) {
 		mysql_close(&mysql);
-		connection = DisConnected;
+		connetion = DisConnected;
 	}
 }
 
@@ -44,7 +44,7 @@ bool AdsMysql::query(const char *sql)
     }
 
     // 保存结果
-    if( !res->storeResult(&mysql) ) {
+    if( !res.storeResult(&mysql) ) {
     	return false;
     }
 

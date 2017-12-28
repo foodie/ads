@@ -88,7 +88,7 @@ public:
 	{ return res; }
 
 	// 获取sql错误信息
-	string getMysqlError() const
+	string getMysqlError()
 	{ return mysql_error(&mysql); }
 
 private:
