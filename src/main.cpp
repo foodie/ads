@@ -11,7 +11,6 @@
 #include "log.h"
 #include "serv.h"
 #include "reloader.h"
-#include "coding.h"
 
 #include "cluster.h"
 #include "ads_def.h"
@@ -220,13 +219,6 @@ int main(int argc, char **argv)
         return 0;
     }
 	
-	// 加载coding
-	if (0 != coding_load("./lib/code")) {
-        FATAL("coding load failed");
-        return -1;
-    }
-    coding_conv_open();
-	
 	// 初始化curl
     curl_global_init(CURL_GLOBAL_ALL);
 	
@@ -271,9 +263,6 @@ int main(int argc, char **argv)
     }
 
 	log_close();
-	
-	coding_conv_close();
-    coding_del();
 	
 	curl_global_cleanup();
 	
