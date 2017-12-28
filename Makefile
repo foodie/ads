@@ -16,7 +16,7 @@ CPPFLAGS=-O3 -g -static -fPIC -finline-functions -Wall -pipe \
 
 LDFLAGS= -lm -lcrypt -lpthread -lssl -llog -lconn -lcluster \
 		 -lzookeeper_mt -lgflags -lini_config -lz -lprotobuf -lserv -lcap -lfcgi \
-         -lmysqlclient -lcoding -lssl -lxml2 -lcurl -lhiredis
+         -lmysqlclient -lssl -lxml2 -lcurl -lhiredis
 
 all: mads
 
