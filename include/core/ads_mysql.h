@@ -25,42 +25,6 @@ typedef struct _ads_mysql_conf_t
 	char encoding[MAX_MYSQL_ENCODING_LEN];
 } ads_mysql_conf_t;
 
-class AdsMysqlRes;
-
-class AdsMysql
-{
-public:
-	typedef ads_mysql_conf_t AdsMysqlConf;
-
-	enum AdsMysqlConnetion { DisConnected=0, Connected=1 }
-
-	AdsMysql() : connetion(AdsMysqlConnetion::DisConnected), mysql(), res() {}
-	~AdsMysql();
-
-	// 连接数据库
-	bool connect(const AdsMysqlConf *conf);
-
-	// 断开连接
-	void close();
-
-	// 查询数据库
-	bool query(const char *sql);
-	bool query(const string& sql);
-
-	// 获取查询结果
-	AdsMysqlRes& getResult()
-	{ return res; }
-
-	// 获取sql错误信息
-	string getMysqlError() const
-	{ return mysql_error(mysql); }
-
-private:
-	AdsMysqlConnetion connetion; // 连接状态
-	MYSQL mysql;
-	AdsMysqlRes res; // 查询结果
-};
-
 typedef std::unordered_map<string, string>	AdsMysqlRow;
 
 class AdsMysqlRes
@@ -98,6 +62,41 @@ private:
 
 	AdsMysqlRow 	row;
 };
+
+class AdsMysql
+{
+public:
+	typedef ads_mysql_conf_t AdsMysqlConf;
+
+	enum AdsMysqlConnetion { DisConnected=0, Connected=1 };
+
+	AdsMysql() : connetion(DisConnected), mysql(), res() {}
+	~AdsMysql();
+
+	// 连接数据库
+	bool connect(const AdsMysqlConf *conf);
+
+	// 断开连接
+	void close();
+
+	// 查询数据库
+	bool query(const char *sql);
+	bool query(const string& sql);
+
+	// 获取查询结果
+	AdsMysqlRes& getResult()
+	{ return res; }
+
+	// 获取sql错误信息
+	string getMysqlError() const
+	{ return mysql_error(&mysql); }
+
+private:
+	AdsMysqlConnetion connetion; // 连接状态
+	MYSQL mysql;
+	AdsMysqlRes res; // 查询结果
+};
+
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
