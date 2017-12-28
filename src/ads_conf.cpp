@@ -94,7 +94,7 @@ int AdsConf::loadMysqlConf(struct collection_item *config)
 	}
 
 	ret = conf_string(config, section, "encoding", "utf8", 
-			mysql.encoding, 16);
+			mysql.encoding, MAX_MYSQL_ENCODING_LEN);
 	if (ret) {
 		FATAL("config mysql encoding failed");
 		return ADS_ERROR;

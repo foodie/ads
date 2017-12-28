@@ -2,42 +2,37 @@
 #define _ADS_MYSQL_H
 
 #include <string>
+#include <unordered_map>
 #include <mysql/mysql.h>
 
-#include "ads_map.h"
+#include "ads_core.h"
 
 using std::string;
 
-/**
- * 对MYSQL数据结构的封装
- */
+static const unsigned int MAX_MYSQL_DB_LEN = 64;
+static const unsigned int MAX_MYSQL_USERNAME_LEN = 64;
+static const unsigned int MAX_MYSQL_PASSWORD_LEN = 64;
+static const unsigned int MAX_MYSQL_ENCODING_LEN = 16;
 
-#define ADS_MAX_MYSQL_HOST_LEN 				 	 16
-#define ADS_MAX_MYSQL_NODE_NAME_LEN 			256
-#define ADS_MAX_MYSQL_ENCODING_NAME_LEN 		 16
-
-/* The mysql conf structure: */
+/* mysql */
 typedef struct _ads_mysql_conf_t
 {
-	char host[ADS_MAX_MYSQL_HOST_LEN];
+	char host[MAX_HOST_LEN];
 	int  port;
-    char db[ADS_MAX_MYSQL_NODE_NAME_LEN];
-    char user[ADS_MAX_MYSQL_NODE_NAME_LEN];
-    char password[ADS_MAX_MYSQL_NODE_NAME_LEN];
-	char *unix_socket; // =0
-	long client_flag; // =0
-	char encoding[ADS_MAX_MYSQL_ENCODING_NAME_LEN]; // 编码
+	char db[MAX_MYSQL_DB_LEN];
+	char username[MAX_MYSQL_USERNAME_LEN];
+	char password[MAX_MYSQL_PASSWORD_LEN];
+	char encoding[MAX_MYSQL_ENCODING_LEN];
 } ads_mysql_conf_t;
 
 /* The mysql structure: */
 typedef struct _ads_mysql_t
 {
-	MYSQL 		 		mysql;
-
+	MYSQL 	mysql;
 } ads_mysql_t;
 
 /* The mysql row structure: */
-typedef ads_map_t<string, string>	ads_mysql_row_t;
+typedef std::unordered_map<string, string>	ads_mysql_row_t;
 
 /* The mysql result structure: */
 typedef struct _ads_mysql_res_t
@@ -47,7 +42,6 @@ typedef struct _ads_mysql_res_t
 	unsigned int 	fields_num;
 	ads_mysql_row_t *row;
 } ads_mysql_res_t;
-
 
 /**
  * @brief      连接数据库
@@ -73,23 +67,81 @@ char 	ads_mysql_get_char(const ads_mysql_row_t *row, const string &key, char def
 long 	ads_mysql_get_long(const ads_mysql_row_t *row, const string &key, long def=0);
 double 	ads_mysql_get_double(const ads_mysql_row_t *row, const string &key, double def=0);
 
-/**
- * @brief      销毁结果集
- *
- * @param      res   The resource
- */
-void ads_mysql_res_free(ads_mysql_res_t *res);
 
 
-/**
- * @brief      获取错误信息
- */
-const char *ads_mysql_error(ads_mysql_t *mysql);
+class AdsMysqlRes;
 
-/**
- * @brief      关闭数据库连接
- */
-void ads_mysql_close(ads_mysql_t *mysql);
+class AdsMysql
+{
+public:
+	typedef ads_mysql_conf_t AdsMysqlConf;
+
+	enum AdsMysqlConnetion { DisConnected=0, Connected=1 }
+
+	AdsMysql() : connetion(AdsMysqlConnetion::DisConnected), mysql(), res() {}
+	~AdsMysql();
+
+	// 连接数据库
+	bool connect(const AdsMysqlConf *conf);
+
+	// 断开连接
+	void close();
+
+	// 查询数据库
+	bool query(const char *sql);
+	bool query(const string& sql);
+
+	// 获取查询结果
+	AdsMysqlRes& getResult()
+	{ return res; }
+
+	// 获取sql错误信息
+	string getMysqlError() const
+	{ return mysql_error(mysql); }
+
+private:
+	AdsMysqlConnetion connetion; // 连接状态
+	MYSQL mysql;
+	AdsMysqlRes res; // 查询结果
+};
+
+typedef std::unordered_map<string, string>	AdsMysqlRow;
+
+class AdsMysqlRes
+{
+public:
+	AdsMysqlRes() : res(NULL), fields(NULL), fieldsNum(0), row() {}
+	~AdsMysqlRes();
+
+	// 储存结果集
+	bool storeResult(MYSQL *mysql);
+
+	// 销毁结果集
+	void freeResult();
+
+	// 获取行结果
+	AdsMysqlRow* fetchRow();
+
+	// 
+	string& getString(const string& key)
+	{ return row[key]; }
+
+	char getChar(const string& key)
+	{ return row[key].at(0); }
+
+	int getInt(const string& key)
+	{ return atoi(row[key].c_str()); }
+
+	long getLong(const string& key)
+	{ return atol(row[key].c_str()); }
+
+private:
+	MYSQL_RES 		*res;
+	MYSQL_FIELD 	*fields;
+	unsigned int 	fieldsNum;
+
+	AdsMysqlRow 	row;
+};
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

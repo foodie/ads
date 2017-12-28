@@ -10,9 +10,7 @@ extern "C" {
 #include <ini_config.h>
 }
 
-#define ADS_OK  		0
-#define ADS_ERROR 		-1
-
+#include "ads_core.h"
 
 // 监测接口
 #define ADS_MONITOR_WINNOTICE_API		"monitor/winnotice" 

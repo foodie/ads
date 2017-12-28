@@ -2,32 +2,10 @@
 #define _ADS_CONF_H
 
 #include "ads_def.h"
+#include "ads_mysql.h"
 
 static const char CONF_FPATH[] = "./conf";
 static const char CONF_FNAME[] = "ads";
-
-static const unsigned int MAX_HOST_LEN = 256;
-static const unsigned int MAX_HOST_PORT_LEN = 256;
-
-static const unsigned int MAX_MYSQL_DB_LEN = 64;
-static const unsigned int MAX_MYSQL_USERNAME_LEN = 64;
-static const unsigned int MAX_MYSQL_PASSWORD_LEN = 64;
-
-static const unsigned int MAX_NODE_NAME_LEN = 32;
-
-static const unsigned int MAX_FNAME_LEN = 256;
-static const unsigned int MAX_FPATH_LEN = 256;
-
-/* mysql */
-typedef struct _mysql_conf_t
-{
-	char host[MAX_HOST_LEN];
-	int  port;
-	char db[MAX_MYSQL_DB_LEN];
-	char username[MAX_MYSQL_USERNAME_LEN];
-	char password[MAX_MYSQL_PASSWORD_LEN];
-	char encoding[16];
-} mysql_conf_t;
 
 /* ads */
 typedef struct _ads_conf_t
@@ -73,7 +51,7 @@ typedef struct _redis_conf_t
 class AdsConf
 {
 public:
-	mysql_conf_t 	 mysql;
+	ads_mysql_conf_t mysql;
 	ads_conf_t 		 ads;
 	api_conf_t 		 api;
 	adview_conf_t 	 adview;
