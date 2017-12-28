@@ -40,14 +40,14 @@ int callback()
 	struct timeval start, end;
     gettimeofday(&start, NULL);
 
-    int      fd = serv_get_socket();
-    uint64_t id = (start.tv_sec * 1000000 + start.tv_usec) * 1000 + (fd < 0 ? 0 : fd);
-    log_setlogid(id);
-
+    int fd = serv_get_socket();
     if (fd < 0) {
         WARN("module:callback\x02msg:can't get valid socket[%d]", fd);
         return -1;
     }
+
+    uint64_t id = (start.tv_sec * 1000000 + start.tv_usec) * 1000 + (fd < 0 ? 0 : fd);
+    log_setlogid(id);
 
     thread_data_t *p_thd_data = (thread_data_t *) serv_get_user_data();
     if (p_thd_data == NULL) {

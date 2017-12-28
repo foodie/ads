@@ -22,21 +22,21 @@ int AdsConf::load(const char* fpath, const char* fname)
 		
 	// 投放配置 ads
 	ret = loadAdsConf(config);
-	if (ret) {
+	if ( ret ) {
 		FATAL("config ads failed");
 		return ADS_ERROR;
 	}
 		
 	// 接口配置 api
 	ret = loadApiConf(config);
-	if (ret) {
+	if ( ret ) {
 		FATAL("config api failed");
 		return ADS_ERROR;
 	}
 
 	// adview配置 adview
 	ret = loadAdviewConf(config);
-	if (ret) {
+	if ( ret ) {
 		FATAL("config adview failed");
 		return ADS_ERROR;
 	}
@@ -45,7 +45,7 @@ int AdsConf::load(const char* fpath, const char* fname)
 	loadZookeeperConf(config);
 		
 	//读取完毕
-	if (config){
+	if ( config ) {
 		free_ini_config(config);
 		config = NULL;
 	}
