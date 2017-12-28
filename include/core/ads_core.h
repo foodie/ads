@@ -1,5 +1,5 @@
-#ifndef _ADS_DEF_H
-#define _ADS_DEF_H
+#ifndef _ADS_CORE_H
+#define _ADS_CORE_H
 
 #define ADS_OK  		0
 #define ADS_ERROR 		-1
