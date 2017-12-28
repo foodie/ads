@@ -209,9 +209,9 @@ int AdsConf::loadZookeeperConf(struct collection_item *config)
 	conf_string(config, "zookeeper", "zk_switch",
 				"off", zookeeper.zk_switch, 4);
 	conf_string(config, "zookeeper", "zk_host_port",
-				"127.0.0.1:2181", zookeeper.zk_host_port, MAX_IP_PORT_LEN);
+				"127.0.0.1:2181", zookeeper.zk_host_port, MAX_HOST_PORT_LEN);
 	conf_string(config, "zookeeper", "serv_host_port",
-				"", zookeeper.serv_host_port, MAX_IP_PORT_LEN);
+				"", zookeeper.serv_host_port, MAX_HOST_PORT_LEN);
 	conf_string(config, "zookeeper", "zk_node",
 				"/kvs", zookeeper.zk_node, MAX_NODE_NAME_LEN);
 	return ADS_OK;
