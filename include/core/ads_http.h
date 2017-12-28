@@ -1,11 +1,6 @@
 #ifndef _ADS_HTTP_H
 #define _ADS_HTTP_H
 
-#include <string>
-#include "ads_core.h"
-#include "ads_array.h"
-#include "ads_map.h"
-
 #define ADS_MAX_HTTP_IP_LEN				  	  16
 #define ADS_MAX_HTTP_UA_LEN				 	 256
 #define ADS_MAX_HTTP_URL_LEN 				4096
