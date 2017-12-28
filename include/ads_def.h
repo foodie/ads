@@ -1,7 +1,6 @@
 #ifndef _ADS_DEF_H
 #define _ADS_DEF_H
 
-#include <string>
 #include <serv.h>
 #include <signal.h>
 #include <gflags/gflags.h>
@@ -14,8 +13,6 @@ extern "C" {
 #define ADS_OK  		0
 #define ADS_ERROR 		-1
 
-// ads cookie的键名
-#define ADS_COOKIE_KEY					"ID"
 
 // 监测接口
 #define ADS_MONITOR_WINNOTICE_API		"monitor/winnotice" 
@@ -73,8 +70,11 @@ extern "C" {
 #define ADX_MOJI 						5
 
 // 购买方式
-#define ADS_RTB							1
-#define ADS_PDB							2
+enum AdsBiddingMode
+{
+	RTB = 1,
+	PDB
+};
 
 // 计费方式
 #define ADS_CPM							1

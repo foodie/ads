@@ -2,10 +2,7 @@
 #include <gflags/gflags.h>
 #include <fcgi_stdio.h>
 #include <fstream>
-#include <set>
-#include <vector>
 #include <unistd.h>
-#include <mysql/mysql.h>
 #include <curl/curl.h>
 
 #include "log.h"
@@ -31,7 +28,7 @@ DEFINE_bool(h, false, "help message, bool");
 using namespace std;
 
 g_conf_t *g_conf;
-reloader_t<g_conf_t> *conf_reloader;
+reloader_t<g_conf_t> *g_conf_reloader;
 
 g_data_t g_data;
 
@@ -145,16 +142,16 @@ int serv_run(serv_conf_t *serv_conf)
         return -1;
     }
 
-    if (0 == strcmp("on", g_conf->zookeeper_conf.zk_switch)){
-        if (0 != strcmp("", g_conf->zookeeper_conf.serv_host_port)) {
-            zhandle_t *zh = register_to_zk(g_conf->zookeeper_conf.zk_host_port,
-										   g_conf->zookeeper_conf.zk_node,
-										   g_conf->zookeeper_conf.serv_host_port);
+    if (0 == strcmp("on", g_conf->zookeeper.zk_switch)){
+        if (0 != strcmp("", g_conf->zookeeper.serv_host_port)) {
+            zhandle_t *zh = register_to_zk(g_conf->zookeeper.zk_host_port,
+										   g_conf->zookeeper.zk_node,
+										   g_conf->zookeeper.serv_host_port);
             if (NULL == zh) {
                 FATAL("register kvs to zookeeper error");
                 return -1;
             }
-            INFO("register kvs to zookeeper: %s", g_conf->zookeeper_conf.zk_host_port);
+            INFO("register kvs to zookeeper: %s", g_conf->zookeeper.zk_host_port);
         } else {
             FATAL("register kvs to zookeeper, please set local host.");
             return -1;
@@ -186,7 +183,7 @@ static void print_ads_pid()
 {
     char pid[16];
     snprintf(pid, 16, "%d", getpid());
-    FILE *pid_file = fopen(g_conf->ads_pid, "w");
+    FILE *pid_file = fopen(g_conf->ads.pid_fpath, "w");
     fwrite(pid, 1, strlen(pid), pid_file);
     fclose(pid_file);
 }
@@ -213,7 +210,6 @@ int main(int argc, char **argv)
         print_help_usage();
         return 0;
     }
-
     if (FLAGS_v){
         print_version();
         return 0;
@@ -223,19 +219,19 @@ int main(int argc, char **argv)
     curl_global_init(CURL_GLOBAL_ALL);
 	
     //全局配置
-	conf_reloader = new (std::nothrow) reloader_t<g_conf_t>(FLAGS_p.c_str(), FLAGS_f.c_str(), &g_conf_t::init);
-	if (conf_reloader == NULL) {
+	g_conf_reloader = new (std::nothrow) reloader_t<g_conf_t>(FLAGS_p.c_str(), FLAGS_f.c_str());
+	if (g_conf_reloader == NULL) {
 		FATAL("conf reloader is null");
 		return -1;
 	}
 	
 	//服务配置
-	ret = conf_reloader->reload();
+	ret = g_conf_reloader->reload();
     if (ret == -1) {
         FATAL("g_conf init failed");
         return -1;
     }
-	g_conf = conf_reloader->get_content();
+	g_conf = g_conf_reloader->get_content();
 
 
     print_ads_pid();
@@ -249,7 +245,7 @@ int main(int argc, char **argv)
 
     //服务配置
 	serv_conf_t serv_conf;
-    ret = serv_conf_init(g_conf->serv_fpath, g_conf->serv_fname, &serv_conf);
+    ret = serv_conf_init("./conf", "serv", &serv_conf);
     if (ret) {
         FATAL("set serv conf init failed");
         return -1;
