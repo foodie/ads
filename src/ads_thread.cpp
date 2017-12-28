@@ -4,7 +4,8 @@
 
 int thread_data_init(thread_data_t *p_thd_data)
 {
-	
+	p_thd_data->request = new AdsHttpRequest;
+	p_thd_data->response = new AdsHttpResponse;
 
 	return ADS_OK;
 }

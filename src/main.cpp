@@ -74,13 +74,13 @@ int callback()
     }
 	
 	// 解析请求
-	p_thd_data->request.parseFromFcgxRequest(request);
+	p_thd_data->request->parseFromFcgxRequest(request);
 	
     // 控制器调度
     
 	
 	// 封装响应
-	p_thd_data->response.packToFcgxRequest(request);
+	p_thd_data->response->packToFcgxRequest(request);
 
     request->keepConnection = 1;
     FCGX_Finish_r(request);

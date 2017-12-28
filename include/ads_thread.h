@@ -8,8 +8,10 @@
 
 typedef struct _thread_data_t
 {	
-	FCGX_Request 			*fcgx_request;
+	FCGX_Request 		*fcgx_request;
 
+	AdsHttpRequest		*request;
+	AdsHttpResponse		*response;
 } thread_data_t;
 
 int thread_data_init(thread_data_t *p_thd_data);
