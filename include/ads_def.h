@@ -11,6 +11,9 @@ extern "C" {
 #include <ini_config.h>
 }
 
+#define ADS_OK  		0
+#define ADS_ERROR 		-1
+
 // ads cookie的键名
 #define ADS_COOKIE_KEY					"ID"
 
