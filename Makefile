@@ -10,11 +10,11 @@ LIB_PATH=-L./lib
 IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
 CORE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CORE_PATH}/*.cpp))
 
-CPPFLAGS=-O3 -g -static -fPIC -finline-functions -Wall -pipe \
+CPPFLAGS= -std=c++11 -O0 -g -static -fPIC -finline-functions -pipe \
         -Wreturn-type -Wtrigraphs -Wformat -Wparentheses -Wpointer-arith \
-        -D_XOPEN_SOURE=500 -D_GNU_SOURCE
+        -D_XOPEN_SOURE=500 -D_GNU_SOURCE -Wno-narrowing
 
-LDFLAGS= -lm -lcrypt -lpthread -lssl -llog -lconn -lcluster \
+LDFLAGS= -ldl -lm -lcrypto -lpthread -lssl -llog -lconn -lcluster \
 		 -lzookeeper_mt -lgflags -lini_config -lz -lprotobuf -lserv -lcap -lfcgi \
          -lmysqlclient -lssl -lxml2 -lcurl -lhiredis
 

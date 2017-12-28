@@ -5,7 +5,9 @@
  * 来源:nginx
  */
 
-#include <string>
+#include <sys/types.h>
+#include <stdint.h>
+#include <string.h>
 
 #ifndef ngx_memcpy
 #define ngx_memcpy memcpy
