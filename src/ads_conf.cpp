@@ -42,7 +42,7 @@ int AdsConf::load(const char* fpath, const char* fname)
 	}
 	
 	// zookeeper配置 zookeeper
-	loadZookeeperConf();
+	loadZookeeperConf(config);
 		
 	//读取完毕
 	if (config){
