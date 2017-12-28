@@ -1,6 +1,7 @@
 #ifndef __ALLOC_H__
 #define __ALLOC_H__
 
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <new>
