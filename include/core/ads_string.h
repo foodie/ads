@@ -1,6 +1,7 @@
 #ifndef _ADS_STRING_H
 #define _ADS_STRING_H
 
+#include <string.h>
 #include <string>
 
 using std::string;

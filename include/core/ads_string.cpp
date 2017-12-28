@@ -89,7 +89,7 @@ void ads_string_tolower(string &str, size_t n)
 void ads_str_ltrim(char *src, char *dst, const char *charlist)
 {
 	dst = dst != NULL ? dst : src;
-	while ( *src && ads_strchr(charlist, *src) != NULL ) {
+	while ( *src && strchr(charlist, *src) != NULL ) {
 		src++;
 	}
 	while (*src) {
@@ -104,7 +104,7 @@ void ads_str_rtrim(char *src, char *dst, const char *charlist)
 {
 	dst = dst != NULL ? dst : src;
 	int i = strlen(src);
-	while ( i && ads_strchr(charlist, src[i-1]) != NULL ) {
+	while ( i && strchr(charlist, src[i-1]) != NULL ) {
 		i--;
 	}
 	while (i) {
@@ -153,18 +153,18 @@ void ads_str_replace(const char *src, char *dst,
 	const char *p1, *p2;
 	p1 = src;
 	while (limit--) {
-		p2 = (const char*) ads_strstr(p1, search);
+		p2 = (const char*) strstr(p1, search);
 		if (p2 == NULL) {
 			break;
 		}
-		ads_strncpy(dst, p1, p2 - p1);
+		strncpy(dst, p1, p2 - p1);
 		dst += p2 - p1;
-		ads_strcpy(dst, replace);
+		strcpy(dst, replace);
 		dst += strlen(replace);
 		p1 = p2 + strlen(search);
 	}
 	if (*p1 != '\0') {
-		ads_strcpy(dst, p1);
+		strcpy(dst, p1);
 	}
 }
 
