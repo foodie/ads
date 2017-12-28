@@ -66,8 +66,8 @@ typedef struct _zookeeper_conf_t
 
 typedef struct _redis_conf_t
 {
-	char host[MAX_IP_LEN];
-	unsigned int port;
+	char host[MAX_HOST_LEN];
+	int  port;
 } redis_conf_t;
 
 class AdsConf
