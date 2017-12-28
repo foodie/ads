@@ -8,9 +8,6 @@
 #include <new>
 #include "log.h"
 
-template <bool> class static_assert;
-template <> class static_assert<true> {};
-
 // @brief   双 buffer 管理类
 // @note    T 一定要实现 int load(const char* cp_dir, const char* cp_fname) 函数, 否则编译失败
 // @note    如果有 init 需求, 可以在构造时, 提供一个 int T::init() 函数
@@ -93,7 +90,7 @@ reloader_t<T>::reloader_t(const char* cp_path,
     _init_func(init_func)
 {
     // 静态检查 load 的返回值必须是 int
-    static_assert<sizeof(small_t) == sizeof(_is_int(_get_load_ret_type(&T::load)))>();
+    static_assert(sizeof(small_t) == sizeof(_is_int(_get_load_ret_type(&T::load))), "error");
 
     if (cp_path == NULL) {
         cp_path = "./";

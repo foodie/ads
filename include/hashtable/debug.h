@@ -12,13 +12,13 @@ namespace lib
 
 #define __BSL_DEBUG(fmt, arg...) \
 { \
-	fprintf(stdout, "[----------debug--------][%s:%d]"fmt"\n", __FILE__, __LINE__, ##arg); \
+	fprintf(stdout, "[----------debug--------][%s:%d]" fmt "\n", __FILE__, __LINE__, ##arg); \
 }
 #define __BSL_ASSERT(flag, fmt, arg...) \
 {\
 	bool ___bsl_flag = flag; \
 	if (!(___bsl_flag)) { \
-		fprintf(stdout, "[error][%s:%d][%s]"fmt"\n", __FILE__, __LINE__, #flag, ##arg); \
+		fprintf(stdout, "[error][%s:%d][%s]" fmt "\n", __FILE__, __LINE__, #flag, ##arg); \
 	}\
 	assert (___bsl_flag); \
 }
@@ -50,7 +50,7 @@ class auto_xtimer
 
 #define __BSL_ERROR(fmt, arg...) \
 { \
-	fprintf(stdout, "[error][%s:%d]"fmt"\n", __FILE__, __LINE__, ##arg); \
+	fprintf(stdout, "[error][%s:%d]" fmt "\n", __FILE__, __LINE__, ##arg); \
 }
 
 
