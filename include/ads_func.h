@@ -4,18 +4,6 @@
 #include <pthread.h>
 #include <string>
 
-std::string seconds_to_his(int seconds); // 秒数转换为时分秒, 15 => 00:00:15
-
-// device
-void ads_imei_md5(const char *imei, char *imei_md5);
-void ads_androidid_md5(const char *androidid, char *androidid_md5);
-void ads_mac_md5(const char *mac, char *mac_md5);
-void ads_mac_to_mac1(const char *mac, char *mac1);
-void ads_mac1_to_mac(const char *mac1, char *mac);
-
-uint32_t ads_ip_to_long(const char *ip);
-void 	 ads_long_to_ip(uint32_t l, char *ip);
-
 // 互斥锁监听
 class mutexlock_monitor
 {
