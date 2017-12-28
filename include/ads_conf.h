@@ -3,7 +3,6 @@
 
 #include "log.h"
 #include "ads_def.h"
-#include "ads_mysql.h"
 
 static const char CONF_FPATH[] = "./conf";
 static const char CONF_FNAME[] = "ads";
@@ -33,9 +32,6 @@ public:
 	// serv 重载无效
 	char serv_fpath[MAX_FPATH_LEN];
 	char serv_fname[MAX_FNAME_LEN];
-	
-	// mysql
-	ads_mysql_conf_t mysql;
 	
 	// ads
 	char ads_pid[MAX_FNAME_LEN];
@@ -104,13 +100,6 @@ public:
 		ret = load_serv();
 		if (ret) {
 			FATAL("config serv failed");
-			return -1;
-		}
-
-		// 数据库配置 mysql
-		ret = load_mysql();
-		if (ret) {
-			FATAL("config mysql failed");
 			return -1;
 		}
 		
@@ -212,55 +201,6 @@ private:
 			FATAL("config serv_fname failed");
 			return -1;
 		}
-		return 0;
-	}
-
-	/**
-	 * @brief 加载mysql配置
-	 * @return int -1:失败; 0:成功
-	**/
-	int load_mysql()
-	{
-		int ret = 0;
-		ret = conf_string(config, "mysql", "mysql_host",
-				"127.0.0.1", mysql.host, ADS_MAX_MYSQL_HOST_LEN);
-		if (ret) {
-			FATAL("config mysql host failed ");
-			return -1;
-		}
-		ret = conf_int(config, "mysql", "mysql_port",
-				0, &mysql.port);
-		if (ret) {
-			FATAL("config mysql port failed ");
-			return -1;
-		}
-		ret = conf_string(config, "mysql", "mysql_db",
-				"dsp", mysql.db, ADS_MAX_MYSQL_NODE_NAME_LEN);
-		if (ret) {
-			FATAL("config mysql db failed ");
-			return -1;
-		}
-		ret = conf_string(config, "mysql", "mysql_user",
-				"root", mysql.user, ADS_MAX_MYSQL_NODE_NAME_LEN);
-		if (ret) {
-			FATAL("config mysql user failed ");
-			return -1;
-		}
-		ret = conf_string(config, "mysql", "mysql_pswd",
-				"", mysql.password, ADS_MAX_MYSQL_NODE_NAME_LEN);
-		if (ret) {
-			FATAL("config mysql password failed ");
-			return -1;
-		}
-		ret = conf_string(config, "mysql", "mysql_encoding",
-				"utf8", mysql.encoding, ADS_MAX_MYSQL_ENCODING_NAME_LEN);
-		if (ret) {
-			FATAL("config mysql encoding failed ");
-			return -1;
-		}
-		
-		mysql.unix_socket = 0;
-		mysql.client_flag = 0;
 		return 0;
 	}
 	
