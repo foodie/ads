@@ -118,8 +118,8 @@ void ads_str_rtrim(char *src, char *dst, const char *charlist)
 
 void ads_str_trim(char *src, char *dst, const char *charlist)
 {
-	ads_char_ltrim(src, dst, charlist);
-	ads_char_rtrim(dst, NULL, charlist);
+	ads_str_ltrim(src, dst, charlist);
+	ads_str_rtrim(dst, NULL, charlist);
 }
 
 void ads_string_ltrim(string &str, const char *charlist)
