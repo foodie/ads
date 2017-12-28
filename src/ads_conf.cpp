@@ -2,7 +2,7 @@
 
 #include "log.h"
 
-int AdsConf::load(const char* fpath, const char* fname)
+int AdsConf::load(char* fpath, const char* fname)
 {
 	int ret = 0;
 	struct collection_item *config;
@@ -54,7 +54,7 @@ int AdsConf::load(const char* fpath, const char* fname)
 	return 0;	
 }
 
-int AdsConf::loadMysqlConf(const struct collection_item *config)
+int AdsConf::loadMysqlConf(struct collection_item *config)
 {
 	int ret = 0;
 	const char* section = "mysql";
@@ -103,7 +103,7 @@ int AdsConf::loadMysqlConf(const struct collection_item *config)
 	return ADS_OK;
 }
 
-int AdsConf::loadAdsConf(const struct collection_item *config)
+int AdsConf::loadAdsConf(struct collection_item *config)
 {
 	int ret = 0;
 	const char* section = "ads";
@@ -139,7 +139,7 @@ int AdsConf::loadAdsConf(const struct collection_item *config)
 	return ADS_OK;
 }
 	
-int AdsConf::loadApiConf(const struct collection_item *config)
+int AdsConf::loadApiConf(struct collection_item *config)
 {
 	int ret = 0;
 	const char* section = "api";
@@ -168,7 +168,7 @@ int AdsConf::loadApiConf(const struct collection_item *config)
 	return ADS_OK;
 }
 
-int AdsConf::loadAdviewConf(const struct collection_item *config)
+int AdsConf::loadAdviewConf(struct collection_item *config)
 {
 	int ret = 0;
 	const char* section = "adview";
@@ -204,7 +204,7 @@ int AdsConf::loadAdviewConf(const struct collection_item *config)
 	return ADS_OK;
 }
 
-int AdsConf::loadZookeeperConf(const struct collection_item *config)
+int AdsConf::loadZookeeperConf(struct collection_item *config)
 {
 	conf_string(config, "zookeeper", "zk_switch",
 				"off", zookeeper_conf.zk_switch, 4);

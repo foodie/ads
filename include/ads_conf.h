@@ -87,15 +87,15 @@ public:
 
 private:
 
-	int loadMysqlConf(const struct collection_item *config);
+	int loadMysqlConf(struct collection_item *config);
 
-	int loadAdsConf(const struct collection_item *config);
+	int loadAdsConf(struct collection_item *config);
 	
-	int loadApiConf(const struct collection_item *config);
+	int loadApiConf(struct collection_item *config);
 
-	int loadAdviewConf(const struct collection_item *config);
+	int loadAdviewConf(struct collection_item *config);
 
-	int loadZookeeperConf(const struct collection_item *config);
+	int loadZookeeperConf(struct collection_item *config);
 };
 
 typedef AdsConf g_conf_t;
