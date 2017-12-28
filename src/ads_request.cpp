@@ -3,6 +3,7 @@
 #include <fcgi_stdio.h>
 #include "log.h"
 #include "ads_http.h"
+#include "ads_string.h"
 
 /**
  * AdsHttpRequest
@@ -114,10 +115,10 @@ bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
         }
     }
 
-    // useAgent
+    // userAgent
     value = FCGX_GetParam("HTTP_USER_AGENT", envp);
     if (value) {
-        useAgent = value;
+        userAgent = value;
     }
 
     // referer
