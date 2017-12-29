@@ -1,5 +1,7 @@
 #include "ads_redis.h"
 
+#include "ads_string.h"
+
 /**
  * @brief 连接redis数据库
  * @return int

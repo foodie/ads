@@ -7,36 +7,31 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 
-#include "ads_string.h"
-#include "ads_map.h"
+#include <string>
+#include "ads_core.h"
 
-typedef ads_map_t<string, string> ads_string_map_t;
 
 #define rapidjson_value(itr) itr->value
 
-static inline void rapidjson_value_find(const rapidjson::Value& value, const char *key, 
+inline void rapidjson_value_find(const rapidjson::Value& value, const char *key, 
 	rapidjson::Value::ConstMemberIterator& itr) {
 	itr = value.FindMember(key);
 }
 
-static inline bool rapidjson_value_exist(const rapidjson::Value& value, const char *key, 
+inline bool rapidjson_value_exist(const rapidjson::Value& value, const char *key, 
 	rapidjson::Value::ConstMemberIterator& itr) {
 	itr = value.FindMember(key);
 	return itr != value.MemberEnd();
 }
 
 
-
 // json => string
-void ads_json_to_string(const rapidjson::Value& value, char *json, size_t size);
-void ads_json_to_str(const rapidjson::Value& value, ads_str_t *str);
+string ads_json_to_string(const rapidjson::Value& value);
+void ads_json_to_str(const rapidjson::Value& value, char *json, size_t size);
 
 // protobuf => json string
-void ads_protobuf_to_json(const ::google::protobuf::Message& msg, char *json, size_t size);
-void ads_protobuf_to_json_str(const ::google::protobuf::Message& msg, ads_str_t *str);
+string ads_protobuf_to_json(const ::google::protobuf::Message& msg);
+void ads_protobuf_to_json_str(const ::google::protobuf::Message& msg, char *json, size_t size);
 
-// map => json string
-void ads_string_map_to_json(ads_string_map_t *map, char *json, size_t size);
-void ads_string_map_to_json_str(ads_string_map_t *map, ads_str_t *str);
 
 #endif

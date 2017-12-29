@@ -25,6 +25,8 @@ typedef struct _ads_mysql_conf_t
 	char encoding[MAX_MYSQL_ENCODING_LEN];
 } ads_mysql_conf_t;
 
+typedef ads_mysql_conf_t AdsMysqlConf;
+
 typedef std::unordered_map<string, string>	AdsMysqlRow;
 
 class AdsMysqlRes
@@ -66,8 +68,6 @@ private:
 class AdsMysql
 {
 public:
-	typedef ads_mysql_conf_t AdsMysqlConf;
-
 	enum AdsMysqlConnetion { DisConnected=0, Connected=1 };
 
 	AdsMysql() : connetion(DisConnected), mysql(), res() {}

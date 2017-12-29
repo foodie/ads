@@ -1,19 +1,19 @@
 #include "ads_json.h"
 
-#include "log.h"
-#include "ads_core.h"
+string ads_json_to_string(const rapidjson::Value& value)
+{
+	rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    value.Accept(writer);
+    return buffer.GetString();
+}
 
-void ads_json_to_string(const rapidjson::Value& value, char *json, size_t size)
+void ads_json_to_str(const rapidjson::Value& value, char *json, size_t size)
 {
 	rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
     value.Accept(writer);
 	snprintf(json, size, "%s", buffer.GetString());
-}
-
-void ads_json_to_str(const rapidjson::Value& value, ads_str_t *str)
-{
-	ads_json_to_string(value, ads_str_data(str), ads_str_size(str));
 }
 
 /********** protobuf **********/
@@ -25,19 +25,23 @@ static int ads_protobuf_message_to_json(const ::google::protobuf::Message& msg,
 							  			rapidjson::Value& root, 
 							  			rapidjson::Document::AllocatorType& allocator);
 
-void ads_protobuf_to_json(const ::google::protobuf::Message& msg, char *json, size_t size)
+string ads_protobuf_to_json(const ::google::protobuf::Message& msg)
+{
+	rapidjson::Document doc;
+	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+	rapidjson::Value root(rapidjson::kObjectType);
+	ads_protobuf_message_to_json(msg, root, allocator);
+	return ads_json_to_string(root);
+}
+
+void ads_protobuf_to_json_str(const ::google::protobuf::Message& msg, char *json, size_t size)
 {
 	rapidjson::Document doc;
 	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
 	rapidjson::Value root(rapidjson::kObjectType);
 	ads_protobuf_message_to_json(msg, root, allocator);
 	
-	ads_json_to_string(root, json, size);
-}
-
-void ads_protobuf_to_json_str(const ::google::protobuf::Message& msg, ads_str_t *str)
-{
-	ads_protobuf_to_json(msg, ads_str_data(str), ads_str_size(str));
+	ads_json_to_str(root, json, size);
 }
 
 static int ads_protobuf_repeated_to_json(const ::google::protobuf::Message& msg, 
@@ -176,25 +180,3 @@ ADD_MEMBER:
 }
 
 
-/********** protobuf **********/
-void ads_string_map_to_json(ads_string_map_t *map, char *json, size_t size)
-{
-	rapidjson::Document doc;
-	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
-	rapidjson::Value root(rapidjson::kObjectType);
-	
-	ads_string_map_t::iterator itr;
-	string key, value;
-	for (itr = map->begin(); itr != map->end(); itr++) {
-		key = ads_map_iterator_key(itr);
-		value = ads_map_iterator_value(itr);
-		root.AddMember(rapidjson::Value().SetString(key.c_str(), key.size(), allocator), 
-			rapidjson::Value().SetString(value.c_str(), value.size(), allocator), allocator);
-	}
-	
-	ads_json_to_string(root, json, size);
-}
-void ads_string_map_to_json_str(ads_string_map_t *map, ads_str_t *str)
-{
-	ads_string_map_to_json(map, ads_str_data(str), ads_str_size(str));
-}
