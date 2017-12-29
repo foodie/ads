@@ -1,5 +1,7 @@
 #include "ads_json.h"
 
+#include "ads_string.h"
+
 string ads_json_to_string(const rapidjson::Value& value)
 {
 	rapidjson::StringBuffer buffer;

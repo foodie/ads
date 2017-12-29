@@ -10,6 +10,7 @@
 #include <string>
 #include "ads_core.h"
 
+using std::string;
 
 #define rapidjson_value(itr) itr->value
 

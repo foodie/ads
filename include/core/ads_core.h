@@ -12,5 +12,7 @@ static const unsigned int MAX_NODE_NAME_LEN = 32;
 static const unsigned int MAX_FNAME_LEN = 256;
 static const unsigned int MAX_FPATH_LEN = 256;
 
+static const unsigned int MAX_BUF_LEN = 2048;
+
 #endif
 /* vim: set ts=4 sw=4 noet: */
