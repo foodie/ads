@@ -107,7 +107,7 @@ public:
 		cookie[k] = v;	
 	}
 
-	string& getBody() const 
+	string getBody() const
 	{
 		return body;
 	}
