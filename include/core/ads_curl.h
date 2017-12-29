@@ -2,10 +2,13 @@
 #define _ADS_CURL_H
 
 #include <string>
+#include <unordered_map>
 #include <curl/curl.h>
+
 #include "ads_http.h"
 
 using std::string;
+using std::unordered_map;
 
 /**
  * @brief      curl 保存数据回调函数

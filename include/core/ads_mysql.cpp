@@ -51,7 +51,7 @@ bool AdsMysql::query(const char *sql)
 	return true;
 }
 
-bool query(const string& sql)
+bool AdsMysql::query(const string& sql)
 { 
 	return query(sql.c_str()); 
 }

@@ -24,7 +24,7 @@ all: mads
 	$(CC) $(CPPFLAGS) -c $< -o $@ $(INCLUDES) $(LIB_PATH)
 
 mads: src/ads_conf.o src/ads_hash.o src/ads_data.o src/ads_func.o src/ads_thread.o \
-      src/ads_request.o src/main.o \
+      src/main.o \
      $(IF_OBJ) $(CORE_OBJ) 
 	$(CC) -o $@ $^ $(INCLUDES) $(LIB_PATH) $(GEOIPFLAGS) $(LDFLAGS)
 
