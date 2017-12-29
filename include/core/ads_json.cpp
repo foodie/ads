@@ -51,7 +51,7 @@ static int ads_protobuf_repeated_to_json(const ::google::protobuf::Message& msg,
 							   rapidjson::Value& root,
 							   rapidjson::Document::AllocatorType& allocator)
 {
-	char buffer[ADS_MAX_BUF_LEN];
+	char buffer[MAX_BUF_LEN];
 	const ::google::protobuf::Reflection* reflection = msg.GetReflection();
 	for (int i = 0; i < reflection->FieldSize(msg, field); i++) {
 		rapidjson::Value value;
@@ -104,7 +104,7 @@ static int ads_protobuf_message_to_json(const ::google::protobuf::Message& msg,
 							  			rapidjson::Value& root, 
 							  			rapidjson::Document::AllocatorType& allocator)
 {
-	char buffer[ADS_MAX_BUF_LEN];
+	char buffer[MAX_BUF_LEN];
 	
 	const ::google::protobuf::Descriptor* descriptor = msg.GetDescriptor();
 	const ::google::protobuf::Reflection* reflection = msg.GetReflection();
