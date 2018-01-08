@@ -18,6 +18,7 @@
 #include "ads_thread.h"
 #include "ads_func.h"
 
+#include "ads_controller.h"
 
 DEFINE_string(p, CONF_FPATH, "conf path, string");
 DEFINE_string(f, CONF_FNAME, "conf file, string");
@@ -32,8 +33,6 @@ g_conf_t *g_conf;
 reloader_t<g_conf_t> *g_conf_reloader;
 
 g_data_t g_data;
-
-unordered_map<string, AdsController*> __CONTROLLERS__;
 
 // 请求回调函数
 int callback()
@@ -76,8 +75,12 @@ int callback()
 	p_thd_data->request->parseFromFcgxRequest(request);
 	
     // 控制器调度
-    
-	
+    string controllerName = p_thd_data->request->getUri(0);
+    AdsController* controller = AdsController::getController(controllerName);
+	if ( controller != nullptr ) {
+        controller->perform(p_thd_data);
+    }
+
 	// 封装响应
 	p_thd_data->response->packToFcgxRequest(request);
 
@@ -245,6 +248,12 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    ret = AdsController::init();
+    if ( !ret ) {
+        FATAL("Ads Controller init failed");
+        return -1;
+    }
+
     //服务配置
 	serv_conf_t serv_conf;
     ret = serv_conf_init("./conf", "serv", &serv_conf);
@@ -261,8 +270,8 @@ int main(int argc, char **argv)
     }
 
 	log_close();
-	
 	curl_global_cleanup();
+    AdsController::close();
 	
     return 0;
 }

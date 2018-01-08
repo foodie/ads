@@ -9,29 +9,28 @@ using std::unordered_map;
 using std::function;
 using std::bind;
 
-typedef struct _thread_data_t thread_data_t;
-
-typedef thread_data_t AdsThreadData;
+typedef struct _thread_data_t AdsThreadData;
 
 class AdsController
 {
 public:
-	typedef function<int (AdsThreadData*)> AdsAction;
+	//typedef function<int (AdsThreadData*)> AdsAction;
 
-	AdsController() : actions() {}
-	virtual ~AdsController();
+	AdsController() {}
+	virtual ~AdsController() {}
 
-	virtual int run(AdsThreadData*) = 0;
+	virtual int perform(AdsThreadData*) = 0;
 
-protected:
-
-	void setAction(const string& n, AdsAction a)
-	{ actions[n] = a; }
-
+// static //
+public:
+	static bool init();
+	static void close();
+	static AdsController* getController(const string &name);
 private:
-
-	unordered_map<string, AdsAction> actions;
+	static unordered_map<string, AdsController*> *map = nullptr;
 };
+
+
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

@@ -32,13 +32,19 @@ public:
 
 	// general
 	int getMethod() const 
-	{ return method; }
+	{ 
+		return method; 
+	}
 
 	string getRemoteAddress() const 
-	{ return remoteAddress; }
+	{ 
+		return remoteAddress; 
+	}
 
 	string getUri(unsigned int n, const string& def="") const 
-	{ return uri.size() > n ? uri.at(n) : def; }
+	{ 
+		return uri.size() > n ? uri.at(n) : def; 
+	}
 
 	string getQuery(const string& k, const string& def="") const
 	{
@@ -54,14 +60,20 @@ public:
 	}
 
 	string getUserAgent() const
-	{ return userAgent; }
+	{ 
+		return userAgent; 
+	}
 
 	string getReferer() const
-	{ return referer; }
+	{ 
+		return referer; 
+	}
 
 	// body
 	string getBody() const
-	{ return body; }
+	{ 
+		return body; 
+	}
 
 private:
 	// general
