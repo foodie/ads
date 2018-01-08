@@ -5,10 +5,9 @@
 #include <unordered_map>
 #include <mysql/mysql.h>
 
-#include "ads_core.h"
-
 using std::string;
 
+static const unsigned int MAX_MYSQL_HOST_LEN = 256;
 static const unsigned int MAX_MYSQL_DB_LEN = 64;
 static const unsigned int MAX_MYSQL_USERNAME_LEN = 64;
 static const unsigned int MAX_MYSQL_PASSWORD_LEN = 64;
@@ -17,7 +16,7 @@ static const unsigned int MAX_MYSQL_ENCODING_LEN = 16;
 class AdsMysqlConf
 {
 public:
-	char host[MAX_HOST_LEN];
+	char host[MAX_MYSQL_HOST_LEN];
 	int  port;
 	char db[MAX_MYSQL_DB_LEN];
 	char username[MAX_MYSQL_USERNAME_LEN];
