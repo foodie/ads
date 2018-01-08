@@ -27,9 +27,10 @@ public:
 	static void close();
 	static AdsController* getController(const string &name);
 private:
-	static unordered_map<string, AdsController*> *map = NULL;
+	static unordered_map<string, AdsController*> *map;
 };
 
+unordered_map<string, AdsController*>* AdsController::map = NULL;
 
 
 #endif
