@@ -14,18 +14,16 @@ static const unsigned int MAX_MYSQL_USERNAME_LEN = 64;
 static const unsigned int MAX_MYSQL_PASSWORD_LEN = 64;
 static const unsigned int MAX_MYSQL_ENCODING_LEN = 16;
 
-/* mysql */
-typedef struct _ads_mysql_conf_t
+class AdsMysqlConf
 {
+public:
 	char host[MAX_HOST_LEN];
 	int  port;
 	char db[MAX_MYSQL_DB_LEN];
 	char username[MAX_MYSQL_USERNAME_LEN];
 	char password[MAX_MYSQL_PASSWORD_LEN];
 	char encoding[MAX_MYSQL_ENCODING_LEN];
-} ads_mysql_conf_t;
-
-typedef ads_mysql_conf_t AdsMysqlConf;
+};
 
 typedef std::unordered_map<string, string>	AdsMysqlRow;
 
@@ -97,6 +95,7 @@ private:
 	AdsMysqlRes res; // 查询结果
 };
 
+typedef AdsMysqlConf ads_mysql_conf_t;
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

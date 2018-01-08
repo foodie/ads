@@ -189,6 +189,15 @@ string ads_string_replace(const std::string &src, const char *search,
 }
 
 /**
+ * 字符串分割
+ */
+void ads_string_split(const string &src, const string &sep, 
+	vector<string> &dst, size_t limit)
+{
+
+}
+
+/**
  * 进制转换
  */
 void ads_bin_to_hex(const char *bin, size_t n, char *hex, int upper)

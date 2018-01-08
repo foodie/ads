@@ -3,8 +3,10 @@
 
 #include <string.h>
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 #define ads_tolower(c) (char) ((c >= 'A' && c <= 'Z') ? (c | 0x20) : c)
 #define ads_toupper(c) (char) ((c >= 'a' && c <= 'z') ? (c & ~0x20) : c)
@@ -18,7 +20,7 @@ using std::string;
 #define ads_memzero(buf, n)   		(void) memset(buf, 0, n)
 
 /**
- * @brief      字符串转储
+ * 字符串转储
  */
 char *ads_str_dump(const char *str);
 inline void ads_str_free(char *str)
@@ -27,16 +29,14 @@ inline void ads_str_free(char *str)
 }
 
 /**
- * @brief      在源字符串之后追加字符串
+ * 在源字符串之后追加字符串
  */
 size_t ads_str_append(char *dst, size_t maxsize, const char *src);
 size_t ads_str_append_secure(char *dst, size_t maxsize, const char *src);
 size_t ads_str_append_snprintf(char *dst, size_t offset, size_t maxsize, const char* fmt, ...);
 
-
-
 /**
- * @brief      字符串大小写转换
+ * 字符串大小写转换
  */
 void ads_str_toupper(char *src, char *dst=NULL, size_t n=-1);
 void ads_str_tolower(char *src, char *dst=NULL, size_t n=-1);
@@ -63,12 +63,18 @@ void ads_string_rtrim(string &str, const char *charlist=" \t\n\r\0\x0B");
 void ads_string_trim(string &str, const char *charlist=" \t\n\r\0\x0B");
 
 /**
- * @brief      字符串替换
+ * 字符串替换
  */
 void   ads_str_replace(const char *src, char *dst, 
 	const char *search, const char *replace, size_t limit=-1);
 string ads_string_replace(const string &src, const char *search, 
 	const char *replace, size_t limit=-1);
+
+/**
+ * 字符串分割
+ */
+void ads_string_split(const string &src, const string &sep, 
+	vector<string> &dst, size_t limit=-1);
 
 /**
  * 进制转换

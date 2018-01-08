@@ -4,6 +4,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <curl/curl.h>
+#include <unordered_map>
 
 #include "log.h"
 #include "serv.h"
@@ -32,6 +33,7 @@ reloader_t<g_conf_t> *g_conf_reloader;
 
 g_data_t g_data;
 
+unordered_map<string, AdsController*> __CONTROLLERS__;
 
 // 请求回调函数
 int callback()
