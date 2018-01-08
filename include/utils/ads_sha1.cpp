@@ -1,4 +1,4 @@
-#include "ads_sha1.h"
+#include "utils/ads_sha1.h"
 
 static const u_char *ngx_sha1_body(ngx_sha1_t *ctx, const u_char *data,
     size_t size);

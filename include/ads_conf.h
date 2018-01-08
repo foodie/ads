@@ -2,7 +2,7 @@
 #define _ADS_CONF_H
 
 #include "ads_def.h"
-#include "ads_mysql.h"
+#include "utils/ads_mysql.h"
 
 static const char CONF_FPATH[] = "./conf";
 static const char CONF_FNAME[] = "ads";
