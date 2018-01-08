@@ -27,7 +27,7 @@ public:
 	static void close();
 	static AdsController* getController(const string &name);
 private:
-	static unordered_map<string, AdsController*> *map = nullptr;
+	static unordered_map<string, AdsController*> *map = NULL;
 };
 
 

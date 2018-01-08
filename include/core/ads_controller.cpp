@@ -8,12 +8,12 @@
 // static //
 bool AdsController::init()
 {
-	if ( map != nullptr ) {
+	if ( map != NULL ) {
 		return true;
 	}
 
 	map = new unordered_map<string, AdsController*>();
-	if ( map == nullptr ) {
+	if ( map == NULL ) {
 		WARN("Ads Controller map is null");
 		return false;
 	}
@@ -31,22 +31,22 @@ bool AdsController::init()
 
 void AdsController::close()
 {
-	if ( map != nullptr ) {
+	if ( map != NULL ) {
 		map->clear();
-		map = nullptr;
+		map = NULL;
 	}
 }
 
 AdsController* AdsController::getController(const string &name)
 {
-	if ( map == nullptr ) {
+	if ( map == NULL ) {
 		WARN("Ads Controller doesn't init");
-		return nullptr;
+		return NULL;
 	}
 
 	auto itr = map->find(name);
 	if ( itr == map->end() ) {
-		return nullptr;
+		return NULL;
 	}
 
 	return itr->second;
