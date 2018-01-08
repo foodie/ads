@@ -5,6 +5,7 @@
 #include <functional>
 #include <unordered_map>
 
+using std::string;
 using std::unordered_map;
 using std::function;
 using std::bind;
@@ -29,9 +30,6 @@ public:
 private:
 	static unordered_map<string, AdsController*> *map;
 };
-
-unordered_map<string, AdsController*>* AdsController::map = NULL;
-
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

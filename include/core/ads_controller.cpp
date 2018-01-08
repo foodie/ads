@@ -8,10 +8,6 @@
 // static //
 bool AdsController::init()
 {
-	if ( map != NULL ) {
-		return true;
-	}
-
 	map = new unordered_map<string, AdsController*>();
 	if ( map == NULL ) {
 		WARN("Ads Controller map is null");
