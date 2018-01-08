@@ -31,4 +31,4 @@ mads: src/ads_conf.o src/ads_hash.o src/ads_data.o src/ads_func.o src/ads_thread
 	$(CC) -o $@ $^ $(INCLUDES) $(LIB_PATH) $(GEOIPFLAGS) $(LDFLAGS)
 
 clean:
-	rm -rf src/*.o ${CORE_PATH}/*.o mads
+	rm -rf src/*.o ${CORE_PATH}/*.o ${UTIL_OBJ}/*.o  mads

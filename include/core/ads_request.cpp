@@ -3,7 +3,7 @@
 #include <fcgi_stdio.h>
 #include "log.h"
 #include "ads_http.h"
-#include "ads_string.h"
+#include "utils/ads_string.h"
 
 /**
  * AdsHttpRequest
