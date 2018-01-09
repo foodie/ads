@@ -6,10 +6,9 @@
 #include "monitor/ads_monitor_controller.h"
 
 // static //
-unordered_map<string, AdsController*>* AdsController::map = NULL;
+unordered_map<string, AdsController*>* AdsController::map = new unordered_map<string, AdsController*>();
 bool AdsController::init()
 {
-	map = new unordered_map<string, AdsController*>();
 	if ( map == NULL ) {
 		WARN("Ads Controller map is null");
 		return false;

@@ -4,15 +4,15 @@ SHELL=/bin/sh
 IF_PATH=./if
 CORE_PATH=./include/core
 UTIL_PATH=./include/utils
-MODULE_PATH=./module
+PLUGIN_PATH=./include/utils
 
-INCLUDES=-I. -I./include -I./include/hashtable -I${IF_PATH}/ -I${CORE_PATH}/ -I${MODULE_PATH}/ 
+INCLUDES=-I. -I./include -I./include/hashtable -I${IF_PATH}/ -I${CORE_PATH}/ 
 LIB_PATH=-L./lib
 
 IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
 CORE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CORE_PATH}/*.cpp))
 UTIL_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${UTIL_PATH}/*.cpp))
-MODULE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${MODULE_PATH}/*.cpp))
+PLUGIN_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${PLUGIN_PATH}/*.cpp))
 
 CPPFLAGS= -std=c++11 -O0 -g -static -fPIC -finline-functions -pipe \
         -Wreturn-type -Wtrigraphs -Wformat -Wparentheses -Wpointer-arith \
@@ -29,8 +29,8 @@ all: mads
 
 mads: src/ads_conf.o src/ads_hash.o src/ads_data.o src/ads_func.o src/ads_thread.o \
       src/main.o \
-     $(IF_OBJ) $(CORE_OBJ) $(UTIL_OBJ) $(MODULE_OBJ) 
+     $(IF_OBJ) $(CORE_OBJ) $(UTIL_OBJ) $(PLUGIN_OBJ) 
 	$(CC) -o $@ $^ $(INCLUDES) $(LIB_PATH) $(GEOIPFLAGS) $(LDFLAGS)
 
 clean:
-	rm -rf src/*.o ${CORE_PATH}/*.o ${UTIL_OBJ}/*.o  mads
+	rm -rf src/*.o ${CORE_PATH}/*.o ${UTIL_PATH}/*.o ${MODULE_PATH}/*.o  mads
