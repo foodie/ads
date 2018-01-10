@@ -13,14 +13,15 @@ public:
 	AdsMonitorType type;
 
 	// 广告信息
-	int campaign_id;
-	int launch_id;
-	int creative_id;
-	int material_id;
+	int exchange_id;		// 媒体id
+	int campaign_id;		// 活动id
+	int launch_id;			// 投放id
+	int creative_id;		// 创意id
+	int material_id;		// 素材id
 
 	// 设备信息
-	int os;
-	int device_type;
+	int os;					// 操作系统
+	int device_type;		// 设备类型
 
 	string ua;
 	string idfa;			// idfa
@@ -28,14 +29,14 @@ public:
 	string imei;			// imei MD5
 	string androidid;		// android id MD5
 	string androidid1;		// android id 
-	string mac;			// mac MD5
+	string mac;				// mac MD5
 	string mac1;			// mac1 MD5
 
-	long ip;
-	int address_id;
+	long ip;				// ip
+	int address_id;			// 地域id
 
 	// 应用信息
-	string appname;
+	string appname;			// 应用名称
 
 };
 
