@@ -23,6 +23,8 @@ public:
 			return -1;
 		}
 
+		
+
 		AdsMonitorLogger::logTrack(param);
 		return 0;
 	}

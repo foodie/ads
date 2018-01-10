@@ -16,14 +16,21 @@ public:
 		  creatives(MAX_MONITOR_BITEMS_SIZE) 
 	{}
 
+	void getHistoryData();
+	void getLogData();
+
+	bool setCampaign(int id, AdsMonitorCampaign *v);
+	AdsMonitorCampaign* findCampaign(int id);
 	AdsMonitorCampaign* getCampaign(int id);
+
+	bool setLaunch(int id, AdsMonitorLaunch *v);
+	AdsMonitorLaunch* findLaunch(int id);
 	AdsMonitorLaunch* getLaunch(int id);
-	AdsMonitorCreative* getCreative(int id);
+
 
 private:
 	phashmap<int, AdsMonitorCampaign*> campaigns;
 	phashmap<int, AdsMonitorLaunch*> launchs;
-	phashmap<int, AdsMonitorCreative*> creatives;
 };
 
 

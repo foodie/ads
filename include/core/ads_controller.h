@@ -5,6 +5,9 @@
 #include <functional>
 #include <unordered_map>
 
+#include "ads_data.h"
+#include "ads_thread.h"
+
 using std::string;
 using std::unordered_map;
 using std::function;

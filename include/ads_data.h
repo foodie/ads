@@ -3,10 +3,11 @@
 
 #include <string>
 
+#include "utils/ads_ip_location.h"
+
 struct g_data_t
 {
-	
-
+	AdsIpLocation *iploc;
 };
 
 extern g_data_t g_data;

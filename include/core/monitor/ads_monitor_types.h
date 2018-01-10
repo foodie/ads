@@ -4,52 +4,106 @@
 /**
  * 监测数据的数据结构
  */
-
-#include <sys/time.h>
 #include <string>
 #include <vector>
 #include "phashmap.h"
+#include "utils/ads_time.h"
 
 using std::string;
 using std::vector;
 using lib::phashmap;
 
-/**
- * 广告数据监测
- */
+enum class AdsMonitorRecordMode { DAY=1, WEEK, MONTH, ALL }
 
-class AdsMonitorAdvertise
+typedef vector<time_t> AdsMonitorTimeRecord;
+
+class AdsMonitorTimeRecord
 {
 public:
-	typedef vector<long> _TimeRecord;
-	typedef phashmap<string, _TimeRecord> _UserRecord;
+	void addRecord(time_t ts)
+	{
+		records.push_back(ts);
+	}
+
+	int getFreq(AdsMonitorRecordMode m)
+	{
+		if ( m == AdsMonitorRecordMode::ALL ) {
+			return records.size();
+		}
+
+		time_t t;
+		if ( m == AdsMonitorRecordMode::DAY ) {
+			t = ads_today();
+		} else if ( m == AdsMonitorRecordMode::WEEK ) {
+			t = ads_first_day_of_week();
+		} else if ( m == AdsMonitorRecordMode::MONTH ) {
+			t = ads_first_day_of_month();
+		}
+
+		int i;
+		for ( i = records.size() - 1; i >= 0; i-- ) {
+			if ( records[i] < t ) {
+				break;
+			}
+		}
+
+		return records.size() - 1 - i;
+	}
 
 private:
-	time_t ts;
-
-	unsigned int cost; // 消耗成本
-	unsigned int imp;	// 展示数
-	unsigned int clk;	// 点击数
-
-	_UserRecord records;
+	vector<time_t> records;
 };
+
+class AdsMonitorUserRecord
+{
+public:
+
+	void addImpRecord(time_t ts)
+	{
+		imp.addRecord(ts);
+	}
+
+	int getImpFreq(AdsMonitorRecordMode m)
+	{
+		return imp.getFreq(m);
+	}
+
+	void addClkRecord(time_t ts)
+	{
+		clk.addRecord(ts);
+	}
+
+	int getClkFreq(AdsMonitorRecordMode m)
+	{
+		return clk.getFreq(m);
+	}
+
+private:
+	AdsMonitorTimeRecord imp; // 曝光记录
+	AdsMonitorTimeRecord clk; // 点击记录
+};
+
+
 
 // 活动监测
 class AdsMonitorCampaign
 {
 public:
 	AdsMonitorCampaign() 
-		: ts(0), cost(0), imp(0), clk(0), records(MAX_MONITOR_BITEMS_SIZE)
+		: ts(0), cost(0), imp(0), clk(0), 
+		  records(MAX_MONITOR_BITEMS_SIZE)
 	{}
 
 private:
-	time_t ts;
+	time_t read_ts;
+	time_t write_ts;
 
-	unsigned int cost; // 消耗成本
+	// 总数据
+	unsigned int cost;  // 消耗成本
 	unsigned int imp;	// 展示数
 	unsigned int clk;	// 点击数
 
-	AdsMonitorUserRecord records;
+	phashmap<string, AdsMonitorUserRecord*> records;
 };
 
 // 投放监测
@@ -57,28 +111,84 @@ class AdsMonitorLaunch
 {
 public:
 	AdsMonitorLaunch(AdsMonitorCampaign *campaign) 
-		: ts(0), cost(0), imp(0), clk(0), records(MAX_MONITOR_BITEMS_SIZE)
+		: ts(0), cost(0), imp(0), clk(0), 
+		records(MAX_MONITOR_BITEMS_SIZE)
 	{}
 
 	unsigned int getCost() { return cost; }
+	void setCost(unsigned int c) { cost = c; }
+	void incCost(unsigned int c) { cost += c; }
+
 	unsigned int getImp() { return imp; }
+	void setImp(unsigned int i) { imp = i; }
+	void incImp(unsigned int i=1) { imp += i; }
+
 	unsigned int getClk() { return clk; }
+	void setClk(unsigned int c) { clk = c; }
+	void incClk(unsigned int c=1) { clk += c; }
+
+	void addImpRecord(const string& name, time_t ts) 
+	{ 
+		AdsMonitorUserRecord *record = getUserRecord(name);
+		record->addImpRecord(ts);
+	}
+
+	int getImpFreq(const string& name, AdsMonitorRecordMode m)
+	{
+		AdsMonitorUserRecord *record = findUserRecord(name);
+		if ( record == NULL ) {
+			return 0;
+		}
+		return record->getImpFreq(m);
+	}
+
+	void addClkRecord(const string& name, time_t ts)
+	{
+		AdsMonitorUserRecord *record = getUserRecord(name);
+		record->addClkRecord(ts);
+	}
+
+	int getClkFreq(const string& name, AdsMonitorRecordMode m)
+	{
+		AdsMonitorUserRecord *record = findUserRecord(name);
+		if ( record == NULL ) {
+			return 0;
+		}
+		return record->getClkFreq(m);
+	}
 
 private:
-	time_t ts;
+	time_t read_ts;
+	time_t write_ts;
 
-	unsigned int cost; 	// 当天消耗成本
+	// 当天数据
+	unsigned int cost; 	// 消耗成本
 	unsigned int imp;	// 展示数
 	unsigned int clk;	// 点击数
 	
-	AdsMonitorUserRecord records;
+	phashmap<string, AdsMonitorUserRecord*> records;
+
+	AdsMonitorUserRecord* findUserRecord(const string& name)
+	{
+		AdsMonitorUserRecord *record;
+		if ( records.get(name, &record) == lib::NOEXISTS ) {
+			return NULL;
+		}
+		return record;
+	}
+
+	AdsMonitorUserRecord* getUserRecord(const string& name)
+	{
+		AdsMonitorUserRecord *record = findUserRecord(name);
+		if ( record == NULL ) {
+			record = new (std::nothrow) AdsMonitorUserRecord;
+			records.set(name, record);
+		}
+		return record;
+	}
 };
 
 // 创意监测
-class AdsMonitorCreative
-{
-};
-
 
 
 #endif

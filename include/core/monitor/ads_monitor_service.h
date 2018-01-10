@@ -6,9 +6,17 @@
  * 提供给其他模块的接口
  */
 
+#include "monitor/ads_monitor_manager.h"
+
 class AdsMonitorService
 {
 public:
+	static AdsMonitorManager *manager;
+
+	static bool init();
+	static void close();
+
+	/* 查询接口 */
 
 	// 活动
 	static bool checkCampaignBudget(int id, int budget); // 总预算
@@ -23,6 +31,17 @@ public:
 	static bool checkLaunchClkFreq(int id, int freq); // 点击频次
 
 	// 创意
+
+
+	/* 更新接口 */
+
+	static void addCampaignWin(int id, int price);
+	static void addCampaignImp(int id, const string& name);
+	static void addCampaignClk(int id, const string& name);
+
+	static void addLaunchWin(int id, int price);
+	static void addLaunchImp(int id, const string& name);
+	static void addLaunchClk(int id, const string& name);
 
 };
 
