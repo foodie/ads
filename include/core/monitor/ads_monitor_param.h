@@ -23,13 +23,13 @@ public:
 	int device_type;
 
 	string ua;
-	string 	idfa;			// idfa
-	string 	openudid;		// openudid
-	string 	imei;			// imei MD5
-	string 	androidid;		// android id MD5
-	string 	androidid1;		// android id 
-	string 	mac;			// mac MD5
-	string 	mac1;			// mac1 MD5
+	string idfa;			// idfa
+	string openudid;		// openudid
+	string imei;			// imei MD5
+	string androidid;		// android id MD5
+	string androidid1;		// android id 
+	string mac;			// mac MD5
+	string mac1;			// mac1 MD5
 
 	long ip;
 	int address_id;

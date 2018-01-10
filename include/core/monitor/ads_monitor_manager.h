@@ -16,8 +16,6 @@ public:
 		  creatives(MAX_MONITOR_BITEMS_SIZE) 
 	{}
 
-	
-
 	AdsMonitorCampaign* getCampaign(int id);
 	AdsMonitorLaunch* getLaunch(int id);
 	AdsMonitorCreative* getCreative(int id);

@@ -14,16 +14,32 @@ using std::string;
 using std::vector;
 using lib::phashmap;
 
-typedef vector<long> AdsMonitorTimeRecord;
-typedef phashmap<string, AdsMonitorTimeRecord> AdsMonitorUserRecord;
+/**
+ * 广告数据监测
+ */
+
+class AdsMonitorAdvertise
+{
+public:
+	typedef vector<long> _TimeRecord;
+	typedef phashmap<string, _TimeRecord> _UserRecord;
+
+private:
+	time_t ts;
+
+	unsigned int cost; // 消耗成本
+	unsigned int imp;	// 展示数
+	unsigned int clk;	// 点击数
+
+	_UserRecord records;
+};
 
 // 活动监测
 class AdsMonitorCampaign
 {
 public:
 	AdsMonitorCampaign() 
-		: launchs(MAX_MONITOR_BITEMS_SIZE),
-		  cost(0), imp(0), clk(0)
+		: ts(0), cost(0), imp(0), clk(0), records(MAX_MONITOR_BITEMS_SIZE)
 	{}
 
 private:
@@ -33,7 +49,7 @@ private:
 	unsigned int imp;	// 展示数
 	unsigned int clk;	// 点击数
 
-	phashmap<int, AdsMonitorLaunch*> launchs; // 下属投放
+	AdsMonitorUserRecord records;
 };
 
 // 投放监测
@@ -41,8 +57,7 @@ class AdsMonitorLaunch
 {
 public:
 	AdsMonitorLaunch(AdsMonitorCampaign *campaign) 
-		: campaign(campaign), creatives(MAX_MONITOR_BITEMS_SIZE), record(MAX_MONITOR_BITEMS_SIZE)
-		  cost(0), imp(0), clk(0)
+		: ts(0), cost(0), imp(0), clk(0), records(MAX_MONITOR_BITEMS_SIZE)
 	{}
 
 	unsigned int getCost() { return cost; }
@@ -50,14 +65,13 @@ public:
 	unsigned int getClk() { return clk; }
 
 private:
+	time_t ts;
+
 	unsigned int cost; 	// 当天消耗成本
 	unsigned int imp;	// 展示数
 	unsigned int clk;	// 点击数
 	
-	AdsMonitorUserRecord record;
-
-	AdsMonitorCampaign *campaign; // 所属活动
-	phashmap<int, AdsMonitorCreative*> creatives; // 下属创意
+	AdsMonitorUserRecord records;
 };
 
 // 创意监测

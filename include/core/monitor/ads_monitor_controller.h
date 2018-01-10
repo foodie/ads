@@ -14,21 +14,21 @@ public:
 	virtual int perform(AdsThreadData* pdata) override
 	{
 		bool ret;
-		AdsMonitorParam data;
+		AdsMonitorParam param;
 
 		// 解析
-		ret = parseQuery(pdata, data);
+		ret = getMonitorParamFromQuery(pdata, param);
 		if ( ret ) {
 			AdsMonitorLogger::logWarn();
 			return -1;
 		}
 
-		AdsMonitorLogger::logTrack(data);
+		AdsMonitorLogger::logTrack(param);
 		return 0;
 	}
 
 private:
-	bool parseQuery(AdsThreadData* pdata, AdsMonitorParam& mdata);
+	bool getMonitorParamFromQuery(AdsThreadData* pdata, AdsMonitorParam& param);
 
 };
 
