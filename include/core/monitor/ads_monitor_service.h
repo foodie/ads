@@ -30,18 +30,17 @@ public:
 	static bool checkLaunchImpFreq(int id, int freq); // 展示频次
 	static bool checkLaunchClkFreq(int id, int freq); // 点击频次
 
-	// 创意
 
 
 	/* 更新接口 */
 
-	static void addCampaignWin(int id, int price);
-	static void addCampaignImp(int id, const string& name);
-	static void addCampaignClk(int id, const string& name);
+	static void addCampaignCost(int id, int price);
+	static void addCampaignImp(int id, const string& dev_id);
+	static void addCampaignClk(int id, const string& dev_id);
 
-	static void addLaunchWin(int id, int price);
-	static void addLaunchImp(int id, const string& name);
-	static void addLaunchClk(int id, const string& name);
+	static void addLaunchCost(int id, int price);
+	static void addLaunchImp(int id, const string& dev_id);
+	static void addLaunchClk(int id, const string& dev_id);
 
 };
 
