@@ -1,7 +1,7 @@
-#ifndef _ADS_ADVERTISE_H
-#define _ADS_ADVERTISE_H
+#ifndef _ADS_ADVERTISE_MANAGER_H
+#define _ADS_ADVERTISE_MANAGER_H
 
-class AdsAdvertise
+class AdsAdvertiseManager
 {
 
 };
