@@ -9,7 +9,7 @@ class AdsController
 {
 public:
 
-	virtual int perform(AdsThreadData*) = 0;
+	virtual int process(AdsThreadData*) = 0;
 
 };
 

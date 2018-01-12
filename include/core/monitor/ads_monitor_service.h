@@ -6,7 +6,7 @@
  * 提供给其他模块的接口
  */
 
-#include "monitor/ads_monitor_manager.h"
+#include "core/monitor/ads_monitor_manager.h"
 
 class AdsMonitorService
 {

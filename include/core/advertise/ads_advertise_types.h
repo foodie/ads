@@ -2,7 +2,7 @@
 #define _ADS_ADVERTISE_TYPES_H
 
 #include <sys/time.h>
-#include "advertise/ads_advertise_material.h"
+#include "core/advertise/ads_advertise_material.h"
 
 class AdsCampaign
 {

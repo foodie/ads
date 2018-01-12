@@ -1,13 +1,15 @@
 #ifndef _ADS_BIDDING_PARAM_H
 #define _ADS_BIDDING_PARAM_H
 
+#include "core/bidding/ads_bidding.h"
+#include "core/bidding/ads_bidding_types.h"
+
 class AdsBiddingParam
 {
 
 public:
 	int exchange_id;
-
-	int bidding_type; // rtb pdb
+	AdsBiddingType type;
 
 };
 

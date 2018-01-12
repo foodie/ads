@@ -1,6 +1,6 @@
 #include "plugins/controller/ads_monitor_controller.h"
 
-int AdsMonitorController::perform(AdsThreadData* p_thd_data)
+int AdsMonitorController::process(AdsThreadData* p_thd_data)
 {
 	bool ret;
 	AdsMonitorParam param;

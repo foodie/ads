@@ -79,7 +79,7 @@ int callback()
     AdsControllerFactory *cfactory = AdsControllerFactory::getInstance();
     AdsController* controller = cfactory->getController(cname);
 	if ( controller != NULL ) {
-        controller->perform(p_thd_data);
+        controller->process(p_thd_data);
     }
 
 	// 封装响应

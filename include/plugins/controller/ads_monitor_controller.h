@@ -10,7 +10,7 @@ class AdsMonitorController : public AdsController
 {
 public:
 
-	virtual int perform(AdsThreadData* pdata) override;
+	virtual int process(AdsThreadData* pdata) override;
 
 private:
 	bool parseMonitorParam(AdsThreadData* pdata, AdsMonitorParam& param);

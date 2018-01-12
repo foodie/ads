@@ -5,7 +5,7 @@
  * 监测数据管理
  */
 
-#include "monitor/ads_monitor_types.h"
+#include "core/monitor/ads_monitor_types.h"
 
 class AdsMonitorManager
 {
