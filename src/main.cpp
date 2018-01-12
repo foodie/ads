@@ -19,7 +19,6 @@
 #include "ads_func.h"
 
 #include "plugins/controller/ads_controller_factory.h"
-#include "plugins/exchange/ads_exchange_factory.h"
 
 DEFINE_string(p, CONF_FPATH, "conf path, string");
 DEFINE_string(f, CONF_FNAME, "conf file, string");
@@ -75,10 +74,11 @@ int callback()
 	// 解析请求
 	p_thd_data->request->parseFromFcgxRequest(request);
 	
-    // 控制器调度
-    string controllerName = p_thd_data->request->getUri(0);
-    AdsController* controller = AdsController::getController(controllerName);
-	if ( controller != nullptr ) {
+    // 调用控制器
+    string cname = p_thd_data->request->getUri(0);
+    AdsControllerFactory *cfactory = AdsControllerFactory::getInstance();
+    AdsController* controller = cfactory->getController(cname);
+	if ( controller != NULL ) {
         controller->perform(p_thd_data);
     }
 
@@ -125,19 +125,6 @@ int init()
  */
 static int module_init()
 {
-    // 控制器模块
-    ret = AdsControllerFactory::init();
-    if ( !ret ) {
-        FATAL("Ads Controller init failed");
-        return -1;
-    }
-
-    // Exchange模块
-    ret = AdsExchangeFactory::init();
-    if ( !ret ) {
-        FATAL("Ads Exchange init failed");
-        return -1;
-    }
 
     // 广告管理模块
 

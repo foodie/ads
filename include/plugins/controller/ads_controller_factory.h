@@ -11,11 +11,21 @@ using std::unordered_map;
 class AdsControllerFactory
 {
 public:
-	static bool init();
+	AdsControllerFactory();
+	~AdsControllerFactory();
 	
-	static AdsController* getController(const string &name);
+	AdsController* getController(const string &name) const;
 private:
-	static unordered_map<string, AdsController*> *controllers;
+	unordered_map<string, AdsController*> *controllers;
+
+// static //
+public:
+	static AdsControllerFactory* getInstance()
+	{
+		return instance;
+	}
+private:
+	static AdsControllerFactory *instance;
 };
 
 #endif

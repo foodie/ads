@@ -11,15 +11,22 @@ using std::unordered_map;
 class AdsExchangeFactory
 {
 public:
+	AdsExchangeFactory();
+	~AdsExchangeFactory();
 
-	static bool init();
-
-	static AdsExchange* getExchange(const string& name);
+	AdsExchange* getExchange(const string& name) const;
 
 private:
+	unordered_map<string, AdsExchange*> *exchanges;
 
-	static unordered_map<string, AdsExchange*> *exchanges;
-
+// static //
+public:
+	static AdsExchangeFactory* getInstance() 
+	{
+		return instance;
+	}
+private:
+	static AdsExchangeFactory *instance;
 };
 
 #endif

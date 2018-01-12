@@ -5,30 +5,30 @@
 #include "plugins/controller/ads_bidding_controller.h"
 #include "plugins/controller/ads_monitor_controller.h"
 
-unordered_map<string, AdsController*>* AdsControllerFactory::controllers = new unordered_map<string, AdsController*>;
+AdsControllerFactory* AdsControllerFactory::instance = new AdsControllerFactory;
 
-bool AdsControllerFactory::init()
+AdsControllerFactory::AdsControllerFactory()
 {
+	controllers = new unordered_map<string, AdsController*>;
 	if ( controllers == NULL ) {
 		WARN("Controllers is null");
 		return false;
 	}
 
-	// bidding
-	AdsBiddingController *bidding = new AdsBiddingController;
-	if ( bidding == NULL ) {
-		WARN("Bidding controller is null");
-		return false;
-	}
+	// 添加controller实例
+	controllers->emplace("bidding", new AdsBiddingController);
+	controllers->emplace("monitor", new AdsMonitorController);
+}
 
-	// monitor
-	AdsMonitorController *monitor = new AdsMonitorController;
-	if ( monitor == NULL ) {
-		WARN("Monitor controller is null");
-		return false;
+AdsControllerFactory::~AdsControllerFactory()
+{
+	if ( exchanges != NULL ) {
+		for ( auto itr = controllers->begin(); itr != controllers->end();
+			itr = controllers->erase(itr) ) {
+			delete itr->second;
+			itr->second = NULL;
+		}
 	}
-
-	return true;
 }
 
 AdsController* AdsControllerFactory::getController(const string &name)

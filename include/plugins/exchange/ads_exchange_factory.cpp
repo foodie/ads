@@ -5,24 +5,31 @@
 #include "utils/ads_string.h"
 #include "plugins/exchange/ads_adview_exchange.h"
 
-unordered_map<string, AdsExchange*>* AdsExchangeFactory::exchanges = new unordered_map<string, AdsExchange*>;
+AdsExchangeFactory* AdsExchangeFactory::instance = new AdsExchangeFactory;
 
-bool AdsExchangeFactory::init()
+AdsExchangeFactory::AdsExchangeFactory()
 {
+	// 构造hash map
+	exchanges = new unordered_map<string, AdsExchange*>;
 	if ( exchanges == NULL ) {
 		WARN("Exchanges is null");
-		return false;
+		return;
 	}
 
-	// adview
-	AdsAdviewExchange *adview = new AdsAdviewExchange;
-	if ( adview == NULL ) {
-		WARN("Adview exchange is null");
-		return false;
-	}
-	exchanges->emplace("adview", adview);
+	// 添加exchange实例
+	exchanges->emplace("adview", new AdsAdviewExchange);
 
-	return true;
+}
+
+AdsExchangeFactory::~AdsExchangeFactory()
+{
+	if ( exchanges != NULL ) {
+		for ( auto itr = exchanges->begin(); itr != exchanges->end();
+			itr = exchanges->erase(itr) ) {
+			delete itr->second;
+			itr->second = NULL;
+		}
+	}
 }
 
 AdsExchange* AdsExchangeFactory::getExchange(const string& name)
