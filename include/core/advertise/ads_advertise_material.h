@@ -49,6 +49,8 @@ public:
 class AdsMaterial
 {
 public:
+	int id;
+
 	AdsMaterialType type;
 
 	/* 图片素材 */

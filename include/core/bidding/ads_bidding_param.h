@@ -4,6 +4,11 @@
 class AdsBiddingParam
 {
 
+public:
+	int exchange_id;
+
+	int bidding_type; // rtb pdb
+
 };
 
 

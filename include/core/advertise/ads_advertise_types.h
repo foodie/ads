@@ -7,6 +7,8 @@
 class AdsCampaign
 {
 public:
+	int id;
+
 	unsigned int budget; 	// 预算,分
 	unsigned int imp_limit; // 展示上限
 	unsigned int clk_limit; // 点击上限
@@ -22,6 +24,11 @@ public:
 class AdsLaunch
 {
 public:
+	int id;
+
+	int bidding_type;
+	int price;
+
 
 };
 
@@ -29,8 +36,9 @@ class AdsCreative
 {
 
 public:
-	
-	string ad_position;
+	int id;
+
+	string ad_zone_id;
 
 	int 			clk_act;
 	string 			landing;
@@ -44,13 +52,16 @@ public:
 	time_t 	end_date;
 };
 
+
 class AdsAdvertise
 {
 public:
+
 	AdsCampaign *campaign;
 	AdsLaunch 	*launch;
 	AdsCreative *creative;
 	AdsMaterial *material;
+
 };
 
 #endif

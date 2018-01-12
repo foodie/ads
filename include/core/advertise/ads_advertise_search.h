@@ -4,7 +4,7 @@
 class AdsAdvertiseSearch
 {
 public:
-
+	list<AdsAdvertise*>* search(AdsBiddingParam& param);
 
 };
 

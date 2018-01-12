@@ -18,7 +18,8 @@
 #include "ads_thread.h"
 #include "ads_func.h"
 
-#include "ads_controller.h"
+#include "plugins/controller/ads_controller_factory.h"
+#include "plugins/exchange/ads_exchange_factory.h"
 
 DEFINE_string(p, CONF_FPATH, "conf path, string");
 DEFINE_string(f, CONF_FNAME, "conf file, string");
@@ -115,6 +116,32 @@ int init()
         FATAL("init fcgx request error!");
         return -1;
     }
+
+    return 0;
+}
+
+/**
+ * 初始化模块
+ */
+static int module_init()
+{
+    // 控制器模块
+    ret = AdsController::init();
+    if ( !ret ) {
+        FATAL("Ads Controller init failed");
+        return -1;
+    }
+
+    // Exchange模块
+    ret = AdsExchangeFactory::init();
+    if ( !ret ) {
+        FATAL("Ads Controller init failed");
+        return -1;
+    }
+
+    // 广告管理模块
+
+    // 监测模块
 
     return 0;
 }
@@ -248,9 +275,9 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    ret = AdsController::init();
-    if ( !ret ) {
-        FATAL("Ads Controller init failed");
+    ret = module_init();
+    if (ret) {
+        FATAL("module init failed");
         return -1;
     }
 
@@ -271,7 +298,6 @@ int main(int argc, char **argv)
 
 	log_close();
 	curl_global_cleanup();
-    AdsController::close();
 	
     return 0;
 }
