@@ -1,5 +1,5 @@
-#ifndef _ADS_DECRYPTER_H
-#define _ADS_DECRYPTER_H
+#ifndef _ADS_GOOGLE_DECRYPTER_H
+#define _ADS_GOOGLE_DECRYPTER_H
 
 #include <endian.h>
 #include <netinet/in.h>

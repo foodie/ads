@@ -15,7 +15,7 @@
 // Decrypter is sample code showing the steps to decrypt and verify 64-bit
 // values. It uses the Base 64 decoder in the OpenSSL library.
 
-#include "ads_decrypter.h"
+#include "plugins/decrypter/ads_google_decrypter.h"
 
 // Definition of ntohll
 inline uint64 ntohll(uint64 host_int) {
