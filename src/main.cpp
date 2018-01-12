@@ -126,7 +126,7 @@ int init()
 static int module_init()
 {
     // 控制器模块
-    ret = AdsController::init();
+    ret = AdsControllerFactory::init();
     if ( !ret ) {
         FATAL("Ads Controller init failed");
         return -1;
@@ -135,7 +135,7 @@ static int module_init()
     // Exchange模块
     ret = AdsExchangeFactory::init();
     if ( !ret ) {
-        FATAL("Ads Controller init failed");
+        FATAL("Ads Exchange init failed");
         return -1;
     }
 

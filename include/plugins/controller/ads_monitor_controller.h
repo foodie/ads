@@ -1,7 +1,7 @@
 #ifndef _ADS_MONITOR_CONTROLLER_H
 #define _ADS_MONITOR_CONTROLLER_H
 
-#include "ads_controller.h"
+#include "plugins/controller/ads_controller.h"
 #include "monitor/ads_monitor_param.h"
 #include "monitor/ads_monitor_service.h"
 #include "monitor/ads_monitor_logger.h"
@@ -9,8 +9,6 @@
 class AdsMonitorController : public AdsController
 {
 public:
-	AdsMonitorController() {}
-	virtual ~AdsMonitorController() {}
 
 	virtual int perform(AdsThreadData* pdata) override;
 

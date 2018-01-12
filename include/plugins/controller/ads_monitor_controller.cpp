@@ -1,4 +1,4 @@
-#include "monitor/ads_monitor_controller.h"
+#include "plugins/controller/ads_monitor_controller.h"
 
 int AdsMonitorController::perform(AdsThreadData* p_thd_data)
 {

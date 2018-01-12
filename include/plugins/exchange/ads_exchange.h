@@ -9,9 +9,11 @@ class AdsExchange
 {
 public:
 
-	virtual bool parseBiddingRequest(AdsHttpRequest *request, AdsBiddingParam& param) = 0;
+	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
+		AdsBiddingParam& param) = 0;
 
-	virtual void packBiddingResponse(AdsBiddingParam& param, AdsAdvertise *ad, AdsHttpResponse *response);
+	virtual void packBiddingResponse(AdsBiddingParam& param, 
+		AdsAdvertise *ad, AdsHttpResponse *response) = 0;
 
 	virtual int decryptWinPrice(const string& str)
 	{
