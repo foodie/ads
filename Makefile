@@ -2,17 +2,29 @@ CC=g++
 SHELL=/bin/sh
 
 IF_PATH=./if
-CORE_PATH=./include/core
 UTIL_PATH=./include/utils
-PLUGIN_PATH=./include/utils
+
+CORE_PATH=./include/core
+ADVERTISE_PATH=./include/core/advertise
+BIDDING_PATH=./include/core/bidding
+MONITOR_PATH=./include/core/monitor
+
+CONTROLLER_PATH=./include/plugins/controller
+EXCHANGE_PATH=./include/plugins/exchange
+
+IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
+UTIL_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${UTIL_PATH}/*.cpp))
+
+CORE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CORE_PATH}/*.cpp))
+ADVERTISE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${ADVERTISE_PATH}/*.cpp))
+BIDDING_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${BIDDING_PATH}/*.cpp))
+MONITOR_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${MONITOR_PATH}/*.cpp))
+
+CONTROLLER_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CONTROLLER_PATH}/*.cpp))
+EXCHANGE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${EXCHANGE_PATH}/*.cpp))
 
 INCLUDES=-I. -I./include -I./include/hashtable -I${IF_PATH}/ -I${CORE_PATH}/ 
 LIB_PATH=-L./lib
-
-IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
-CORE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CORE_PATH}/*.cpp))
-UTIL_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${UTIL_PATH}/*.cpp))
-PLUGIN_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${PLUGIN_PATH}/*.cpp))
 
 CPPFLAGS= -std=c++11 -O0 -g -static -fPIC -finline-functions -pipe \
         -Wreturn-type -Wtrigraphs -Wformat -Wparentheses -Wpointer-arith \
@@ -29,8 +41,12 @@ all: mads
 
 mads: src/ads_conf.o src/ads_hash.o src/ads_data.o src/ads_func.o src/ads_thread.o \
       src/main.o \
-     $(IF_OBJ) $(CORE_OBJ) $(UTIL_OBJ) $(PLUGIN_OBJ) 
+     $(IF_OBJ) $(UTIL_OBJ) \
+     $(CORE_OBJ) $(ADVERTISE_OBJ) $(BIDDING_OBJ) $(BIDDING_OBJ) $(MONITOR_OBJ) \
+     $(CONTROLLER_OBJ) $(EXCHANGE_OBJ) 
 	$(CC) -o $@ $^ $(INCLUDES) $(LIB_PATH) $(GEOIPFLAGS) $(LDFLAGS)
 
 clean:
-	rm -rf src/*.o ${CORE_PATH}/*.o ${UTIL_PATH}/*.o ${MODULE_PATH}/*.o  mads
+	rm -rf src/*.o ${UTIL_PATH}/*.o mads \
+	 	${CORE_PATH}/*.o ${ADVERTISE_PATH}/*.o ${BIDDING_PATH}/*.o ${MONITOR_PATH}/*.o \
+		${CONTROLLER_PATH}/*.o ${EXCHANGE_PATH}/*.o
