@@ -7,10 +7,10 @@ typedef struct _thread_data_t AdsThreadData;
 
 class AdsController
 {
+	friend AdsController* getController(const string &name);
+
 public:
-
 	virtual int process(AdsThreadData*) = 0;
-
 };
 
 #endif

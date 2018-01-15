@@ -7,6 +7,8 @@
 
 class AdsExchange
 {
+	friend AdsExchange* getExchange(const string& name);
+
 public:
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 

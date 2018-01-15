@@ -18,7 +18,7 @@
 #include "ads_thread.h"
 #include "ads_func.h"
 
-#include "plugins/controller/ads_controller_factory.h"
+#include "plugins/controller/ads_controller.h"
 
 DEFINE_string(p, CONF_FPATH, "conf path, string");
 DEFINE_string(f, CONF_FNAME, "conf file, string");
@@ -76,8 +76,7 @@ int callback()
 	
     // 调用控制器
     string cname = p_thd_data->request->getUri(0);
-    AdsControllerFactory *cfactory = AdsControllerFactory::getInstance();
-    AdsController* controller = cfactory->getController(cname);
+    AdsController* controller = getController(cname);
 	if ( controller != NULL ) {
         controller->process(p_thd_data);
     }
