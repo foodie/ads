@@ -7,10 +7,15 @@ enum class AdsBiddingType
 	PDB
 };
 
-enum class AdsBiddingImpressionType
+enum class AdsBiddingSettlement
+{
+	CPM = 1,
+	CPC,
+};
+
+enum class AdsImpressionType
 {
 	BANNER = 1,
-
 	VIDEO,
 	NATIVE,
 };
@@ -31,6 +36,7 @@ enum class AdsOs
 
 enum class AdsCarrier
 {
+	UNKNOW = 0,
 	CHINA_MOBILE = 1, 	// 移动
 	CHINA_UNICOM, 		// 联通
 	CHINA_TELECOM, 		// 电信
@@ -38,6 +44,7 @@ enum class AdsCarrier
 
 enum class AdsConnectionType
 {
+	UNKNOW = 0,
 	PC = 1,
 	WIFI,
 	GSM_UNKNOW,
@@ -45,6 +52,7 @@ enum class AdsConnectionType
 	GSM_3G,
 	GSM_4G,
 };
+
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
