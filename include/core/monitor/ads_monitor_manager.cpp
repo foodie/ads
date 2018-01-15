@@ -4,18 +4,18 @@
  * Campaign
  */
 
-bool setCampaign(int id, AdsMonitorCampaign *v)
+bool AdsMonitorManager::setCampaign(int id, AdsMonitorCampaign *v)
 {
 	AdsMonitorCampaign *v2 = findCampaign(id);
 	int ret = campaigns.set(id, v, 1);
-	if ( ret == lib::HASH_INSERT_SEC || ret == lib::HASH_OVERWRITE )
+	if ( ret == lib::HASH_INSERT_SEC || ret == lib::HASH_OVERWRITE ) {
 		delete v2;
 		return true;
 	}
 	return false;
 }
 
-AdsMonitorCampaign* findCampaign(int id)
+AdsMonitorCampaign* AdsMonitorManager::findCampaign(int id)
 {
 	AdsMonitorCampaign* v;
 	if ( campaigns.get(id, &v) == lib::HASH_NOEXIST ) {
@@ -40,8 +40,8 @@ AdsMonitorCampaign* AdsMonitorManager::getCampaign(int id)
 
 bool AdsMonitorManager::setLaunch(int id, AdsMonitorLaunch *v)
 {
-	AdsMonitorLaunch *v2 = findCampaign(id);
-	int ret = campaigns.set(id, v, 1);
+	AdsMonitorLaunch *v2 = findLaunch(id);
+	int ret = launchs.set(id, v, 1);
 	if ( ret == lib::HASH_INSERT_SEC || ret == lib::HASH_OVERWRITE )
 		delete v2;
 		return true;

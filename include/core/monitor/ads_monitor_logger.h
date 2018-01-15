@@ -6,13 +6,20 @@
  */
 
 #include "log.h"
-#include "core/monitor/ads_monitor_data.h"
+#include "core/monitor/ads_monitor_param.h"
 
 class AdsMonitorLogger
 {
 public:
-	static void logTrack(AdsMonitorData& mdata);
-	static void logWarn();
+	static void logTrack(AdsMonitorParam& param)
+	{
+
+	}
+
+	static void logWarn()
+	{
+		
+	}
 };
 
 #endif

@@ -4,10 +4,13 @@
 /**
  * 基本监测参数
  */
+#include <string>
+
+using std::string;
 
 enum class AdsMonitorType { WINNOTICE, IMPRESSION, CLICK };
 
-class AdsMonitorPARAM
+class AdsMonitorParam
 {
 public:
 	AdsMonitorType type;

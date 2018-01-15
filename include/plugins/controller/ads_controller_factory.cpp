@@ -12,7 +12,7 @@ AdsControllerFactory::AdsControllerFactory()
 	controllers = new unordered_map<string, AdsController*>;
 	if ( controllers == NULL ) {
 		WARN("Controllers is null");
-		return false;
+		return ;
 	}
 
 	// 添加controller实例
@@ -22,7 +22,7 @@ AdsControllerFactory::AdsControllerFactory()
 
 AdsControllerFactory::~AdsControllerFactory()
 {
-	if ( exchanges != NULL ) {
+	if ( controllers != NULL ) {
 		for ( auto itr = controllers->begin(); itr != controllers->end();
 			itr = controllers->erase(itr) ) {
 			delete itr->second;
@@ -31,7 +31,7 @@ AdsControllerFactory::~AdsControllerFactory()
 	}
 }
 
-AdsController* AdsControllerFactory::getController(const string &name)
+AdsController* AdsControllerFactory::getController(const string& name) const
 {
 	if ( controllers != NULL ) {
 		ads_string_tolower(name);

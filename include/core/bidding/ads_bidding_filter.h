@@ -1,11 +1,19 @@
 #ifndef _ADS_BIDDING_FILTER_H
 #define _ADS_BIDDING_FILTER_H
 
+#include <string>
+#include <list>
+#include <vector>
 #include <unordered_map>
+#include "core/advertise/ads_advertise_types.h"
+#include "core/bidding/ads_bidding_param.h"
 
+using std::string;
+using std::list;
+using std::vector;
 using std::unordered_map;
 
-typedef bool (*AdsBiddingFilterFunc) (AdsAdvertise*, AdsBiddingParam&);
+typedef bool (*AdsBiddingFilterFunc)(AdsAdvertise*, AdsBiddingParam&);
 
 class AdsBiddingFilterResult
 {

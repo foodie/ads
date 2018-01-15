@@ -2,6 +2,7 @@
 #define _ADS_ADVERTISE_MANAGER_H
 
 #include <unordered_map>
+#include "core/advertise/ads_advertise_types.h"
 
 using std::unordered_map;
 

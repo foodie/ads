@@ -23,7 +23,7 @@ void AdsMonitorService::close()
 
 static bool checkCampaignBudget(int id, int budget)
 {
-	
+	return true;
 }
 
 /**
@@ -32,7 +32,7 @@ static bool checkCampaignBudget(int id, int budget)
 
 void AdsMonitorService::addCampaignCost(int id, int price)
 {
-	AdsMonitorCampaign* v = manager->getCampaign(id)
+	AdsMonitorCampaign* v = manager->getCampaign(id);
 	if ( v != NULL ) {
 		v->incCost(price);
 	}
@@ -64,7 +64,7 @@ void AdsMonitorService::addLaunchCost(int id, int price)
 	}
 }
 
-void AdsMonitorService::addCampaignImp(int id, const string& name)
+void AdsMonitorService::addLaunchImp(int id, const string& name)
 {
 	AdsMonitorLaunch* v = manager->getLaunch(id)
 	if ( v != NULL ) {
@@ -73,7 +73,7 @@ void AdsMonitorService::addCampaignImp(int id, const string& name)
 	}
 }
 
-void AdsMonitorService::addCampaignClk(int id, const string& name)
+void AdsMonitorService::addLaunchClk(int id, const string& name)
 {
 	AdsMonitorLaunch* v = manager->getLaunch(id)
 	if ( v != NULL ) {

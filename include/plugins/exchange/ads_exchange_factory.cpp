@@ -32,7 +32,7 @@ AdsExchangeFactory::~AdsExchangeFactory()
 	}
 }
 
-AdsExchange* AdsExchangeFactory::getExchange(const string& name)
+AdsExchange* AdsExchangeFactory::getExchange(const string& name) const
 {
 	if ( exchanges != NULL ) {
 		ads_string_tolower(name);

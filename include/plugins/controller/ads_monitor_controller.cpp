@@ -6,7 +6,7 @@ int AdsMonitorController::process(AdsThreadData* p_thd_data)
 	AdsMonitorParam param;
 
 	// 解析
-	ret = parseMonitorParam(pdata, param);
+	ret = parseMonitorParam(p_thd_data, param);
 	if ( ret ) {
 		AdsMonitorLogger::logWarn();
 		return -1;
@@ -35,7 +35,8 @@ int AdsMonitorController::process(AdsThreadData* p_thd_data)
 	return 0;
 }
 
-bool AdsMonitorController::parseMonitorParam(AdsThreadData* pdata, AdsMonitorParam& mdata)
+bool AdsMonitorController::parseMonitorParam(AdsThreadData* p_thd_data, 
+	AdsMonitorParam& param)
 {
 
 	return true;

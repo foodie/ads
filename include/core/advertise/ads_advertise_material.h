@@ -1,6 +1,12 @@
 #ifndef _ADS_ADVERTISE_MATERIAL_H
 #define _ADS_ADVERTISE_MATERIAL_H
 
+#include <string>
+#include <vector>
+
+using std::string;
+using std::vector;
+
 enum class AdsMaterialType
 {
 	IMAGE = 1,

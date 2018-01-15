@@ -4,6 +4,8 @@
 #include <list>
 #include "core/advertise/ads_advertise_types.h"
 
+using std::list;
+
 class AdsAdvertiseSearch
 {
 public:

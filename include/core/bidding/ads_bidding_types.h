@@ -49,13 +49,13 @@ private:
 	class Builder
 	{
 	public:
-		Builder(AdsBiddingBanner& banner) : dst(banner) {}
+		Builder(AdsBiddingVideo& video) : dst(video) {}
 		void setWidth(int width) { dst._width = width; }
 		void setHeight(int height) { dst._height = height; }
 		void setMinDuration(int duration) { dst._minduration = duration; }
 		void setMaxDuration(int duration) { dst._maxduration = duration; }
 	private:
-		AdsBiddingBanner& dst;
+		AdsBiddingVideo& dst;
 	};
 
 public:
@@ -146,7 +146,7 @@ public:
 	const string& zoneId() const { return _zoneid; }
 
 	AdsImpressionType type() const { return _type; }
-	AdsBiddingSettlement settlement const { return _settlement; }
+	AdsBiddingSettlement settlement() const { return _settlement; }
 	int bidFloor() const { return _bidfloor; }
 
 	const AdsBiddingBanner& banner() const { return _banner; }
@@ -214,8 +214,8 @@ private:
 public:
 	AdsBiddingDevice() 
 		: _builder(*this),
-		  _type(AdsDeviceType:UNKNOW),_os(AdsOs::UNKNOW),
-		  _carrier(AdsCarrier::UNKNOW),_connectiontype(AdsConnectionType::UNKNOW)
+		  _type(AdsDeviceType::UNKNOW),_os(AdsOs::UNKNOW),
+		  _carrier(AdsCarrier::UNKNOW),_connectiontype(AdsConnectionType::UNKNOW),
 		  _ip(),_idfa(),_imei(),_mac(),_mac1()
 	{}
 	Builder& getBuilder() { return _builder; }

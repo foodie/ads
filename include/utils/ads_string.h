@@ -44,6 +44,9 @@ void ads_str_tolower(char *src, char *dst=NULL, size_t n=-1);
 void ads_string_toupper(string &str, size_t n=-1);
 void ads_string_tolower(string &str, size_t n=-1);
 
+string ads_string_toupper(const string& str, size_t n=-1);
+string ads_string_tolower(const string& str, size_t n=-1);
+
 /**
  *  @brief      去除字符串首尾处的空白字符（或者其他字符）
  *  

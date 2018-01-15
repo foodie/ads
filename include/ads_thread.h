@@ -1,10 +1,10 @@
 #ifndef _ADS_THREAD_H
 #define _ADS_THREAD_H
 
-#include <fcgi_stdio.h>
-
 #include "ads_def.h"
 #include "ads_request.h"
+
+class FCGX_Request;
 
 typedef struct _thread_data_t
 {	

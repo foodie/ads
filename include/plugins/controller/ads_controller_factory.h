@@ -14,7 +14,7 @@ public:
 	AdsControllerFactory();
 	~AdsControllerFactory();
 	
-	AdsController* getController(const string &name) const;
+	AdsController* getController(const string& name) const;
 private:
 	unordered_map<string, AdsController*> *controllers;
 

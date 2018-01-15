@@ -31,6 +31,7 @@ public:
 private:
 	phashmap<int, AdsMonitorCampaign*> campaigns;
 	phashmap<int, AdsMonitorLaunch*> launchs;
+	phashmap<int, AdsMonitorCreative*> creatives;
 };
 
 

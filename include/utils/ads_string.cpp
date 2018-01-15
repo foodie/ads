@@ -82,6 +82,18 @@ void ads_string_tolower(string &str, size_t n)
 	}
 }
 
+string ads_string_toupper(const string& str, size_t n)
+{
+	string res(str);
+	ads_string_toupper(res, n);
+	return res;
+}
+string ads_string_tolower(const string& str, size_t n)
+{
+	string res(str);
+	ads_string_tolower(res, n);
+	return res;
+}
 
 /**
  * 去除字符串首尾处的空白字符（或者其他字符）
