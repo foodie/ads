@@ -42,7 +42,7 @@ bool AdsMonitorManager::setLaunch(int id, AdsMonitorLaunch *v)
 {
 	AdsMonitorLaunch *v2 = findLaunch(id);
 	int ret = launchs.set(id, v, 1);
-	if ( ret == lib::HASH_INSERT_SEC || ret == lib::HASH_OVERWRITE )
+	if ( ret == lib::HASH_INSERT_SEC || ret == lib::HASH_OVERWRITE ) {
 		delete v2;
 		return true;
 	}

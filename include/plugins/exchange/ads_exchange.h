@@ -2,8 +2,8 @@
 #define _ADS_EXCHANGE_H
 
 #include "ads_request.h"
-#include "ads_advertise_types.h"
-#include "bidding/ads_bidding_param.h"
+#include "core/advertise/ads_advertise_types.h"
+#include "core/bidding/ads_bidding_param.h"
 
 class AdsExchange
 {
