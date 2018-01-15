@@ -7,6 +7,8 @@ typedef bool (*AdsBiddingFilterFunc) (AdsAdvertise*, AdsBiddingParam&);
 
 class AdsBiddingFilterResult
 {
+public:
+
 private:
 	unordered_map<string, vector<int>> result;
 };
@@ -14,7 +16,8 @@ private:
 class AdsBiddingFilter
 {
 public:
-	
+	void filt
+
 	list<AdsAdvertise*>* getPassAdvertises();
 
 private:

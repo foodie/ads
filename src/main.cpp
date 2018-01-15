@@ -18,6 +18,7 @@
 #include "ads_thread.h"
 #include "ads_func.h"
 
+#include "ads_http.h"
 #include "plugins/controller/ads_controller.h"
 
 DEFINE_string(p, CONF_FPATH, "conf path, string");
@@ -75,11 +76,18 @@ int callback()
 	p_thd_data->request->parseFromFcgxRequest(request);
 	
     // 调用控制器
+    int code;
     string cname = p_thd_data->request->getUri(0);
     AdsController* controller = getController(cname);
-	if ( controller != NULL ) {
-        controller->process(p_thd_data);
+	if ( controller == NULL ) {
+        code = ADS_HTTP_NOT_FOUND;
+    } else {
+        code = controller->process(p_thd_data);
     }
+
+    // 处理code
+    // 当前只处理404
+    //p_thd_data->response->setStatusCode(code);
 
 	// 封装响应
 	p_thd_data->response->packToFcgxRequest(request);

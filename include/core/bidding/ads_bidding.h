@@ -1,6 +1,10 @@
 #ifndef _ADS_BIDDING_H
 #define _ADS_BIDDING_H
 
+class AdsBiddingParam;
+class AdsBiddingFilter;
+
+
 enum class AdsBiddingType
 {
 	RTB = 1,

@@ -2,7 +2,6 @@
 
 #include <fcgi_stdio.h>
 #include "log.h"
-#include "ads_http.h"
 #include "utils/ads_string.h"
 
 /**
@@ -11,7 +10,7 @@
 void AdsHttpRequest::reset()
 {
 	// general
-	method = ADS_HTTP_UNKNOWN;
+	method = ADS_HTTP_POST;
 	remoteAddress.clear();
 	uri.clear();
 	query.clear();
@@ -140,7 +139,7 @@ bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
  */
 void AdsHttpResponse::reset()
 {
-	statusCode = 200;
+	statusCode = ADS_HTTP_OK;
 	header.clear();
 	cookie.clear();
 	body.clear();

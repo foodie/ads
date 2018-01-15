@@ -12,7 +12,10 @@ typedef struct _thread_data_t
 
 	AdsHttpRequest		*request;
 	AdsHttpResponse		*response;
+
 } thread_data_t;
+
+typedef struct _thread_data_t AdsThreadData;
 
 int thread_data_init(thread_data_t *p_thd_data);
 int thread_data_renew(thread_data_t *p_thd_data);

@@ -7,8 +7,6 @@
 
 class AdsExchange
 {
-	friend AdsExchange* getExchange(const string& name);
-
 public:
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
@@ -22,6 +20,8 @@ public:
 		return atoi( str.c_str() );
 	}
 };
+
+AdsExchange* getExchange(const string& name);
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

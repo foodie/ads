@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include "ads_http.h"
 
 using std::string;
 using std::vector;
@@ -15,7 +16,7 @@ class AdsHttpRequest {
 public:
 
 	AdsHttpRequest() 
-		:method(0), remoteAddress(), uri(), query(),
+		:method(ADS_HTTP_POST), remoteAddress(), uri(), query(),
 		 cookie(), userAgent(), referer(),
 		 body()
 	{
@@ -94,7 +95,7 @@ private:
 class AdsHttpResponse {
 public:
 	AdsHttpResponse() 
-		:statusCode(0), header(), cookie(), body() 
+		:statusCode(ADS_HTTP_OK), header(), cookie(), body() 
 	{
 		reset();
 	}
