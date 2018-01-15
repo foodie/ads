@@ -3,6 +3,8 @@
 
 #include <unordered_map>
 
+using std::unordered_map;
+
 /**
  * 数据只读
  */
@@ -20,7 +22,10 @@ public:
 class AdsAdvertiseManager
 {
 public:
-	static AdsAdvertiseManager* getInstance();
+	static AdsAdvertiseManager* getInstance()
+	{
+		return NULL;
+	}
 
 	int load();
 	int reload();

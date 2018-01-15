@@ -36,7 +36,7 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	AdsAdvertiseSearch::search(param, list);
 
 	// filter
-	AdsBiddingFilterResult filter;
+	AdsBiddingFilter filter;
 	filter.filter(param, list);
 
 	// evaluate

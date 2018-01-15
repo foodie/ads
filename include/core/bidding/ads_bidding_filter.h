@@ -3,6 +3,8 @@
 
 #include <unordered_map>
 
+using std::unordered_map;
+
 typedef bool (*AdsBiddingFilterFunc) (AdsAdvertise*, AdsBiddingParam&);
 
 class AdsBiddingFilterResult
@@ -16,7 +18,7 @@ private:
 class AdsBiddingFilter
 {
 public:
-	void filt
+	void filter(AdsBiddingParam& param, list<AdsAdvertise*>& list);
 
 	list<AdsAdvertise*>* getPassAdvertises();
 

@@ -7,7 +7,10 @@
 class AdsAdvertiseSearch
 {
 public:
-	static void search(AdsBiddingParam& param, list<AdsAdvertise*>& list);
+	static void search(AdsBiddingParam& param, list<AdsAdvertise*>& list)
+	{
+		
+	}
 
 };
 
