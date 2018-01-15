@@ -153,7 +153,7 @@ public:
 	const AdsBiddingVideo& video() const { return _video; }
 	const AdsBiddingNative& native() const { return _native; }
 
-	bool isPmp() { return _ispmp; }
+	bool isPmp() const { return _ispmp; }
 	const AdsBiddingPmp& pmp() const { return _pmp; }
 private:
 	Builder _builder;

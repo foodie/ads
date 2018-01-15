@@ -6,33 +6,47 @@
 
 class AdsBiddingParam
 {
+	friend class Builder;
+private:
+	class Builder
+	{
+	public:
+		Builder(AdsBiddingParam& param) : dst(param) {}
+		void setExchangeId(int id) { dst._exchangeid = id; }
+		void setBiddingId(const string& id) { dst._biddingid = id; }
+		void setBiddingType(AdsBiddingType type) { dst._biddingtype = type; }
+	private:
+		AdsBiddingParam& dst;	
+	};
+
 public:
-	enum class BiddingType { RTB = 1, PDB };
+	AdsBiddingParam() 
+		: _builder(*this),
+		  _exchangeid(0),_biddingid(),_biddingtype(AdsBiddingType::RTB),
+		  _impression(),_device(),_app(),_user()
+	{}
+	Builder& getBuilder() { return _builder; }
 
-	void setExchangeId(int id) { exchange_id = id; }
-	int getExchangeId() const { return exchange_id; }
+	int exchangeId() const { return _exchangeid; }
+	const string& biddingId() const { return _biddingid; }
+	AdsBiddingType biddingType() const { return _biddingtype; }
 
-	void setBiddingId(const string& id) { bidding_id = id; }
-	const string& getBiddingId() const { return bidding_id; }
-
-	void setBiddingType(BiddingType type) { bidding_type = type; }
-	BiddingType getBiddingType() const { return bidding_type; }
-
-
-	AdsBiddingImpression& getImpression() { return impression; }
-	AdsBiddingDevice& getDevice() { return device; }
-	AdsBiddingApp& getApp() { return app; }
-	AdsBiddingUser& getUser() { return user; }
+	const AdsBiddingImpression& impression() const { return _impression; }
+	const AdsBiddingDevice& device() const { return _device; }
+	const AdsBiddingApp& app() const { return _app; }
+	const AdsBiddingUser& user() const { return _user; }
 
 private:
-	int 		exchange_id;
-	string 		bidding_id;
-	BiddingType bidding_type;
+	Builder _builder;
 
-	AdsBiddingImpression 	impression;
-	AdsBiddingDevice 		device;
-	AdsBiddingApp 			app;
-	AdsBiddingUser 			user;
+	int 			_exchangeid;
+	string 			_biddingid;
+	AdsBiddingType 	_biddingtype;
+
+	AdsBiddingImpression 	_impression;
+	AdsBiddingDevice 		_device;
+	AdsBiddingApp 			_app;
+	AdsBiddingUser 			_user;
 };
 
 #endif
