@@ -1,7 +1,6 @@
 #ifndef _ADS_ADVERTISE_CRONTAB_H
 #define _ADS_ADVERTISE_CRONTAB_H
 
-#include "plugins/crontab/ads_crontab.h"
 #include "plugins/crontab/ads_crontab_task.h"
 #include "core/advertise/ads_advertise_manager.h"
 

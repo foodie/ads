@@ -18,8 +18,19 @@ public:
 	{
 		_collections[0] = new AdsAdvertiseCollection;
 		_collections[1] = new AdsAdvertiseCollection;
+	}
+	~AdsAdvertiseManager()
+	{
+		_collections[0]->clear();
+		_collections[1]->clear();
 
-		_loader->load( _collections[0] );
+		delete _collections[0];
+		delete _collections[1];
+	}
+
+	void load()
+	{
+		_loader->load( _collections[_no] );
 	}
 
 	void reload()
