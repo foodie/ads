@@ -20,6 +20,9 @@ enum class AdsMaterialImageType
 	IMAGE,
 };
 
+/**
+ * @brief      Class for ads material image.
+ */
 class AdsMaterialImage
 {
 public:
@@ -32,6 +35,9 @@ public:
 	string source;
 };
 
+/**
+ * @brief      Class for ads material video.
+ */
 class AdsMaterialVideo
 {
 public:
@@ -43,30 +49,66 @@ public:
 	string source;
 };
 
+/**
+ * @brief      Class for ads material native.
+ */
 class AdsMaterialNative
 {
 public:
-	string title;
-	string description;
-	vector<AdsMaterialImage> images;
-
+	string title; 						// 标题
+	string description; 				// 描述
+	vector<AdsMaterialImage> images;	// 图片
 };
 
 class AdsMaterial
 {
 public:
-	int id;
+	AdsMaterial(AdsMaterialType type) 
+		: id(0),_type(type),
+		  _image(NULL),_video(NULL),_native(NULL)
+	{
+		if ( _type == AdsMaterialType::IMAGE ) {
+			_image = new (std::nothrow) AdsMaterialImage;
+		} else if ( _type == AdsMaterialType::VIDEO ) {
+			_video = new (std::nothrow) AdsMaterialVideo;
+		} else if ( _type == AdsMaterialType::NATIVE ) {
+			_native = new (std::nothrow) AdsMaterialNative;
+		}
+	}
 
-	AdsMaterialType type;
+	~AdsMaterial()
+	{
+		if ( _type == AdsMaterialType::IMAGE ) {
+			delete _image;
+		} else if ( _type == AdsMaterialType::VIDEO ) {
+			delete _video;
+		} else if ( _type == AdsMaterialType::NATIVE ) {
+			delete _native;
+		}
+	}
+
+	void setId(int id) { _id = id; }
+	int id() const { return _id; }
+
+	AdsMaterialType type() const { return _type; }
+
+	AdsMaterialImage* image() const { return _image; }
+	AdsMaterialVideo* video() const { return _video; }
+	AdsMaterialNative* native() const { return _native; }
+
+private:
+	int _id;
+
+	AdsMaterialType _type;
 
 	/* 图片素材 */
-	AdsMaterialImage *image;
+	AdsMaterialImage *_image;
 	
 	/* 视频素材 */
-	AdsMaterialVideo *video;
+	AdsMaterialVideo *_video;
 	
 	/* 信息流素材 */
-	AdsMaterialNative *native;
+	AdsMaterialNative *_native;
 };
 
 

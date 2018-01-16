@@ -33,6 +33,11 @@ public:
 	virtual void load(AdsAdvertiseCollection* collection) override
 	{
 
+		AdsCampaign *campaign = collection->addCampaign(1);
+	
+		AdsLaunch *launch = collection->addLaunch(1);
+		launch->campaign = collection->getCampaign(1);
+		launch->campaign->launchs.push_back(launch);
 	}
 };
 

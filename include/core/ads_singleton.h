@@ -18,7 +18,7 @@ protected:
 	AdsSingleton(){};
 public:
 	typedef T object_type;
-	static object_type & instance()
+	static object_type& instance()
 	{
 		static object_type obj;
 		create_object.do_nothing();

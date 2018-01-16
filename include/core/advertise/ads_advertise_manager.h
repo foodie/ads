@@ -18,11 +18,8 @@ public:
 	{
 		_collections[0] = new AdsAdvertiseCollection;
 		_collections[1] = new AdsAdvertiseCollection;
-	}
 
-	void load()
-	{
-		_loader->load( _collections[_no] );
+		_loader->load( _collections[0] );
 	}
 
 	void reload()
@@ -46,7 +43,17 @@ private:
 
 	int _no;
 	AdsAdvertiseCollection* _collections[2];
+
+public:
+	static AdsAdvertiseManager* getInstance()
+	{
+		return instance;
+	}
+private:
+	static AdsAdvertiseManager* instance;
 };
+
+AdsAdvertiseManager* AdsAdvertiseManager::instance = new AdsAdvertiseManager(new AdsAdvertiseApiLoader);
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
