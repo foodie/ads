@@ -29,7 +29,6 @@ public:
 	int bidding_type;
 	int price;
 
-
 };
 
 class AdsCreative
@@ -38,7 +37,7 @@ class AdsCreative
 public:
 	int id;
 
-	string ad_zone_id;
+	string zone_id;
 
 	int 			clk_act;
 	string 			landing;
@@ -50,18 +49,23 @@ public:
 	int 	effective;
 	time_t 	start_date;
 	time_t 	end_date;
-};
-
-
-class AdsAdvertise
-{
-public:
 
 	AdsCampaign *campaign;
 	AdsLaunch 	*launch;
-	AdsCreative *creative;
 	AdsMaterial *material;
+};
 
+typedef AdsCreative AdsAdvertise;
+
+class AdsAdvertiseCollection
+{
+public:
+	void clear();
+
+	unordered_map<int, AdsCampaign*> campaigns;
+	unordered_map<int, AdsLaunch*> 	 launchs;
+	unordered_map<int, AdsCreative*> creatives;
+	unordered_map<int, AdsMaterial*> materials;
 };
 
 #endif

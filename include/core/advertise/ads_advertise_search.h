@@ -14,6 +14,11 @@ public:
 		
 	}
 
+	static AdsAdvertise* search(id)
+	{
+		
+	}
+
 };
 
 #endif

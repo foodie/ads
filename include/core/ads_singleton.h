@@ -11,7 +11,7 @@ class AdsSingleton
 protected:
 	struct object_creator
 	{
-		object_creator() { ssingleton<T>::instance(); }
+		object_creator() { AdsSingleton<T>::instance(); }
 		inline void do_nothing() const { }
 	};
 	static object_creator create_object;
@@ -31,7 +31,7 @@ public:
 };
 
 template <typename T>
-typename ssingleton<T>::object_creator ssingleton<T>::create_object;
+typename AdsSingleton<T>::object_creator AdsSingleton<T>::create_object;
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
