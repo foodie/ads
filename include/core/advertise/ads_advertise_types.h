@@ -64,11 +64,11 @@ public:
 	int exchangeid;
 
 	/* 定向 */
-	unordered_set<int> 					area; 				// 地域
-	AdsOsOrientation 					os; 				// 操作系统
-	AdsDeviceOrientation 				device; 			// 设备
-	unordered_set<AdsConnectionType> 	connection_type; 	// 联网方式
-	unordered_set<AdsCarrier> 			carrier;			// 运营商
+	unordered_set<int> 		area; 				// 地域
+	AdsOsOrientation 		os; 				// 操作系统
+	AdsDeviceOrientation 	device; 			// 设备
+	unordered_set<int> 		connection_type; 	// 联网方式
+	unordered_set<int> 		carrier;			// 运营商
 
 	/* 所属关系 */
 	AdsCampaign *campaign;

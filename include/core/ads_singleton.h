@@ -15,6 +15,7 @@ private:
 	/* 构造器 */
 	class Creator
 	{
+	public:
 		Creator() { AdsSingleton<T>::getInstance(); }
 		inline void doNothing() const {}
 	};

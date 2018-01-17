@@ -64,7 +64,7 @@ class AdsMaterial
 {
 public:
 	AdsMaterial(AdsMaterialType type) 
-		: id(0),_type(type),
+		: _id(0),_type(type),
 		  _image(NULL),_video(NULL),_native(NULL)
 	{
 		if ( _type == AdsMaterialType::IMAGE ) {
