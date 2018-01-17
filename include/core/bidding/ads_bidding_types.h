@@ -1,7 +1,7 @@
 #ifndef _ADS_BIDDING_TYPES_H
 #define _ADS_BIDDING_TYPES_H
 
-#include "core/bidding/ads_bidding.h"
+#include "core/ads_core.h"
 
 /**
  * 使用匿名内部类Builder进行读写分离

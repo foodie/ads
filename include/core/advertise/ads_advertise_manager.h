@@ -13,8 +13,7 @@ class AdsAdvertiseManager
 {
 public:
 	AdsAdvertiseManager(AdsAdvertiseLoader *loader) 
-		: _loader(loader),
-		  _no(0)
+		: _loader(loader),_no(0)
 	{
 		_collections[0] = new AdsAdvertiseCollection;
 		_collections[1] = new AdsAdvertiseCollection;
@@ -26,13 +25,16 @@ public:
 
 		delete _collections[0];
 		delete _collections[1];
+
+		_collections[0] = NULL;
+		_collections[1] = NULL;
 	}
 
 	void load()
 	{
 		_loader->load( _collections[_no] );
 	}
-
+	
 	void reload()
 	{
 		// 在备份内存中重载广告数据
@@ -54,17 +56,8 @@ private:
 
 	int _no;
 	AdsAdvertiseCollection* _collections[2];
-
-public:
-	static AdsAdvertiseManager* getInstance()
-	{
-		return instance;
-	}
-private:
-	static AdsAdvertiseManager* instance;
 };
 
-AdsAdvertiseManager* AdsAdvertiseManager::instance = new AdsAdvertiseManager(new AdsAdvertiseApiLoader);
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

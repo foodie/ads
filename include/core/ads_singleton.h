@@ -8,30 +8,32 @@
 template <typename T>
 class AdsSingleton
 {
-protected:
-	struct object_creator
+private:
+	AdsSingleton(const AdsSingleton& src) {}
+	AdsSingleton &operator=(const AdsSingleton& src) {}
+
+	/* 构造器 */
+	class Creator
 	{
-		object_creator() { AdsSingleton<T>::instance(); }
-		inline void do_nothing() const { }
+		Creator() { AdsSingleton<T>::getInstance(); }
+		inline void doNothing() const {}
 	};
-	static object_creator create_object;
+	static Creator creator;
+
+protected:
 	AdsSingleton(){};
+
 public:
-	typedef T object_type;
-	static object_type& instance()
+	static T& getInstance()
 	{
-		static object_type obj;
-		create_object.do_nothing();
+		static T obj;
+		creator.doNothing();
 		return obj;
-	}
-	static object_type& getInstance()
-	{
-		return instance();
 	}
 };
 
 template <typename T>
-typename AdsSingleton<T>::object_creator AdsSingleton<T>::create_object;
+typename AdsSingleton<T>::Creator AdsSingleton<T>::creator;
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

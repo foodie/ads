@@ -2,7 +2,7 @@
 #define _ADS_ADVERTISE_TYPES_H
 
 #include <sys/time.h>
-#include "core/bidding/ads_bidding.h"
+#include "core/ads_core.h"
 #include "core/advertise/ads_advertise_material.h"
 
 #include <string>

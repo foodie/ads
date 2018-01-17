@@ -1,7 +1,7 @@
 #ifndef _ADS_BIDDING_PARAM_H
 #define _ADS_BIDDING_PARAM_H
 
-#include "core/bidding/ads_bidding.h"
+#include "core/ads_core.h"
 #include "core/bidding/ads_bidding_types.h"
 
 class AdsBiddingParam
