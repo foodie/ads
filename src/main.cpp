@@ -182,13 +182,11 @@ static int services_init()
     }
 
     // 监测模块
-    /*
     ret = AdsMonitorService::getInstance().init();
     if ( !ret ) {
         FATAL("AdsMonitorService init failed");
         return -1;
     }
-    */
 
     return 0;
 }

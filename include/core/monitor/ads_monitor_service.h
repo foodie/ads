@@ -1,48 +1,49 @@
 #ifndef _ADS_MONITOR_SERVICE_H
 #define _ADS_MONITOR_SERVICE_H
 
-
 /**
- * 提供给其他模块的接口
+ * 监测模块对外服务接口类
  */
+#include "core/ads_singleton.h"
 
-#include "core/monitor/ads_monitor_manager.h"
+class AdsMonitorManager;
+class AdsMonitorParam;
 
-class AdsMonitorService
+class AdsMonitorService : public AdsSingleton<AdsMonitorService>
 {
+	friend class AdsSingleton<AdsMonitorService>;
 public:
-	static AdsMonitorManager *manager;
+	~AdsMonitorService();
 
-	static bool init();
-	static void close();
+	bool init();
 
 	/* 查询接口 */
 
-	// 活动
-	static bool checkCampaignBudget(int id, int budget); // 总预算
-	static bool checkCampaignImp(int id, int imp); // 展示上限
-	static bool checkCampaignClk(int id, int imp); // 点击上限
-	static bool checkCampaignImpFreq(int id, int freq); // 展示频次
-	static bool checkCampaignClkFreq(int id, int freq); // 点击频次
+	// 活动(总数据)
+	int getCampaignCost(int id); 	// 总预算
+	int getCampaignImp(int id); 	// 展示数
+	int getCampaignClk(int id); 	// 点击数
+	int getCampaignImpFreq(int id); // 展示频次
+	int getCampaignClkFreq(int id); // 点击频次
 
-	// 投放
-	static bool checkLaunchBudget(int id, int budget); // 预算
-	static bool checkLaunchImpFreq(int id, int freq); // 展示频次
-	static bool checkLaunchClkFreq(int id, int freq); // 点击频次
-
-
+	// 投放(当日数据)
+	int getLaunchCost(int id); 		// 消耗金额
+	int getLaunchImpFreq(int id); 	// 展示数
+	int getLaunchClkFreq(int id); 	// 点击数
 
 	/* 更新接口 */
+	void update(const AdsMonitorParam* param);
 
-	static void addCampaignCost(int id, int price);
-	static void addCampaignImp(int id, const string& dev_id);
-	static void addCampaignClk(int id, const string& dev_id);
+private:
+	AdsMonitorService();
 
-	static void addLaunchCost(int id, int price);
-	static void addLaunchImp(int id, const string& dev_id);
-	static void addLaunchClk(int id, const string& dev_id);
-
+	AdsMonitorManager *_manager;
 };
+
+inline static AdsMonitorService& getMonitorService()
+{
+	return AdsMonitorService::getInstance();
+}
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

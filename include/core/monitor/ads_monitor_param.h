@@ -22,6 +22,8 @@ public:
 	int creative_id;		// 创意id
 	int material_id;		// 素材id
 
+	int price;
+
 	// 设备信息
 	int os;					// 操作系统
 	int device_type;		// 设备类型

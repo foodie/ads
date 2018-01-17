@@ -56,7 +56,9 @@ bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
     	string uriStr(value);
 
     	// 去掉第一个问号之后的部分
-    	uriStr.erase( uriStr.begin() + uriStr.find('?'), uriStr.end() );
+    	if ( uriStr.find('?') != string::npos ) {
+            uriStr.erase( uriStr.begin() + uriStr.find('?'), uriStr.end() );
+        }
 
         // 切割uri
         size_t p1=0, p2=0;

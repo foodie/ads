@@ -16,7 +16,7 @@ public:
 		  creatives(MAX_MONITOR_BITEMS_SIZE) 
 	{}
 
-	void getHistoryData();
+	void loadHistoryData();
 	void getLogData();
 
 	bool setCampaign(int id, AdsMonitorCampaign *v);

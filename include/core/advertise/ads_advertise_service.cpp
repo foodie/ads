@@ -42,7 +42,7 @@ void AdsAdvertiseService::reload()
 	_manager->reload();
 }
 
-void AdsAdvertiseService::search(list<AdsAdvertise*>& list)
+void AdsAdvertiseService::search(const string& id, list<AdsAdvertise*>& list)
 {
 	AdsAdvertiseCollection *collection = _manager->get();
 
