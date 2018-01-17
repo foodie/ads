@@ -3,29 +3,24 @@
 
 #include <string>
 #include <unordered_map>
-#include "plugins/controller/ads_controller.h"
+#include "core/ads_singleton.h"
 
 using std::string;
 using std::unordered_map;
 
-class AdsControllerFactory
+class AdsController;
+
+class AdsControllerFactory : public AdsSingleton<AdsControllerFactory>
 {
+	friend class AdsSingleton<AdsControllerFactory>;
 public:
-	AdsControllerFactory();
 	~AdsControllerFactory();
 	
 	AdsController* getController(const string& name) const;
 private:
-	unordered_map<string, AdsController*> *controllers;
+	AdsControllerFactory();
 
-// static //
-public:
-	static AdsControllerFactory* getInstance()
-	{
-		return instance;
-	}
-private:
-	static AdsControllerFactory *instance;
+	unordered_map<string, AdsController*> *controllers;
 };
 
 #endif

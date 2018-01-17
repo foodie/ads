@@ -5,8 +5,6 @@
 #include "plugins/controller/ads_bidding_controller.h"
 #include "plugins/controller/ads_monitor_controller.h"
 
-AdsControllerFactory* AdsControllerFactory::instance = new AdsControllerFactory;
-
 AdsControllerFactory::AdsControllerFactory()
 {
 	controllers = new unordered_map<string, AdsController*>;
@@ -34,8 +32,7 @@ AdsControllerFactory::~AdsControllerFactory()
 AdsController* AdsControllerFactory::getController(const string& name) const
 {
 	if ( controllers != NULL ) {
-		ads_string_tolower(name);
-		auto itr = controllers->find(name);
+		auto itr = controllers->find( ads_string_tolower(name) );
 		if ( itr != controllers->end() ) {
 			return itr->second;
 		}

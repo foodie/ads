@@ -16,7 +16,7 @@ public:
 	virtual void load(AdsAdvertiseCollection* collection) = 0;
 };
 
-// mysql加载
+// Mysql加载
 class AdsAdvertiseMysqlLoader : public AdsAdvertiseLoader
 {
 public:

@@ -3,30 +3,25 @@
 
 #include <string>
 #include <unordered_map>
-#include "plugins/exchange/ads_exchange.h"
+#include "core/ads_singleton.h"
 
 using std::string;
 using std::unordered_map;
 
-class AdsExchangeFactory
+class AdsExchange;
+
+class AdsExchangeFactory : public AdsSingleton<AdsExchangeFactory>
 {
+	friend class AdsSingleton<AdsExchangeFactory>;
 public:
-	AdsExchangeFactory();
 	~AdsExchangeFactory();
 
 	AdsExchange* getExchange(const string& name) const;
 
 private:
-	unordered_map<string, AdsExchange*> *exchanges;
+	AdsExchangeFactory();
 
-// static //
-public:
-	static AdsExchangeFactory* getInstance() 
-	{
-		return instance;
-	}
-private:
-	static AdsExchangeFactory *instance;
+	unordered_map<string, AdsExchange*> *exchanges;
 };
 
 #endif

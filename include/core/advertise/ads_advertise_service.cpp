@@ -9,6 +9,7 @@
 
 AdsAdvertiseService::AdsAdvertiseService()
 {
+	// Advertise Service 的main函数
 	_manager = new AdsAdvertiseManager(new AdsAdvertiseApiLoader);
 	_manager->load();
 

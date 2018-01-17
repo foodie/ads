@@ -1,11 +1,9 @@
 #include "plugins/exchange/ads_exchange_factory.h"
 
 #include "log.h"
-
 #include "utils/ads_string.h"
+#include "plugins/exchange/ads_exchange.h"
 #include "plugins/exchange/ads_adview_exchange.h"
-
-AdsExchangeFactory* AdsExchangeFactory::instance = new AdsExchangeFactory;
 
 AdsExchangeFactory::AdsExchangeFactory()
 {
@@ -35,8 +33,7 @@ AdsExchangeFactory::~AdsExchangeFactory()
 AdsExchange* AdsExchangeFactory::getExchange(const string& name) const
 {
 	if ( exchanges != NULL ) {
-		ads_string_tolower(name);
-		auto itr = exchanges->find(name);
+		auto itr = exchanges->find( ads_string_tolower(name) );
 		if ( itr != exchanges->end() ) {
 			return itr->second;
 		}

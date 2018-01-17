@@ -26,10 +26,9 @@ public:
 
 	/* 检索广告 */
 	void search(list<AdsAdvertise*>& list);
-	AdsAdvertise* search(id);
 
 private:
-	AdsAdvertiseManager *_manager;
+	AdsAdvertiseManager *_manager; // 数据管理类
 };
 
 inline static AdsAdvertiseService& getAdvertiseService()

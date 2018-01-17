@@ -4,6 +4,7 @@
 #include "ads_request.h"
 #include "core/advertise/ads_advertise_types.h"
 #include "core/bidding/ads_bidding_param.h"
+#include "plugins/exchange/ads_exchange_factory.h"
 
 class AdsExchange
 {
@@ -21,7 +22,10 @@ public:
 	}
 };
 
-AdsExchange* getExchange(const string& name);
+inline static AdsExchange* getExchange(const string& name)
+{
+	return AdsExchangeFactory::getInstance().getExchange(name);
+}
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

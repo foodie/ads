@@ -2,7 +2,7 @@
 
 time_t ads_nowtime()
 {
-	return 0;
+	return time(NULL);
 }
 
 time_t ads_today()
