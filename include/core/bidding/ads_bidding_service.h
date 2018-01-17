@@ -5,7 +5,8 @@
  * 竞价模块对外服务接口类
  */
 
-class AdsAdvertise;
+#include "core/advertise/ads_advertise_types.h"
+
 class AdsBiddingParam;
 
 class AdsBiddingService : public AdsSingleton<AdsBiddingService>

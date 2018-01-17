@@ -7,10 +7,10 @@
 
 #include <list>
 #include "core/ads_singleton.h"
+#include "core/advertise/ads_advertise_types.h"
 
 using std::list;
 
-class AdsAdvertise;
 class AdsAdvertiseManager;
 
 class AdsAdvertiseService : public AdsSingleton<AdsAdvertiseService>

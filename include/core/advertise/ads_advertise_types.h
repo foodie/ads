@@ -21,6 +21,8 @@ class AdsCampaign;
 class AdsLaunch;
 class AdsCreative;
 
+typedef AdsCreative AdsAdvertise;
+
 class AdsCampaign
 {
 public:
@@ -99,8 +101,6 @@ public:
 	AdsLaunch 	*launch;
 	AdsMaterial *material;
 };
-
-typedef AdsCreative AdsAdvertise;
 
 /**
  * @brief      List of ads advertises.
