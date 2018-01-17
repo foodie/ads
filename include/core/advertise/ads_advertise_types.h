@@ -133,9 +133,9 @@ public:
 		return creative;
 	}
 
-	AdsMaterial* addMaterial(int id)
+	AdsMaterial* addMaterial(int id, AdsMaterialType type)
 	{
-		AdsMaterial* material = new (std::nothrow) AdsMaterial;
+		AdsMaterial* material = new (std::nothrow) AdsMaterial(type);
 		materials.emplace(id, material);
 		return material;
 	}
@@ -189,25 +189,25 @@ public:
 		// campaigns
 		for ( auto itr = campaigns.begin(); itr != campaigns.end(); 
 			itr = campaigns.erase(itr) ) {
-			delete itr.second;
+			delete itr->second;
 		}
 
 		// launchs
 		for ( auto itr = launchs.begin(); itr != launchs.end(); 
 			itr = launchs.erase(itr) ) {
-			delete itr.second;
+			delete itr->second;
 		}
 
 		// creatives
 		for ( auto itr = creatives.begin(); itr != creatives.end(); 
 			itr = creatives.erase(itr) ) {
-			delete itr.second;
+			delete itr->second;
 		}
 
 		// materials
 		for ( auto itr = materials.begin(); itr != materials.end(); 
 			itr = materials.erase(itr) ) {
-			delete itr.second;
+			delete itr->second;
 		}
 	}
 
