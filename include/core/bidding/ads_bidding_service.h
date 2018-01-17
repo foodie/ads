@@ -4,7 +4,7 @@
 /**
  * 竞价模块对外服务接口类
  */
-
+#include "core/ads_singleton.h"
 #include "core/advertise/ads_advertise_types.h"
 
 class AdsBiddingParam;
