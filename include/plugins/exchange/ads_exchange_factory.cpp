@@ -7,16 +7,6 @@
 
 AdsExchangeFactory::AdsExchangeFactory()
 {
-	// 构造hash map
-	exchanges = new unordered_map<string, AdsExchange*>;
-	if ( exchanges == NULL ) {
-		WARN("Exchanges is null");
-		return;
-	}
-
-	// 添加exchange实例
-	exchanges->emplace("adview", new AdsAdviewExchange);
-
 }
 
 AdsExchangeFactory::~AdsExchangeFactory()
@@ -28,6 +18,21 @@ AdsExchangeFactory::~AdsExchangeFactory()
 			itr->second = NULL;
 		}
 	}
+}
+
+bool AdsExchangeFactory::init()
+{
+	// 构造hash map
+	exchanges = new unordered_map<string, AdsExchange*>;
+	if ( exchanges == NULL ) {
+		WARN("Exchanges is null");
+		return false;
+	}
+
+	// 添加exchange实例
+	exchanges->emplace("adview", new AdsAdviewExchange);
+
+	return true;
 }
 
 AdsExchange* AdsExchangeFactory::getExchange(const string& name) const

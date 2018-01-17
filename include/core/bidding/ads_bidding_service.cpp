@@ -4,12 +4,17 @@
 
 AdsBiddingService::AdsBiddingService()
 {
-
 }
 
 AdsBiddingService::~AdsBiddingService()
 {
 
+}
+
+bool AdsBiddingService::init()
+{
+
+	return true;
 }
 
 AdsAdvertise* AdsBiddingService::bidding(const AdsBiddingParam* param)

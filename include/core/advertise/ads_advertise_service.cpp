@@ -1,5 +1,6 @@
 #include "core/advertise/ads_advertise_service.h"
 
+#include "log.h"
 #include "utils/ads_time.h"
 #include "plugins/crontab/ads_crontab.h"
 #include "core/advertise/ads_advertise_manager.h"
@@ -8,12 +9,6 @@
 
 AdsAdvertiseService::AdsAdvertiseService()
 {
-	// Advertise Service 的main函数
-	_manager = new AdsAdvertiseManager(new AdsAdvertiseApiLoader);
-	_manager->load();
-
-	// 添加定时任务
-	//crontab.add("0 */30 * * *", new AdsAdvertiseReloadTask);
 }
 
 AdsAdvertiseService::~AdsAdvertiseService()
@@ -23,6 +18,24 @@ AdsAdvertiseService::~AdsAdvertiseService()
 		_manager = NULL;
 	}
 }
+
+
+bool AdsAdvertiseService::init()
+{
+	// 构造数据管理实例
+	_manager = new (std::nothrow) AdsAdvertiseManager(new AdsAdvertiseApiLoader);
+	if ( _manager == NULL ) {
+		WARN("Advertise Manager is null");
+		return false;
+	}
+	_manager->load();
+
+	// 添加定时任务
+	//crontab.add("0 */30 * * *", new AdsAdvertiseReloadTask);
+	
+	return true;
+}
+
 
 void AdsAdvertiseService::reload()
 {

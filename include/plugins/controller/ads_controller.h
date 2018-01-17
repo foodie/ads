@@ -11,6 +11,11 @@ public:
 	virtual int process(AdsThreadData*) = 0;
 };
 
+inline static bool initController()
+{
+	return AdsControllerFactory::getInstance().init();
+}
+
 inline static AdsController* getController(const string &name)
 {
 	return AdsControllerFactory::getInstance().getController(name);

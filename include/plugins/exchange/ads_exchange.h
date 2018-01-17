@@ -22,6 +22,11 @@ public:
 	}
 };
 
+inline static bool initExchange()
+{
+	return AdsExchangeFactory::getInstance().init();
+}
+
 inline static AdsExchange* getExchange(const string& name)
 {
 	return AdsExchangeFactory::getInstance().getExchange(name);

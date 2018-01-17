@@ -16,6 +16,7 @@ class AdsControllerFactory : public AdsSingleton<AdsControllerFactory>
 public:
 	~AdsControllerFactory();
 	
+	bool init();
 	AdsController* getController(const string& name) const;
 private:
 	AdsControllerFactory();

@@ -7,15 +7,6 @@
 
 AdsControllerFactory::AdsControllerFactory()
 {
-	controllers = new unordered_map<string, AdsController*>;
-	if ( controllers == NULL ) {
-		WARN("Controllers is null");
-		return ;
-	}
-
-	// 添加controller实例
-	controllers->emplace("bidding", new AdsBiddingController);
-	controllers->emplace("monitor", new AdsMonitorController);
 }
 
 AdsControllerFactory::~AdsControllerFactory()
@@ -27,6 +18,21 @@ AdsControllerFactory::~AdsControllerFactory()
 			itr->second = NULL;
 		}
 	}
+}
+
+bool AdsControllerFactory::init()
+{
+	controllers = new (std::nothrow) unordered_map<string, AdsController*>;
+	if ( controllers == NULL ) {
+		WARN("Controllers is null");
+		return false;
+	}
+
+	// 添加controller实例
+	controllers->emplace("bidding", new AdsBiddingController);
+	controllers->emplace("monitor", new AdsMonitorController);
+
+	return true;
 }
 
 AdsController* AdsControllerFactory::getController(const string& name) const

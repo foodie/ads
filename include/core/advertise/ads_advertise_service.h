@@ -22,6 +22,7 @@ private:
 public:
 	~AdsAdvertiseService();
 
+	bool init();
 	inline void reload();
 
 	/* 检索广告 */

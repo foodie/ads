@@ -16,6 +16,7 @@ class AdsExchangeFactory : public AdsSingleton<AdsExchangeFactory>
 public:
 	~AdsExchangeFactory();
 
+	bool init();
 	AdsExchange* getExchange(const string& name) const;
 
 private:

@@ -19,7 +19,14 @@
 #include "ads_func.h"
 
 #include "ads_http.h"
+
 #include "plugins/controller/ads_controller.h"
+#include "plugins/exchange/ads_exchange.h"
+#include "plugins/crontab/ads_crontab.h"
+
+#include "core/advertise/ads_advertise_service.h"
+#include "core/advertise/ads_bidding_service.h"
+#include "core/advertise/ads_monitor_service.h"
 
 DEFINE_string(p, CONF_FPATH, "conf path, string");
 DEFINE_string(f, CONF_FNAME, "conf file, string");
@@ -128,14 +135,58 @@ int init()
 }
 
 /**
- * 初始化模块
+ * 初始化组件
  */
-static int module_init()
+static int plugins_init()
 {
+    bool ret;
+    // exchange
+    ret = initExchange();
+    if ( !ret ) {
+        FATAL("Exchange plugins init failed");
+        return -1;
+    }
 
-    // 广告管理模块
+    // crontab
+    
+
+    // controller
+    ret = initController();
+    if ( !ret ) {
+        FATAL("Controller plugins init failed");
+        return -1;
+    }
+
+    return 0;
+}
+
+/**
+ * 初始化服务
+ */
+static int services_init()
+{
+    bool ret;
+
+    // 广告模块
+    ret = AdsAdvertiseService::getInstance().init();
+    if ( !ret ) {
+        FATAL("AdsAdvertiseService init failed");
+        return -1;
+    }
+
+    // 竞价模块
+    ret = AdsBiddingService::getInstance().init();
+    if ( !ret ) {
+        FATAL("AdsBiddingService init failed");
+        return -1;
+    }
 
     // 监测模块
+    ret = AdsMonitorService::getInstance().init();
+    if ( !ret ) {
+        FATAL("AdsMonitorService init failed");
+        return -1;
+    }
 
     return 0;
 }
@@ -269,9 +320,15 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    ret = module_init();
+    ret = plugins_init();
     if (ret) {
-        FATAL("module init failed");
+        FATAL("plugins init failed");
+        return -1;
+    }
+
+    ret = services_init();
+    if (ret) {
+        FATAL("services init failed");
         return -1;
     }
 

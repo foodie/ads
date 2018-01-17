@@ -11,6 +11,7 @@ MONITOR_PATH=./include/core/monitor
 
 CONTROLLER_PATH=./include/plugins/controller
 EXCHANGE_PATH=./include/plugins/exchange
+CRONTAB_PATH=./include/plugins/corntab
 
 IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
 UTIL_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${UTIL_PATH}/*.cpp))
@@ -22,6 +23,7 @@ MONITOR_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${MONITOR_PATH}/*.cpp))
 
 CONTROLLER_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CONTROLLER_PATH}/*.cpp))
 EXCHANGE_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${EXCHANGE_PATH}/*.cpp))
+CRONTAB_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${CRONTAB_PATH}/*.cpp))
 
 INCLUDES=-I. -I./include -I./include/hashtable -I${IF_PATH}/ -I${CORE_PATH}/ 
 LIB_PATH=-L./lib
@@ -43,10 +45,10 @@ mads: src/ads_conf.o src/ads_hash.o src/ads_data.o src/ads_func.o src/ads_thread
       src/main.o \
      $(IF_OBJ) $(UTIL_OBJ) \
      $(CORE_OBJ) $(ADVERTISE_OBJ) $(BIDDING_OBJ) $(BIDDING_OBJ) $(MONITOR_OBJ) \
-     $(CONTROLLER_OBJ) $(EXCHANGE_OBJ) 
+     $(CONTROLLER_OBJ) $(EXCHANGE_OBJ) $(CRONTAB_OBJ) 
 	$(CC) -o $@ $^ $(INCLUDES) $(LIB_PATH) $(GEOIPFLAGS) $(LDFLAGS)
 
 clean:
 	rm -rf src/*.o ${UTIL_PATH}/*.o mads \
 	 	${CORE_PATH}/*.o ${ADVERTISE_PATH}/*.o ${BIDDING_PATH}/*.o ${MONITOR_PATH}/*.o \
-		${CONTROLLER_PATH}/*.o ${EXCHANGE_PATH}/*.o
+		${CONTROLLER_PATH}/*.o ${EXCHANGE_PATH}/*.o ${CRONTAB_PATH}/*.o

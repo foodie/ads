@@ -18,6 +18,7 @@ private:
 public:
 	~AdsBiddingService();
 
+	bool init();
 	AdsAdvertise* bidding(const AdsBiddingParam* param);
 };
 
