@@ -1,7 +1,7 @@
 #ifndef _ADS_TIME_H
 #define _ADS_TIME_H
 
-#include <sys/time.h>
+#include "time.h"
 
 time_t ads_nowtime();
 

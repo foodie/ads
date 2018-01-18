@@ -19,7 +19,7 @@ public:
 		: method(ADS_HTTP_POST), remoteAddress(), uri(), query(),
 		  cookie(), userAgent(), referer(),
 		  body(),
-		  uri_raw(), query_raw(), cookie_raw(),
+		  uri_raw(), query_raw(), cookie_raw()
 	{
 		reset();
 	}
@@ -97,13 +97,10 @@ private:
 	// general
 	int method;
 	string remoteAddress;
-	string uri_raw;
 	vector<string> uri;
-	string query_raw;
 	unordered_map<string, string> query;
 
 	// header
-	string cookie_raw;
 	unordered_map<string, string> cookie;
 	string userAgent;
 	string referer;
