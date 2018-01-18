@@ -12,10 +12,13 @@ void AdsHttpRequest::reset()
 	// general
 	method = ADS_HTTP_POST;
 	remoteAddress.clear();
+    uri_raw.clear();
 	uri.clear();
+    query_raw.clear();
 	query.clear();
 
 	// header
+    cookie_raw.clear();
 	cookie.clear();
 	userAgent.clear();
 	referer.clear();
@@ -53,19 +56,19 @@ bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
     // uri
     value = FCGX_GetParam("REQUEST_URI", envp);
     if (value){
-    	string uriStr(value);
+    	uri_raw = value;
 
     	// 去掉第一个问号之后的部分
-    	if ( uriStr.find('?') != string::npos ) {
-            uriStr.erase( uriStr.begin() + uriStr.find('?'), uriStr.end() );
+    	if ( uri_raw.find('?') != string::npos ) {
+            uri_raw.erase( uri_raw.begin() + uri_raw.find('?'), uri_raw.end() );
         }
 
         // 切割uri
         size_t p1=0, p2=0;
         string uriParam;
         while( p2 != string::npos ) {
-            p2 = uriStr.find('/', p1);
-            uriParam = uriStr.substr(p1, p2 - p1);
+            p2 = uri_raw.find('/', p1);
+            uriParam = uri_raw.substr(p1, p2 - p1);
             if ( !uriParam.empty() ) {
             	uri.push_back( uriParam );
             }
@@ -76,13 +79,13 @@ bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
     // query
 	value = FCGX_GetParam("QUERY_STRING", envp);
     if (value){
-    	string queryStr(value);
+        query_raw = value;
 
     	size_t p1=0, p2=0, p3=0;
         string queryParam, queryKey, queryValue;
         while( p2 != string::npos ) {
-            p2 = queryStr.find('&', p1);
-            queryParam = queryStr.substr(p1, p2 - p1);
+            p2 = query_raw.find('&', p1);
+            queryParam = query_raw.substr(p1, p2 - p1);
             if ( !queryParam.empty() ) {
             	p3 = queryParam.find('=');
             	queryKey = queryParam.substr(0, p3);
@@ -96,13 +99,13 @@ bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
     // cookie
     value = FCGX_GetParam("HTTP_COOKIE", envp);
     if (value){
-        string cookieStr(value);
+        cookie_raw = value;
 
         size_t p1=0, p2=0, p3=0;
         string cookieParam, cookieKey, cookieValue;
         while( p2 != string::npos ) {
-            p2 = cookieStr.find(';', p1);
-            cookieParam = cookieStr.substr(p1, p2 - p1);
+            p2 = cookie_raw.find(';', p1);
+            cookieParam = cookie_raw.substr(p1, p2 - p1);
             // 去除空格
             cookieParam.erase(0, cookieParam.find_first_not_of(' '));  
 			cookieParam.erase(cookieParam.find_last_not_of(' ') + 1);

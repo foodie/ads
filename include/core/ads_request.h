@@ -37,16 +37,24 @@ public:
 		return method; 
 	}
 
-	string getRemoteAddress() const 
+	const string& getRemoteAddress() const 
 	{ 
 		return remoteAddress; 
 	}
 
+	const string& getUriRaw() const
+	{
+		return uri_raw;
+	}
 	string getUri(unsigned int n, const string& def="") const 
 	{ 
 		return uri.size() > n ? uri.at(n) : def; 
 	}
 
+	const string& getQueryRaw() const
+	{
+		return query_raw;
+	}
 	string getQuery(const string& k, const string& def="") const
 	{
 		auto itr = query.find(k);
@@ -54,24 +62,28 @@ public:
 	}
 
 	// header
+	const string& getCookieRaw() const
+	{
+		return cookie_raw;
+	}
 	string getCookie(const string& k, const string& def="") const
 	{
 		auto itr = cookie.find(k);
 		return itr != cookie.end() ? itr->second : def;
 	}
 
-	string getUserAgent() const
+	const string& getUserAgent() const
 	{ 
 		return userAgent; 
 	}
 
-	string getReferer() const
+	const string& getReferer() const
 	{ 
 		return referer; 
 	}
 
 	// body
-	string getBody() const
+	const string& getBody() const
 	{ 
 		return body; 
 	}
@@ -80,10 +92,13 @@ private:
 	// general
 	int method;
 	string remoteAddress;
+	string uri_raw;
 	vector<string> uri;
+	string query_raw;
 	unordered_map<string, string> query;
 
 	// header
+	string cookie_raw;
 	unordered_map<string, string> cookie;
 	string userAgent;
 	string referer;

@@ -2,6 +2,7 @@
 #define _ADS_CRONTAB_H
 
 #include <string>
+#include "core/ads_singleton.h"
 
 using std::string;
 

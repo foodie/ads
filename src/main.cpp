@@ -42,6 +42,41 @@ reloader_t<g_conf_t> *g_conf_reloader;
 
 g_data_t g_data;
 
+void log_request(AdsHttpRequest *request)
+{
+    // method
+    switch( request->getMethod() ) {
+        case ADS_HTTP_UNKNOWN: 
+            log_pushnotice("method", "%s", "UNKNOW");
+            break;
+        case ADS_HTTP_GET:
+            log_pushnotice("method", "%s", "GET");
+            break;
+        case ADS_HTTP_POST:
+            log_pushnotice("method", "%s", "GET");
+            break;
+        default:
+            log_pushnotice("method", "%s", "UNKNOW");
+            break;
+    }
+
+    // remote_addr
+    log_pushnotice("remote_addr", "%s", request->getRemoteAddress().c_str());
+    // uri
+    log_pushnotice("uri", "%s", request->getUriRaw().c_str());
+    // query
+    log_pushnotice("query", "%s", request->getQueryRaw().c_str());
+    // cookie
+    log_pushnotice("cookie", "%s", request->getCookieRaw().c_str());
+    // ua
+    log_pushnotice("user-agent", "%s", request->getUserAgent().c_str());
+    // referer
+    log_pushnotice("referer", "%s", request->getReferer().c_str());
+    // length
+    log_pushnotice("length", "%d", request->getBody().size());
+
+}
+
 // 请求回调函数
 int callback()
 {
@@ -81,6 +116,7 @@ int callback()
 	
 	// 解析请求
 	p_thd_data->request->parseFromFcgxRequest(request);
+    log_request(p_thd_data->request);
 	
     // 调用控制器
     int code;

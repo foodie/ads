@@ -11,7 +11,7 @@ MONITOR_PATH=./include/core/monitor
 
 CONTROLLER_PATH=./include/plugins/controller
 EXCHANGE_PATH=./include/plugins/exchange
-CRONTAB_PATH=./include/plugins/corntab
+CRONTAB_PATH=./include/plugins/crontab
 
 IF_OBJ:=$(patsubst %.cc,%.o, $(wildcard ${IF_PATH}/*.cc))
 UTIL_OBJ:=$(patsubst %.cpp,%.o, $(wildcard ${UTIL_PATH}/*.cpp))
