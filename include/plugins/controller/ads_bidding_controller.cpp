@@ -7,7 +7,7 @@
 #include "core/advertise/ads_advertise_service.h"
 #include "core/bidding/ads_bidding_param.h"
 #include "core/bidding/ads_bidding_service.h"
-#include "core/utils/ads_ip_location.h"
+#include "utils/ads_ip_location.h"
 
 using std::list;
 
@@ -32,8 +32,8 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	}
 
 	// 通过ip获取地域id
-	auto devBuilder = param.device().getBuilder();
-	devBuilder.setAddressId(0);
+	auto device = param.device();
+	device.getBuilder().setAddressId(0);
 
 	// 获取可投放广告列表
 	list<AdsAdvertise*> adList;

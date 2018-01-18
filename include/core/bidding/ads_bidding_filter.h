@@ -13,7 +13,7 @@ using std::list;
 using std::vector;
 using std::unordered_map;
 
-typedef bool (*AdsBiddingFilterFunc)(const AdsBiddingParam&, const AdsAdvertise*);
+typedef bool (*AdsBiddingFilterFunc)(const AdsBiddingParam&, AdsAdvertise*);
 
 
 class AdsBiddingFilter
