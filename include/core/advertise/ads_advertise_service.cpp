@@ -31,8 +31,7 @@ bool AdsAdvertiseService::init()
 	_manager->load();
 
 	// 添加定时任务
-	//crontab.add("0 */30 * * *", new AdsAdvertiseReloadTask);
-	
+	registerCrontabTask("0 */30 * * *", new AdsAdvertiseReloadTask);
 	return true;
 }
 
@@ -42,7 +41,7 @@ void AdsAdvertiseService::reload()
 	_manager->reload();
 }
 
-void AdsAdvertiseService::search(const string& id, list<AdsAdvertise*>& list)
+void AdsAdvertiseService::search(list<AdsAdvertise*>& list)
 {
 	AdsAdvertiseCollection *collection = _manager->get();
 

@@ -7,13 +7,27 @@ using std::string;
 
 class AdsCrontabTask;
 
-class AdsCrontab
+class AdsCrontab : public AdsSingleton<AdsCrontab>
 {
+	friend class AdsSingleton<AdsCrontab>;
 public:
-	virtual int process() = 0;
+	~AdsCrontab();
 
-	static void add(const string& format, AdsCrontabTask *task);
+	bool init(); 
+	void process();
+
+	void add(const string& format, AdsCrontabTask *task);
+
+private:
+	AdsCrontab();
+
+	
 };
+
+static inline void registerCrontabTask(const string& format, AdsCrontabTask *task)
+{
+	AdsCrontab::getInstance().add(format, task);
+}
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

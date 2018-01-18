@@ -20,6 +20,7 @@ using std::unordered_set;
 class AdsCampaign;
 class AdsLaunch;
 class AdsCreative;
+class AdsAdvertiseCollection;
 
 typedef AdsCreative AdsAdvertise;
 

@@ -126,7 +126,7 @@ private:
 		void setSettlement(AdsBiddingSettlement settlement) { dst._settlement = settlement; }
 		void setBidFloor(int floor) { dst._bidfloor = floor; }
 
-		void setIsPmp(bool flag) { dst._ispmp = flag; }
+		void setBiddingType(AdsBiddingType type) { dst._biddingtype = type; }
 	private:
 		AdsBiddingImpression& dst;
 	};
@@ -153,7 +153,7 @@ public:
 	const AdsBiddingVideo& video() const { return _video; }
 	const AdsBiddingNative& native() const { return _native; }
 
-	bool isPmp() const { return _ispmp; }
+	AdsBiddingType biddingType() const { return _biddingtype; }
 	const AdsBiddingPmp& pmp() const { return _pmp; }
 private:
 	Builder _builder;
@@ -169,8 +169,8 @@ private:
 	AdsBiddingVideo  _video;
 	AdsBiddingNative _native;
 
-	bool _ispmp;
-	AdsBiddingPmp _pmp;
+	AdsBiddingType 	_biddingtype;
+	AdsBiddingPmp 	_pmp;
 };
 
 /**

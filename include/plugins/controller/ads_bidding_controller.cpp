@@ -4,6 +4,7 @@
 
 #include "plugins/exchange/ads_exchange.h"
 #include "core/advertise/ads_advertise_types.h"
+#include "core/advertise/ads_advertise_service.h"
 #include "core/bidding/ads_bidding_param.h"
 #include "core/bidding/ads_bidding_service.h"
 
@@ -29,9 +30,14 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 		return ADS_HTTP_BAD_REQUEST;
 	}
 
-	// 访问竞价服务接口
+	// 获取可投放广告列表
+	list<AdsAdvertise*> adList;
+	AdsAdvertiseService& adService = getAdvertiseService();
+	adService.search(adList);
+
+	// 竞价处理
 	AdsBiddingService& biddingService = getBiddingService();
-	AdsAdvertise* ad = biddingService.bidding(&param);
+	AdsAdvertise* ad = biddingService.bidding(param, adList);
 
 	// 封装响应数据
 	exchange->packBiddingResponse(param, ad, response);

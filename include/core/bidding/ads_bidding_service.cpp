@@ -1,10 +1,8 @@
 #include "core/bidding/ads_bidding_service.h"
 
-#include <list>
-#include "core/bidding/ads_bidding_param.h"
-#include "core/advertise/ads_advertise_service.h"
-
-using std::list;
+#include "core/bidding/ads_bidding_filter.h"
+#include "core/bidding/ads_bidding_evaluate.h"
+#include "core/bidding/ads_bidding_select.h"
 
 AdsBiddingService::AdsBiddingService()
 {
@@ -21,15 +19,21 @@ bool AdsBiddingService::init()
 	return true;
 }
 
-AdsAdvertise* AdsBiddingService::bidding(const AdsBiddingParam* param)
+AdsAdvertise* AdsBiddingService::bidding(const AdsBiddingParam& param,
+	list<AdsAdvertise*>& ad_list)
 {
-	list<AdsAdvertise*> ad_list;
-	string dev_id = getDeviceId(param.device()); // 设备id
+	// 过滤
+	ads_bidding_filter(param, ad_list);
+	if ( ad_list.size() == 0 ) {
+		return NULL;
+	}
 
-	AdsAdvertiseService& ad_serv = getAdvertiseService();
-	ad_serv.search(dev_id, ad_list);
+	// 评估
+	//vector<AdsBiddingEvaluateValue> value( ad_list.size() );
+	//ads_bidding_evaluate(param, ad_list, value);
 
+	// 选择
+	AdsAdvertise *ad = ads_bidding_select(ad_list);
 
-
-	return NULL;
+	return ad;
 }

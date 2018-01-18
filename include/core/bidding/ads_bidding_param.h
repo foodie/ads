@@ -39,9 +39,8 @@ public:
 private:
 	Builder _builder;
 
-	int 			_exchangeid;
-	string 			_biddingid;
-	AdsBiddingType 	_biddingtype;
+	int 			_exchangeid;  	// exchange id
+	string 			_biddingid;		// 竞价请求id
 
 	AdsBiddingImpression 	_impression;
 	AdsBiddingDevice 		_device;

@@ -25,8 +25,8 @@ public:
 	bool init();
 	inline void reload();
 
-	/* 检索广告 */
-	void search(const string& id, list<AdsAdvertise*>& list);
+	/* 检索当前可投放广告 */
+	void search(list<AdsAdvertise*>& list);
 
 private:
 	AdsAdvertiseManager *_manager; // 数据管理类

@@ -13,27 +13,26 @@ using std::list;
 using std::vector;
 using std::unordered_map;
 
-typedef bool (*AdsBiddingFilterFunc)(AdsAdvertise*, AdsBiddingParam&);
+typedef bool (*AdsBiddingFilterFunc)(const AdsBiddingParam&, const AdsAdvertise*);
 
-class AdsBiddingFilterResult
-{
-public:
-
-private:
-	unordered_map<string, vector<int>> result;
-};
 
 class AdsBiddingFilter
 {
 public:
-	void filter(AdsBiddingParam& param, list<AdsAdvertise*>& list);
+	void filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
 
-	list<AdsAdvertise*>* getPassAdvertises();
-
-private:
-	AdsBiddingFilterResult res;
-
+	void rtb_filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
+	void pdb_filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
+	
+	void user_filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
 };
+
+static inline void ads_bidding_filter(const AdsBiddingParam& param, 
+	list<AdsAdvertise*>& list)
+{
+	AdsBiddingFilter filter;
+	filter.filter(param, list);
+}
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
