@@ -16,9 +16,10 @@ class AdsHttpRequest {
 public:
 
 	AdsHttpRequest() 
-		:method(ADS_HTTP_POST), remoteAddress(), uri(), query(),
-		 cookie(), userAgent(), referer(),
-		 body()
+		: method(ADS_HTTP_POST), remoteAddress(), 
+		  uri_raw(), uri(), query_raw(), query(),
+		  cookie_raw(), cookie(), userAgent(), referer(),
+		  body()
 	{
 		reset();
 	}
