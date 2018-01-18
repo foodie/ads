@@ -14,7 +14,6 @@ private:
 		Builder(AdsBiddingParam& param) : dst(param) {}
 		void setExchangeId(int id) { dst._exchangeid = id; }
 		void setBiddingId(const string& id) { dst._biddingid = id; }
-		void setBiddingType(AdsBiddingType type) { dst._biddingtype = type; }
 	private:
 		AdsBiddingParam& dst;	
 	};
@@ -22,14 +21,13 @@ private:
 public:
 	AdsBiddingParam() 
 		: _builder(*this),
-		  _exchangeid(0),_biddingid(),_biddingtype(AdsBiddingType::RTB),
+		  _exchangeid(0),_biddingid(),
 		  _impression(),_device(),_app(),_user()
 	{}
 	Builder& getBuilder() { return _builder; }
 
 	int exchangeId() const { return _exchangeid; }
 	const string& biddingId() const { return _biddingid; }
-	AdsBiddingType biddingType() const { return _biddingtype; }
 
 	const AdsBiddingImpression& impression() const { return _impression; }
 	const AdsBiddingDevice& device() const { return _device; }

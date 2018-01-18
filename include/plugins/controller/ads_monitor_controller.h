@@ -4,7 +4,6 @@
 #include "plugins/controller/ads_controller.h"
 #include "monitor/ads_monitor_param.h"
 #include "monitor/ads_monitor_service.h"
-#include "monitor/ads_monitor_logger.h"
 
 class AdsMonitorController : public AdsController
 {

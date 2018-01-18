@@ -18,7 +18,7 @@ AdsMonitorService::~AdsMonitorService()
 bool AdsMonitorService::init()
 {
 	_manager = new (std::nothrow) AdsMonitorManager;
-	if (manager == NULL) {
+	if (_manager == NULL) {
 		WARN("monitor manager is null");
 		return false;
 	}

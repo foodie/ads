@@ -25,7 +25,7 @@ public:
 static inline AdsAdvertise* ads_bidding_select(list<AdsAdvertise*>& ad_list)
 {
 	AdsBiddingSelector selector;
-	return selector.select();
+	return selector.select(ad_list);
 }
 
 #endif

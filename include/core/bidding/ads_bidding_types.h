@@ -138,7 +138,7 @@ public:
 		  _type(AdsImpressionType::BANNER),_settlement(AdsBiddingSettlement::CPM),
 		  _bidfloor(0), 
 		  _banner(),_video(),_native(),
-		  _ispmp(false),_pmp()
+		  _biddingtype(AdsBiddingType::RTB),_pmp()
 	{}
 	Builder& getBuilder() { return _builder; }
 

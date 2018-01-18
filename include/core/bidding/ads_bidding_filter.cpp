@@ -3,12 +3,14 @@
 static int filter_helper(const AdsBiddingParam& param, list<AdsAdvertise*>& list, 
 	AdsBiddingFilterFunc func);
 
-static void bool filter_exchage_func(const AdsBiddingParam&, const AdsAdvertise*);
+static void bool filter_exchange_func(const AdsBiddingParam& param, 
+	const AdsAdvertise* ad);
 
-void AdsBiddingFilter::filter(AdsBiddingParam& param, list<AdsAdvertise*>& list)
+void AdsBiddingFilter::filter(const AdsBiddingParam& param, 
+	list<AdsAdvertise*>& list)
 {
 	// 过滤媒体
-	if ( filter_helper(param, list, filter_exchage_func) == 0 ) {
+	if ( filter_helper(param, list, filter_exchange_func) == 0 ) {
 		return ;
 	}
 
@@ -50,4 +52,10 @@ static int filter_helper(const AdsBiddingParam& param, list<AdsAdvertise*>& list
 		}
 	}
 	return list.size();
+}
+
+static void bool filter_exchange_func(const AdsBiddingParam& param, 
+	const AdsAdvertise* ad)
+{
+	return false;
 }

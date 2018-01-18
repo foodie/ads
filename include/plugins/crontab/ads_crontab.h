@@ -19,9 +19,7 @@ public:
 	void add(const string& format, AdsCrontabTask *task);
 
 private:
-	AdsCrontab();
-
-	
+	AdsCrontab();	
 };
 
 static inline void registerCrontabTask(const string& format, AdsCrontabTask *task)
