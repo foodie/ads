@@ -51,7 +51,7 @@ public:
 
 	int 	bidding_type;
 	int 	price;
-	int 	pdb_id;
+	string 	pmp_id;
 
 	/* 频次控制 */
 	unsigned int imp_freq;	// 展示频次

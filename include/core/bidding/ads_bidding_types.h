@@ -201,6 +201,7 @@ private:
 		void setCarrier(AdsCarrier carrier) { dst._carrier = carrier; }
 		void setConnectionType(AdsConnectionType type) { dst._connectiontype = type; }
 
+		void setAddressId(int id) { dst._addressid = id; }
 		void setIp(const string& ip) { dst._ip = ip; }
 		void setIdfa(const string& idfa) { dst._idfa = idfa; }
 		void setImei(const string& imei) { dst._imei = imei; }
@@ -216,7 +217,7 @@ public:
 		: _builder(*this),
 		  _type(AdsDeviceType::UNKNOW),_os(AdsOs::UNKNOW),
 		  _carrier(AdsCarrier::UNKNOW),_connectiontype(AdsConnectionType::UNKNOW),
-		  _ip(),_idfa(),_imei(),_mac(),_mac1()
+		  _addressid(0),_ip(),_idfa(),_imei(),_mac(),_mac1()
 	{}
 	Builder& getBuilder() { return _builder; }
 
@@ -225,6 +226,7 @@ public:
 	AdsCarrier carrier() const { return _carrier; }
 	AdsConnectionType connectionType() const { return _connectiontype; }
 
+	int addressId() const { return _addressid; }
 	const string& ip() const { return _ip; }
 	const string& idfa() const { return _idfa; }
 	const string& imei() const { return _imei; }
@@ -239,6 +241,7 @@ private:
 	AdsCarrier 			_carrier;
 	AdsConnectionType 	_connectiontype;
 
+	int    _addressid;
 	string _ip;
 	string _idfa;	// 原值
 	string _imei;	// 大写,md5
