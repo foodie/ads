@@ -16,10 +16,10 @@ class AdsHttpRequest {
 public:
 
 	AdsHttpRequest() 
-		: method(ADS_HTTP_POST), remoteAddress(), 
-		  uri_raw(), uri(), query_raw(), query(),
-		  cookie_raw(), cookie(), userAgent(), referer(),
-		  body()
+		: method(ADS_HTTP_POST), remoteAddress(), uri(), query(),
+		  cookie(), userAgent(), referer(),
+		  body(),
+		  uri_raw(), query_raw(), cookie_raw(),
 	{
 		reset();
 	}
@@ -43,19 +43,11 @@ public:
 		return remoteAddress; 
 	}
 
-	const string& getUriRaw() const
-	{
-		return uri_raw;
-	}
 	string getUri(unsigned int n, const string& def="") const 
 	{ 
 		return uri.size() > n ? uri.at(n) : def; 
 	}
 
-	const string& getQueryRaw() const
-	{
-		return query_raw;
-	}
 	string getQuery(const string& k, const string& def="") const
 	{
 		auto itr = query.find(k);
@@ -63,10 +55,6 @@ public:
 	}
 
 	// header
-	const string& getCookieRaw() const
-	{
-		return cookie_raw;
-	}
 	string getCookie(const string& k, const string& def="") const
 	{
 		auto itr = cookie.find(k);
@@ -89,6 +77,22 @@ public:
 		return body; 
 	}
 
+	// raw
+	const string& getUriRaw() const
+	{
+		return uri_raw;
+	}
+
+	const string& getQueryRaw() const
+	{
+		return query_raw;
+	}
+
+	const string& getCookieRaw() const
+	{
+		return cookie_raw;
+	}
+
 private:
 	// general
 	int method;
@@ -106,6 +110,11 @@ private:
 
 	// body
 	string body;
+
+	// raw
+	string uri_raw;
+	string query_raw;
+	string cookie_raw;
 };
 
 class AdsHttpResponse {

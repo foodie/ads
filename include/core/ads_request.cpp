@@ -12,19 +12,21 @@ void AdsHttpRequest::reset()
 	// general
 	method = ADS_HTTP_POST;
 	remoteAddress.clear();
-    uri_raw.clear();
 	uri.clear();
-    query_raw.clear();
 	query.clear();
 
 	// header
-    cookie_raw.clear();
 	cookie.clear();
 	userAgent.clear();
 	referer.clear();
 
 	// body
 	body.clear();
+
+    // raw
+    uri_raw.clear();
+    query_raw.clear();
+    cookie_raw.clear();
 }
 
 bool AdsHttpRequest::parseFromFcgxRequest(const FCGX_Request *fcgx_request)
