@@ -19,6 +19,20 @@ public:
 		  //creatives(MAX_MONITOR_BITEMS_SIZE) 
 	{}
 
+	~AdsMonitorManager()
+	{
+		for ( auto itr = campaigns.begin(); itr != campaigns.end(); itr++ ) {
+			AdsMonitorDataBase *v = itr->second;
+			delete v;
+			campaigns.erase(itr->first);
+		}
+		for ( auto itr = launchs.begin(); itr != launchs.end(); itr++ ) {
+			AdsMonitorDataBase *v = itr->second;
+			delete v;
+			launchs.erase(itr->first);
+		}
+	}
+
 	void loadHistoryData();
 	void getLogData();
 

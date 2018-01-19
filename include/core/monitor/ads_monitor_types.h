@@ -31,15 +31,15 @@ public:
 
 	~AdsMonitorDataBase()
 	{
-		for ( auto itr = _imp_record.begin(); itr != _imp_record.end(); ) {
+		for ( auto itr = _imp_record.begin(); itr != _imp_record.end(); itr++ ) {
 			AdsMonitorTimeRecord *record = itr->second;
 			delete record;
-			itr = _imp_record.erase(itr);
+			_imp_record.erase(itr->first);
 		}
-		for ( auto itr = _clk_record.begin(); itr != _clk_record.end(); ) {
+		for ( auto itr = _clk_record.begin(); itr != _clk_record.end(); itr++ ) {
 			AdsMonitorTimeRecord *record = itr->second;
 			delete record;
-			itr = _clk_record.erase(itr);
+			_clk_record.erase(itr->first);
 		}
 	}
 
