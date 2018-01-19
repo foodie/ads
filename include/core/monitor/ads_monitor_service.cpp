@@ -4,6 +4,7 @@
 #include "core/monitor/ads_monitor_param.h"
 #include "core/monitor/ads_monitor_manager.h"
 
+static string getMonitorDeviceId(AdsMonitorParam *param);
 
 AdsMonitorService::AdsMonitorService()
 {
@@ -123,5 +124,34 @@ unsigned int AdsMonitorService::getLaunchClkFreq(int id,
  */
 void AdsMonitorService::update(const AdsMonitorParam* param)
 {
+	AdsMonitorDataBase *campaign = _manager->findCampaignData(id);
+	AdsMonitorDataBase *launch = _manager->findLaunchData(id);
 
+	string device_id = getMonitorDeviceId(param);
+	time_t nowtime = ads_nowtime();
+
+	if ( param->type == AdsMonitorType::WINNOTICE ) {
+
+	} else if ( param->type == AdsMonitorType::WINNOTICE ) {
+
+	} else if ( param->type == AdsMonitorType::CLICK ) {
+
+		// 
+		campaign->setClkInc();
+		campaign->addClkRecord(device_id, nowtime);
+
+		launch->setClkInc();
+		launch->addClkRecord(device_id, nowtime);
+	}
+
+}
+
+static string getMonitorDeviceId(AdsMonitorParam *param)
+{
+	if ( param->os == AdsOs::IOS ) {
+		return param->idfa;
+	} else if ( param->os == AdsOs::ANDROID ) {
+		return param->imei;
+	}
+	return param->idfa.empty() ? param->imei : param->idfa;
 }

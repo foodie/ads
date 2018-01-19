@@ -5,6 +5,7 @@
  * 基本监测参数
  */
 #include <string>
+#include "core/ads_core.h"
 
 using std::string;
 
@@ -15,6 +16,8 @@ class AdsMonitorParam
 public:
 	AdsMonitorType type;
 
+	string bid_id;
+
 	// 广告信息
 	int exchange_id;		// 媒体id
 	int campaign_id;		// 活动id
@@ -23,12 +26,17 @@ public:
 	int material_id;		// 素材id
 
 	int price;
+	AdsBiddingType 		 bidding_type; 	// 竞价类型 rtb pdb
+	AdsBiddingSettlement settlement;	// 结算类型 cpm cpc
+	AdsAdvertiseType	 ad_type;		// 广告展示类型
 
 	// 设备信息
-	int os;					// 操作系统
-	int device_type;		// 设备类型
+	AdsOs 				os;					// 操作系统
+	AdsDeviceType 		device_type;		// 设备类型
+	AdsCarrier			carrier;			// 运营商
+	AdsConnectionType	connection_type;	// 联网方式
 
-	string ua;
+	//string ua;
 	string idfa;			// idfa
 	string openudid;		// openudid
 	string imei;			// imei MD5

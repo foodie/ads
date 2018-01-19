@@ -53,6 +53,15 @@ enum class AdsBiddingSettlement
 	CPC,
 };
 
+enum class AdsAdvertiseType
+{
+	BANNER = 1,
+	PLAQUE,
+	SPLASH,
+	VIDEO,
+	NATIVE
+};
+
 enum class AdsImpressionType
 {
 	BANNER = 1,
