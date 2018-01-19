@@ -27,45 +27,53 @@ bool AdsMonitorService::init()
 }
 
 
-static bool checkCampaignBudget(int id, int budget)
-{
-	return true;
-}
-
-
 /**
  * 查询接口
  */
-int AdsMonitorService::getCampaignCost(int id)
+unsigned int AdsMonitorService::getCampaignTotalCost(int id)
 {
 	return 0;
 }
-int AdsMonitorService::getCampaignImp(int id)
+unsigned int AdsMonitorService::getCampaignTotalImp(int id)
 {
 	return 0;
 }
-int AdsMonitorService::getCampaignClk(int id)
-{
-	return 0;
-}
-int AdsMonitorService::getCampaignImpFreq(int id)
-{
-	return 0;
-}
-int AdsMonitorService::getCampaignClkFreq(int id)
+unsigned int AdsMonitorService::getCampaignTotalClk(int id)
 {
 	return 0;
 }
 
-int AdsMonitorService::getLaunchCost(int id)
+unsigned int AdsMonitorService::getCampaignImpFreq(int id, 
+	const string& devid, time_t ts)
 {
 	return 0;
 }
-int AdsMonitorService::getLaunchImpFreq(int id)
+unsigned int AdsMonitorService::getCampaignClkFreq(int id,
+	const string& devid, time_t ts)
 {
 	return 0;
 }
-int AdsMonitorService::getLaunchClkFreq(int id)
+
+unsigned int AdsMonitorService::getLaunchTodayCost(int id)
+{
+	return 0;
+}
+unsigned int AdsMonitorService::getLaunchTodayImp(int id)
+{
+	return 0;
+}
+unsigned int AdsMonitorService::getLaunchTodayClk(int id)
+{
+	return 0;
+}
+
+unsigned int AdsMonitorService::getLaunchImpFreq(int id, 
+	const string& devid, time_t ts)
+{
+	return 0;
+}
+unsigned int AdsMonitorService::getLaunchClkFreq(int id, 
+	const string& devid, time_t ts)
 {
 	return 0;
 }

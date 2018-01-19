@@ -93,7 +93,7 @@ public:
 	
 
 	/* 有效时间 */
-	int 	effective;
+	int 	effective;		// 0-全程 1-自定义
 	time_t 	start_date;
 	time_t 	end_date;
 
