@@ -93,5 +93,11 @@ enum class AdsConnectionType
 	GSM_4G,
 };
 
+enum class AdsClickAction
+{
+	OPEN_WEBPAGE = 1,
+	DOWNLOAD_APP,
+};
+
 #endif
 /* vim: set ts=4 sw=4 noet: */

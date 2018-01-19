@@ -49,9 +49,9 @@ class AdsLaunch
 public:
 	int id;
 
-	int 	bidding_type;
-	int 	price;
-	string 	pmp_id;
+	AdsBiddingType 	bidding_type;
+	unsigned int 	price;
+	string 			pmp_id;
 
 	/* 频次控制 */
 	unsigned int imp_freq;	// 展示频次
@@ -84,12 +84,12 @@ class AdsCreative
 public:
 	int id;
 
-	string zone_id;
+	string zone_id;		// 广告位
 
-	int 			clk_act;
-	string 			landing;
-	vector<string> 	imp_track;
-	vector<string> 	clk_track;
+	AdsClickAction 	action;		// 点击行为
+	string 			landing;	// 落地页
+	vector<string> 	imp_track;	// 曝光监测
+	vector<string> 	clk_track; 	// 点击监测
 	
 
 	/* 有效时间 */

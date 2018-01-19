@@ -32,50 +32,90 @@ bool AdsMonitorService::init()
  */
 unsigned int AdsMonitorService::getCampaignTotalCost(int id)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findCampaignData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getCostTotal();
 }
 unsigned int AdsMonitorService::getCampaignTotalImp(int id)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findCampaignData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getImpTotal();
 }
 unsigned int AdsMonitorService::getCampaignTotalClk(int id)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findCampaignData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getClkTotal();
 }
 
 unsigned int AdsMonitorService::getCampaignImpFreq(int id, 
 	const string& devid, time_t ts)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findCampaignData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getImpRecordNum(devid, ts);
 }
 unsigned int AdsMonitorService::getCampaignClkFreq(int id,
 	const string& devid, time_t ts)
-{
-	return 0;
+{	
+	AdsMonitorDataBase *data = _manager->findCampaignData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getClkRecordNum(devid, ts);
 }
 
 unsigned int AdsMonitorService::getLaunchTodayCost(int id)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findLaunchData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getCostToday();
 }
 unsigned int AdsMonitorService::getLaunchTodayImp(int id)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findLaunchData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getImpToday();
 }
 unsigned int AdsMonitorService::getLaunchTodayClk(int id)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findLaunchData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getClkToday();
 }
 
 unsigned int AdsMonitorService::getLaunchImpFreq(int id, 
 	const string& devid, time_t ts)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findLaunchData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getImpRecordNum(devid, ts);
 }
 unsigned int AdsMonitorService::getLaunchClkFreq(int id, 
 	const string& devid, time_t ts)
 {
-	return 0;
+	AdsMonitorDataBase *data = _manager->findLaunchData(id);
+	if ( data == NULL ) {
+		return 0;
+	}
+	return data->getClkRecordNum(devid, ts);
 }
 
 /**

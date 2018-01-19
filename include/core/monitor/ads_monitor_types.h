@@ -15,249 +15,216 @@ using lib::phashmap;
 
 const unsigned int MAX_MONITOR_BITEMS_SIZE = 1000;
 
-enum class AdsMonitorRecordMode { DAY=1, WEEK, MONTH, ALL };
+typedef vector<time_t> AdsMonitorTimeRecord;
+typedef phashmap<string, AdsMonitorTimeRecord*> AdsMonitorRecord;
 
-//typedef vector<time_t> AdsMonitorTimeRecord;
-
-class AdsMonitorTimeRecord
+class AdsMonitorDataBase
 {
 public:
-	void addRecord(time_t ts)
+	AdsMonitorDataBase()
+		: _write_ts(0),_read_ts(0),
+		  _imp_before(0),_clk_before(0),_cost_before(0),
+		  _imp_today(0),_clk_today(0),_cost_today(0),
+		  _imp_record(MAX_MONITOR_BITEMS_SIZE),
+		  _clk_record(MAX_MONITOR_BITEMS_SIZE)
+	{}
+
+	~AdsMonitorDataBase()
 	{
-		records.push_back(ts);
+		for ( auto itr = _imp_record.begin(); itr != _imp_record.end(); ) {
+			AdsMonitorTimeRecord *record = itr->second;
+			delete record;
+			itr = _imp_record.erase(itr);
+		}
+		for ( auto itr = _clk_record.begin(); itr != _clk_record.end(); ) {
+			AdsMonitorTimeRecord *record = itr->second;
+			delete record;
+			itr = _clk_record.erase(itr);
+		}
 	}
 
-	int getFreq(AdsMonitorRecordMode m)
+public:
+
+	/* 修改 */
+	void setImpBefore(unsigned int imp)
 	{
-		if ( m == AdsMonitorRecordMode::ALL ) {
-			return records.size();
-		}
+		_imp_before = imp;
+	}
+	void setClkBefore(unsigned int clk)
+	{
+		_clk_before = clk;
+	}
+	void setCostBefore(unsigned int cost)
+	{
+		_cost_before = cost;
+	}
 
-		time_t t;
-		if ( m == AdsMonitorRecordMode::DAY ) {
-			t = ads_today();
-		} else if ( m == AdsMonitorRecordMode::WEEK ) {
-			t = ads_first_day_of_week();
-		} else if ( m == AdsMonitorRecordMode::MONTH ) {
-			t = ads_first_day_of_month();
-		}
+	void setImpToday(unsigned int imp)
+	{
+		_imp_today = imp;
+	}
+	void setClkToday(unsigned int clk)
+	{
+		_clk_today = clk;
+	}
+	void setCostToday(unsigned int cost)
+	{
+		_cost_today = cost;
+	}
 
-		int i;
-		for ( i = records.size() - 1; i >= 0; i-- ) {
-			if ( records[i] < t ) {
+	void setImpInc()
+	{
+		checkDayPass();
+		_imp_today++;
+		refreshWriteTime();
+	}
+	void setClkInc()
+	{
+		checkDayPass();
+		_clk_today++;
+		refreshWriteTime();
+	}
+	void setCostInc(unsigned int c)
+	{
+		checkDayPass();
+		_cost_today+=c;
+		refreshWriteTime();
+	}
+
+	void addImpRecord(const string& id, time_t ts)
+	{
+		AdsMonitorTimeRecord *record;
+		if ( _imp_record.get(id, &record) == lib::HASH_NOEXIST ) {
+			record = new (std::nothrow) AdsMonitorTimeRecord;
+			if ( record == NULL ) {
+				WARN("new monitor time record failed");
+				return;
+			}
+			_imp_record.set(id, record);
+		}
+		record->push_back(ts);
+		refreshWriteTime();
+	}
+	void addClkRecord(const string& id, time_t ts)
+	{
+		AdsMonitorTimeRecord *record;
+		if ( _clk_record.get(id, &record) == lib::HASH_NOEXIST ) {
+			record = new (std::nothrow) AdsMonitorTimeRecord;
+			if ( record == NULL ) {
+				WARN("new monitor time record failed");
+				return;
+			}
+			_clk_record.set(id, record);
+		}
+		record->push_back(ts);
+		refreshWriteTime();
+	}
+
+	/* 查询 */
+	unsigned int getImpTotal() 
+	{
+		refreshReadTime(); 
+		return _imp_before + _imp_today; 
+	}
+	unsigned int getClkTotal() 
+	{
+		refreshReadTime(); 
+		return _clk_before + _clk_today; 
+	}
+	unsigned int getCostTotal() 
+	{
+		refreshReadTime(); 
+		return _cost_before + _cost_today; 
+	}
+
+	unsigned int getImpToday() 
+	{
+		refreshReadTime(); 
+		return _imp_today; 
+	}
+	unsigned int getClkToday() 
+	{
+		refreshReadTime(); 
+		return _clk_today; 
+	}
+	unsigned int getCostToday() 
+	{
+		refreshReadTime(); 
+		return _cost_today; 
+	}
+
+	unsigned int getImpRecordNum(const string& id, time_t ts)
+	{
+		AdsMonitorTimeRecord *record;
+		if ( _imp_record.get(id, &record) == lib::HASH_NOEXIST ) {
+			return 0;
+		}
+		if ( ts == 0 ) {
+			return record->size();
+		}
+		int sum = 0;
+		for ( auto itr = record->rbegin(); itr != record->rend(); itr++ ) {
+			if ( *itr < ts ) {
 				break;
 			}
+			sum++;
 		}
-
-		return records.size() - 1 - i;
+		return sum;
+	}
+	unsigned int getClkRecordNum(const string& id, time_t ts)
+	{
+		AdsMonitorTimeRecord *record;
+		if ( _imp_record.get(id, &record) == lib::HASH_NOEXIST ) {
+			return 0;
+		}
+		if ( ts == 0 ) {
+			return record->size();
+		}
+		int sum = 0;
+		for ( auto itr = record->rbegin(); itr != record->rend(); itr++ ) {
+			if ( *itr < ts ) {
+				break;
+			}
+			sum++;
+		}
+		return sum;
 	}
 
 private:
-	vector<time_t> records;
-};
+	time_t _write_ts; // 最后修改时间
+	time_t _read_ts; // 最后读取时间
 
-class AdsMonitorUserRecord
-{
-public:
+	// 历史数据
+	unsigned int _imp_before;
+	unsigned int _clk_before;
+	unsigned int _cost_before;
 
-	void addImpRecord(time_t ts)
-	{
-		imp.addRecord(ts);
-	}
+	// 本日数据
+	unsigned int _imp_today;
+	unsigned int _clk_today;
+	unsigned int _cost_today;
 
-	int getImpFreq(AdsMonitorRecordMode m)
-	{
-		return imp.getFreq(m);
-	}
+	AdsMonitorRecord _imp_record;	// 展示记录
+	AdsMonitorRecord _clk_record;	// 点击记录
 
-	void addClkRecord(time_t ts)
-	{
-		clk.addRecord(ts);
-	}
+	void refreshWriteTime() { _write_ts = ads_nowtime(); }
+	void refreshReadTime() { _read_ts = ads_nowtime(); }
 
-	int getClkFreq(AdsMonitorRecordMode m)
-	{
-		return clk.getFreq(m);
-	}
+	void checkDayPass() {
+		if ( _write_ts < ads_today() ) {
+			_imp_before  += _imp_today;
+			_clk_before  += _clk_today;
+			_cost_before += _cost_today;
 
-private:
-	AdsMonitorTimeRecord imp; // 曝光记录
-	AdsMonitorTimeRecord clk; // 点击记录
-};
-
-
-
-// 活动监测
-class AdsMonitorCampaign
-{
-public:
-	AdsMonitorCampaign() 
-		: read_ts(0),write_ts(0), 
-		  cost(0),imp(0),clk(0), 
-		  records(MAX_MONITOR_BITEMS_SIZE)
-	{}
-
-	unsigned int getCost() { return cost; }
-	void setCost(unsigned int c) { cost = c; }
-	void incCost(unsigned int c) { cost += c; }
-
-	unsigned int getImp() { return imp; }
-	void setImp(unsigned int i) { imp = i; }
-	void incImp(unsigned int i=1) { imp += i; }
-
-	unsigned int getClk() { return clk; }
-	void setClk(unsigned int c) { clk = c; }
-	void incClk(unsigned int c=1) { clk += c; }
-
-	void addImpRecord(const string& name, time_t ts) 
-	{ 
-		AdsMonitorUserRecord *record = getUserRecord(name);
-		record->addImpRecord(ts);
-	}
-
-	int getImpFreq(const string& name, AdsMonitorRecordMode m)
-	{
-		AdsMonitorUserRecord *record = findUserRecord(name);
-		if ( record == NULL ) {
-			return 0;
+			_imp_today  = 0;
+			_clk_today  = 0;
+			_cost_today = 0;
+			
+			_write_ts = ads_today();
 		}
-		return record->getImpFreq(m);
-	}
-
-	void addClkRecord(const string& name, time_t ts)
-	{
-		AdsMonitorUserRecord *record = getUserRecord(name);
-		record->addClkRecord(ts);
-	}
-
-	int getClkFreq(const string& name, AdsMonitorRecordMode m)
-	{
-		AdsMonitorUserRecord *record = findUserRecord(name);
-		if ( record == NULL ) {
-			return 0;
-		}
-		return record->getClkFreq(m);
-	}
-
-private:
-	time_t read_ts;
-	time_t write_ts;
-
-	// 总数据
-	unsigned int cost;  // 消耗成本
-	unsigned int imp;	// 展示数
-	unsigned int clk;	// 点击数
-
-	phashmap<string, AdsMonitorUserRecord*> records;
-
-	AdsMonitorUserRecord* findUserRecord(const string& name)
-	{
-		AdsMonitorUserRecord *record;
-		if ( records.get(name, &record) == lib::HASH_NOEXIST ) {
-			return NULL;
-		}
-		return record;
-	}
-
-	AdsMonitorUserRecord* getUserRecord(const string& name)
-	{
-		AdsMonitorUserRecord *record = findUserRecord(name);
-		if ( record == NULL ) {
-			record = new (std::nothrow) AdsMonitorUserRecord;
-			records.set(name, record);
-		}
-		return record;
 	}
 };
 
-// 投放监测
-class AdsMonitorLaunch
-{
-public:
-	AdsMonitorLaunch() 
-		: read_ts(0),write_ts(0), 
-		  cost(0),imp(0),clk(0), 
-		  records(MAX_MONITOR_BITEMS_SIZE)
-	{}
-
-	unsigned int getCost() { return cost; }
-	void setCost(unsigned int c) { cost = c; }
-	void incCost(unsigned int c) { cost += c; }
-
-	unsigned int getImp() { return imp; }
-	void setImp(unsigned int i) { imp = i; }
-	void incImp(unsigned int i=1) { imp += i; }
-
-	unsigned int getClk() { return clk; }
-	void setClk(unsigned int c) { clk = c; }
-	void incClk(unsigned int c=1) { clk += c; }
-
-	void addImpRecord(const string& name, time_t ts) 
-	{ 
-		AdsMonitorUserRecord *record = getUserRecord(name);
-		record->addImpRecord(ts);
-	}
-
-	int getImpFreq(const string& name, AdsMonitorRecordMode m)
-	{
-		AdsMonitorUserRecord *record = findUserRecord(name);
-		if ( record == NULL ) {
-			return 0;
-		}
-		return record->getImpFreq(m);
-	}
-
-	void addClkRecord(const string& name, time_t ts)
-	{
-		AdsMonitorUserRecord *record = getUserRecord(name);
-		record->addClkRecord(ts);
-	}
-
-	int getClkFreq(const string& name, AdsMonitorRecordMode m)
-	{
-		AdsMonitorUserRecord *record = findUserRecord(name);
-		if ( record == NULL ) {
-			return 0;
-		}
-		return record->getClkFreq(m);
-	}
-
-private:
-	time_t read_ts;
-	time_t write_ts;
-
-	// 当天数据
-	unsigned int cost; 	// 消耗成本
-	unsigned int imp;	// 展示数
-	unsigned int clk;	// 点击数
-	
-	phashmap<string, AdsMonitorUserRecord*> records;
-
-	AdsMonitorUserRecord* findUserRecord(const string& name)
-	{
-		AdsMonitorUserRecord *record;
-		if ( records.get(name, &record) == lib::HASH_NOEXIST ) {
-			return NULL;
-		}
-		return record;
-	}
-
-	AdsMonitorUserRecord* getUserRecord(const string& name)
-	{
-		AdsMonitorUserRecord *record = findUserRecord(name);
-		if ( record == NULL ) {
-			record = new (std::nothrow) AdsMonitorUserRecord;
-			records.set(name, record);
-		}
-		return record;
-	}
-};
-
-// 创意监测
-class AdsMonitorCreative
-{
-
-};
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
