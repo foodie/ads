@@ -4,7 +4,11 @@
 /**
  * 监测模块对外服务接口类
  */
+#include <string>
+#include "time.h"
 #include "core/ads_singleton.h"
+
+using std::string;
 
 class AdsMonitorManager;
 class AdsMonitorParam;

@@ -32,8 +32,8 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	}
 
 	// 通过ip获取地域id
-	auto device = param.device();
-	device.getBuilder().setAddressId(0);
+	auto deviceBuilder = param.device().getBuilder();
+	deviceBuilder.setAddressId(0);
 
 	// 获取可投放广告列表
 	list<AdsAdvertise*> adList;

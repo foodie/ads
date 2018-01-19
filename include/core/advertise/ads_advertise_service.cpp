@@ -96,7 +96,7 @@ static bool checkCampaign(AdsCampaign* campaign)
 	}
 	// 展示上限
 	if ( campaign->imp_limit > 0 ) {
-		unsigned int imp = monitorServ.getCampaignToastImp(campaign->id);
+		unsigned int imp = monitorServ.getCampaignTotalImp(campaign->id);
 		if ( imp >= campaign->imp_limit ) {
 			return false;
 		}
@@ -120,8 +120,6 @@ static bool checkLaunch(AdsLaunch* launch)
 		return false;
 	}
 
-	AdsMonitorService& monitorServ = getMonitorService();
-	unsigned int cost = monitorServ.getLaunchTodayCost(launch->id);
 	// 排期
 	unsigned int budget = 0;
 	if ( launch->schedule == AdsAdvertiseSchedule::AVERAGE ) {
@@ -143,6 +141,7 @@ static bool checkLaunch(AdsLaunch* launch)
 		// 快速
 	}
 	*/
+	AdsMonitorService& monitorServ = getMonitorService();
 	unsigned int cost = monitorServ.getLaunchTodayCost(launch->id);
 	if ( cost >= budget ) {
 		return false;

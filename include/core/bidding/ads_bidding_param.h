@@ -29,10 +29,10 @@ public:
 	int exchangeId() const { return _exchangeid; }
 	const string& biddingId() const { return _biddingid; }
 
-	const AdsBiddingImpression& impression() const { return _impression; }
-	const AdsBiddingDevice& device() const { return _device; }
-	const AdsBiddingApp& app() const { return _app; }
-	const AdsBiddingUser& user() const { return _user; }
+	AdsBiddingImpression& impression() { return _impression; }
+	AdsBiddingDevice& device() { return _device; }
+	AdsBiddingApp& app() { return _app; }
+	AdsBiddingUser& user() { return _user; }
 
 private:
 	Builder _builder;

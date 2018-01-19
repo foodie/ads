@@ -149,9 +149,9 @@ public:
 	AdsBiddingSettlement settlement() const { return _settlement; }
 	int bidFloor() const { return _bidfloor; }
 
-	const AdsBiddingBanner& banner() const { return _banner; }
-	const AdsBiddingVideo& video() const { return _video; }
-	const AdsBiddingNative& native() const { return _native; }
+	AdsBiddingBanner& banner() { return _banner; }
+	AdsBiddingVideo& video() { return _video; }
+	AdsBiddingNative& native() { return _native; }
 
 	AdsBiddingType biddingType() const { return _biddingtype; }
 	const AdsBiddingPmp& pmp() const { return _pmp; }
