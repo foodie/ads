@@ -34,6 +34,11 @@ public:
 	AdsBiddingApp& app() { return _app; }
 	AdsBiddingUser& user() { return _user; }
 
+	const AdsBiddingImpression& impression() const { return _impression; }
+	const AdsBiddingDevice& device() const { return _device; }
+	const AdsBiddingApp& app() const { return _app; }
+	const AdsBiddingUser& user() const { return _user; }
+
 private:
 	Builder _builder;
 

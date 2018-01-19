@@ -149,11 +149,18 @@ public:
 	AdsBiddingSettlement settlement() const { return _settlement; }
 	int bidFloor() const { return _bidfloor; }
 
+
 	AdsBiddingBanner& banner() { return _banner; }
 	AdsBiddingVideo& video() { return _video; }
 	AdsBiddingNative& native() { return _native; }
 
+	const AdsBiddingBanner& banner() const { return _banner; }
+	const AdsBiddingVideo& video() const { return _video; }
+	const AdsBiddingNative& native() const { return _native; }
+
 	AdsBiddingType biddingType() const { return _biddingtype; }
+	
+	AdsBiddingPmp& pmp() { return _pmp; }
 	const AdsBiddingPmp& pmp() const { return _pmp; }
 private:
 	Builder _builder;
