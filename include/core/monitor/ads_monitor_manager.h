@@ -15,8 +15,7 @@ class AdsMonitorManager
 public:
 	AdsMonitorManager() 
 		: campaigns(MAX_MONITOR_BITEMS_SIZE), 
-		  launchs(MAX_MONITOR_BITEMS_SIZE), 
-		  //creatives(MAX_MONITOR_BITEMS_SIZE) 
+		  launchs(MAX_MONITOR_BITEMS_SIZE)
 	{}
 
 	~AdsMonitorManager()
@@ -38,28 +37,28 @@ public:
 
 	AdsMonitorDataBase* addCampaignData(int id)
 	{
-		add(campaigns, id);
+		return add(campaigns, id);
 	}
 	AdsMonitorDataBase* findCampaignData(int id)
 	{
-		find(campaigns, id);
+		return find(campaigns, id);
 	}
 	AdsMonitorDataBase* getCampaignData(int id)
 	{
-		get(campaigns, id);
+		return get(campaigns, id);
 	}
 
 	AdsMonitorDataBase* addLaunchData(int id)
 	{
-		add(launchs, id);
+		return add(launchs, id);
 	}
 	AdsMonitorDataBase* findLaunchData(int id)
 	{
-		find(launchs, id);
+		return find(launchs, id);
 	}
 	AdsMonitorDataBase* getLaunchData(int id)
 	{
-		get(launchs, id);
+		return get(launchs, id);
 	}
 
 private:
