@@ -1,5 +1,6 @@
 #include "core/bidding/ads_bidding_service.h"
 
+#include "log.h"
 #include "core/bidding/ads_bidding_filter.h"
 #include "core/bidding/ads_bidding_evaluate.h"
 #include "core/bidding/ads_bidding_select.h"
