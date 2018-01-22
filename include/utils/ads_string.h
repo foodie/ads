@@ -89,11 +89,11 @@ size_t 	ads_hex_to_bin(const char* hex, char* bin, size_t n=0);
 
 static inline int ads_string_to_int(const string& str)
 {
-	return aoti(str.c_str());
+	return atoi(str.c_str());
 }
 static inline long ads_string_to_long(const string& str)
 {
-	return aotl(str.c_str());
+	return atol(str.c_str());
 }
 
 /**

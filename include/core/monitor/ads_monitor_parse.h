@@ -7,9 +7,9 @@
 #include <string>
 #include "core/ads_core.h"
 #include "core/ads_request.h"
-#include "core/utils/ads_string.h"
-#include "core/utils/ads_ip_location.h"
 #include "core/monitor/ads_monitor_param.h"
+#include "utils/ads_string.h"
+#include "utils/ads_ip_location.h"
 
 using std::string;
 

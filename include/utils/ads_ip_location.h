@@ -1,6 +1,11 @@
 #ifndef _ADS_IP_LOCATION_H
 #define _ADS_IP_LOCATION_H
 
+#include <string>
+#include <string.h>
+
+using std::string;
+
 class AdsIpLocation
 {
 public:
@@ -40,11 +45,11 @@ public:
 	static string long2Ip(long ipval)
 	{
 		char ipstr[16];
-		snprintf(ip, 16, "%d.%d.%d.%d", 
-						(int) ((ipstr & 0xFF000000) >> 24),  
-						(int) ((ipstr & 0x00FF0000) >> 16), 
-						(int) ((ipstr & 0x0000FF00) >> 8), 
-						(int) (ipstr & 0x000000FF));
+		snprintf(ipstr, 16, "%d.%d.%d.%d", 
+						(int) ((ipval & 0xFF000000) >> 24),  
+						(int) ((ipval & 0x00FF0000) >> 16), 
+						(int) ((ipval & 0x0000FF00) >> 8), 
+						(int) (ipval & 0x000000FF));
 		return ipstr;
 	}
 	static long ip2Long(const char *ip) {
