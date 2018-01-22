@@ -37,6 +37,8 @@ bool AdsAdvertiseService::init()
 
 	// 添加定时任务
 	registerCrontabTask("0 */30 * * *", new AdsAdvertiseReloadTask);
+
+	INFO("[Advertise] Advertise Service init success");
 	return true;
 }
 

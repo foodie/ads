@@ -16,6 +16,7 @@ AdsBiddingService::~AdsBiddingService()
 bool AdsBiddingService::init()
 {
 
+	INFO("[Bidding] Bidding Service init success");
 	return true;
 }
 

@@ -32,6 +32,7 @@ bool AdsExchangeFactory::init()
 	// 添加exchange实例
 	exchanges->emplace("adview", new AdsAdviewExchange);
 
+	INFO("[Exchange] Exchange plugin init success");
 	return true;
 }
 

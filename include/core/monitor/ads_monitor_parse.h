@@ -8,6 +8,7 @@
 #include "core/ads_core.h"
 #include "core/ads_request.h"
 #include "core/monitor/ads_monitor_param.h"
+#include "plugins/exchange/ads_exchange.h"
 #include "utils/ads_string.h"
 #include "utils/ads_ip_location.h"
 

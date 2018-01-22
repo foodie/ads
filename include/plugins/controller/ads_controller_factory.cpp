@@ -32,6 +32,7 @@ bool AdsControllerFactory::init()
 	controllers->emplace("bidding", new AdsBiddingController);
 	controllers->emplace("monitor", new AdsMonitorController);
 
+	INFO("[Controller] Controller plugin init success");
 	return true;
 }
 
