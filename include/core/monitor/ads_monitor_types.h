@@ -23,7 +23,7 @@ class AdsMonitorDataBase
 public:
 	AdsMonitorDataBase()
 		: _write_ts(0),_read_ts(0),
-		  _imp_before(0),_clk_before(0),_cost_before(0),
+		  _imp_history(0),_clk_history(0),_cost_history(0),
 		  _imp_today(0),_clk_today(0),_cost_today(0),
 		  _imp_record(MAX_MONITOR_BITEMS_SIZE),
 		  _clk_record(MAX_MONITOR_BITEMS_SIZE)
@@ -46,17 +46,17 @@ public:
 public:
 
 	/* 修改 */
-	void setImpBefore(unsigned int imp)
+	void setImpHistory(unsigned int imp)
 	{
-		_imp_before = imp;
+		_imp_history = imp;
 	}
-	void setClkBefore(unsigned int clk)
+	void setClkHistory(unsigned int clk)
 	{
-		_clk_before = clk;
+		_clk_history = clk;
 	}
-	void setCostBefore(unsigned int cost)
+	void setCostHistory(unsigned int cost)
 	{
-		_cost_before = cost;
+		_cost_history = cost;
 	}
 
 	void setImpToday(unsigned int imp)
@@ -124,17 +124,17 @@ public:
 	unsigned int getImpTotal() 
 	{
 		refreshReadTime(); 
-		return _imp_before + _imp_today; 
+		return _imp_history + _imp_today; 
 	}
 	unsigned int getClkTotal() 
 	{
 		refreshReadTime(); 
-		return _clk_before + _clk_today; 
+		return _clk_history + _clk_today; 
 	}
 	unsigned int getCostTotal() 
 	{
 		refreshReadTime(); 
-		return _cost_before + _cost_today; 
+		return _cost_history + _cost_today; 
 	}
 
 	unsigned int getImpToday() 
@@ -195,9 +195,9 @@ private:
 	time_t _read_ts; // 最后读取时间
 
 	// 历史数据
-	unsigned int _imp_before;
-	unsigned int _clk_before;
-	unsigned int _cost_before;
+	unsigned int _imp_history;
+	unsigned int _clk_history;
+	unsigned int _cost_history;
 
 	// 本日数据
 	unsigned int _imp_today;
@@ -212,9 +212,9 @@ private:
 
 	void checkDayPass() {
 		if ( _write_ts < ads_today() ) {
-			_imp_before  += _imp_today;
-			_clk_before  += _clk_today;
-			_cost_before += _cost_today;
+			_imp_history  += _imp_today;
+			_clk_history  += _clk_today;
+			_cost_history += _cost_today;
 
 			_imp_today  = 0;
 			_clk_today  = 0;

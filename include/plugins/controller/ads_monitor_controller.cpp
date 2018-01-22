@@ -1,31 +1,21 @@
 #include "plugins/controller/ads_monitor_controller.h"
 
+#include "core/monitor/ads_monitor_parse.h"
+#include "core/monitor/ads_monitor_service.h"
+
 int AdsMonitorController::process(AdsThreadData* p_thd_data)
 {
 	bool ret;
 	AdsMonitorParam param;
 
-	// 解析
-	ret = parseMonitorParam(p_thd_data, param);
-	if ( ret ) {
-		return -1;
+	ret = AdsMonitorParse::parseMonitorRequest(p_thd_data->request, &param);
+	if ( !ret ) {
+		WARN("[Monitor] parse request failed");
+		return ADS_HTTP_BAD_REQUEST;
 	}
 
-	string dev_id = getDeviceId(param);
+	AdsMonitorService& serv = getMonitorService();
+	serv.update(&param);
 
-
-	return 0;
-}
-
-bool AdsMonitorController::parseMonitorParam(AdsThreadData* p_thd_data, 
-	AdsMonitorParam& param)
-{
-
-	return true;
-}
-
-string AdsMonitorController::getDeviceId(AdsMonitorParam& param)
-{
-
-	return "";
+	return ADS_HTTP_OK;
 }

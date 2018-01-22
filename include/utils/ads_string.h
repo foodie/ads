@@ -87,6 +87,15 @@ size_t 	ads_hex_to_bin(const char* hex, char* bin, size_t n=0);
 
 //int 	ads_hex_to_int(const char* hex);
 
+static inline int ads_string_to_int(const string& str)
+{
+	return aoti(str.c_str());
+}
+static inline long ads_string_to_long(const string& str)
+{
+	return aotl(str.c_str());
+}
+
 /**
  * url编码
  */

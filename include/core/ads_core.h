@@ -15,6 +15,27 @@ static const unsigned int MAX_FPATH_LEN = 256;
 static const unsigned int MAX_BUF_LEN = 2048;
 
 
+#define ADS_MONITOR_KEY_BIDDING_ID 			"b"
+#define ADS_MONITOR_KEY_CAMPAIGN_ID 		"c1"
+#define ADS_MONITOR_KEY_LAUNCH_ID 			"l"
+#define ADS_MONITOR_KEY_CREATIVE_ID 		"c2"
+#define ADS_MONITOR_KEY_MATERIAL_ID 		"m"
+#define ADS_MONITOR_KEY_EXCHANGE 			"e"
+#define ADS_MONITOR_KEY_PRICE 				"p"
+#define ADS_MONITOR_KEY_BIDDING_TYPE 		"t"
+#define ADS_MONITOR_KEY_SETTLEMENT 			"s"
+#define ADS_MONITOR_KEY_AD_TYPE 			"p"
+#define ADS_MONITOR_KEY_OS 					"os"
+#define ADS_MONITOR_KEY_DEVICE_TYPE 		"dev"
+#define ADS_MONITOR_KEY_CARRIER 			"c3"
+#define ADS_MONITOR_KEY_CONNECTION_TYPE 	"c4"
+#define ADS_MONITOR_KEY_USER_AGENT 			"ua"
+#define ADS_MONITOR_KEY_IDFA 				"m2"
+#define ADS_MONITOR_KEY_IMEI 				"m3"
+#define ADS_MONITOR_KEY_IP 					"ip"
+#define ADS_MONITOR_KEY_ADDRESS_ID 			"addr"
+#define ADS_MONITOR_KEY_APP_NAME 			"n"
+
 enum class AdsAdvertiseSchedule
 {
 	AVERAGE = 2,

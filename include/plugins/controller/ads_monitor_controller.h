@@ -11,10 +11,6 @@ public:
 
 	virtual int process(AdsThreadData* pdata) override;
 
-private:
-	bool parseMonitorParam(AdsThreadData* pdata, AdsMonitorParam& param);
-	string getDeviceId(AdsMonitorParam& param);
-
 };
 
 #endif

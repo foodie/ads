@@ -132,12 +132,20 @@ void AdsMonitorService::update(const AdsMonitorParam* param)
 	time_t nowtime = ads_nowtime();
 
 	if ( param->type == AdsMonitorType::WINNOTICE ) {
+		// 赢价
 
 	} else if ( param->type == AdsMonitorType::WINNOTICE ) {
+		// 展示
+
+		campaign->setImpInc();
+		campaign->addImpRecord(device_id, nowtime);
+
+		launch->setImpInc();
+		launch->addImpRecord(device_id, nowtime);
 
 	} else if ( param->type == AdsMonitorType::CLICK ) {
-
-		// 
+		// 点击
+		
 		campaign->setClkInc();
 		campaign->addClkRecord(device_id, nowtime);
 
@@ -146,6 +154,7 @@ void AdsMonitorService::update(const AdsMonitorParam* param)
 	}
 
 }
+
 
 static string getMonitorDeviceId(const AdsMonitorParam *param)
 {
