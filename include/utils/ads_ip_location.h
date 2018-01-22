@@ -54,7 +54,7 @@ public:
 		uint32_t l = 0;
 		for (int i = 0; i < 4; i++) {
 			char v = (char) atoi(ip);
-			ads_memcpy((char*)&l + 3 - i, &v, 1);
+			memcpy((char*)&l + 3 - i, &v, 1);
 			ip = strchr(ip, '.') + 1;
 		}
 		return l;
