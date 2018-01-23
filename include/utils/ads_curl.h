@@ -89,10 +89,10 @@ public:
 	{ request.body = b; }
 
 	// response
-	int getResponseCode()
+	int getResponseCode() const
 	{ return response.code; }
 
-	string getResponseBody()
+	const string& getResponseBody() const
 	{ return response.body; }
 
 private:
