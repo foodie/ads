@@ -136,6 +136,13 @@ int AdsConf::loadAdsConf(struct collection_item *config)
 		return ADS_ERROR;
 	}
 
+	ret = conf_string(config, "ads", "advertise_api",
+			"", ads.advertise_api, MAX_HOST_LEN);
+	if (ret) {
+		FATAL("config advertise_api failed ");
+		return ADS_ERROR;
+	}
+
 	return ADS_OK;
 }
 	

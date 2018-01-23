@@ -1,6 +1,7 @@
 #include "core/advertise/ads_advertise_loader.h"
 
 #include "log.h"
+#include "ads_conf.h"
 #include "utils/ads_string.h"
 #include "utils/ads_curl.h"
 #include "utils/ads_json.h"
@@ -11,7 +12,7 @@ static void _split_si(const string& str, unordered_set<int>& vec, char sep);
 void AdsAdvertiseApiLoader::load(AdsAdvertiseCollection* collection)
 {
 	AdsCurl curl;
-	curl.setRequestUrl("http://123.57.174.226/Admin/Api/returnAdQuery");
+	curl.setRequestUrl( g_conf->ads.advertise_api );
 	curl.setRequestMethod(ADS_HTTP_POST);
 	if ( !curl.execute() ) {
 		WARN("[Advertise] Query advertise data failed");

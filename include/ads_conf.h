@@ -14,6 +14,7 @@ typedef struct _ads_conf_t
 	char hywry_fpath[MAX_FPATH_LEN];
 	char ads_host[MAX_HOST_LEN];
 	char material_host[MAX_HOST_LEN];
+	char advertise_api[MAX_HOST_LEN];
 } ads_conf_t;
 
 /* api */
