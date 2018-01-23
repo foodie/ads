@@ -1,5 +1,6 @@
 #include "core/advertise/ads_advertise_loader.h"
 
+#include "log.h"
 #include "utils/ads_string.h"
 #include "utils/ads_curl.h"
 #include "utils/ads_json.h"
@@ -92,7 +93,7 @@ void AdsAdvertiseApiLoader::load(AdsAdvertiseCollection* collection)
 				lau->settlement		= AdsBiddingSettlement( launch["charge_type"].GetInt() );
 				lau->bidding_type 	= AdsBiddingType( launch["bidding_type"].GetInt() );
 				lau->price 			= launch["price"].GetUint();
-				lau->pmp_id 		= ads_int_to_string( launch["pdb_id"].GetString() );
+				lau->pmp_id 		= ads_int_to_string( launch["pdb_id"].GetInt() );
 
 				lau->imp_freq 	= launch["imp_freq"].GetUint();
 				lau->clk_freq 	= launch["clk_freq"].GetUint();
@@ -101,10 +102,10 @@ void AdsAdvertiseApiLoader::load(AdsAdvertiseCollection* collection)
 				lau->end_date 	= launch["end_date"].GetUint64();
 
 				lau->schedule 	= AdsAdvertiseSchedule( launch["schedule"].GetInt() );
-			    for ( auto& b : lanch["budget"].GetArray() ) {
+			    for ( auto& b : launch["budget"].GetArray() ) {
 			    	lau->budget.push_back( b.GetInt() );
 			    }
-				lau->speed 		= AdsAdvertiseSchedule( launch["speed"].GetInt() );
+				lau->speed 		= AdsAdvertiseSpeed( launch["speed"].GetInt() );
 
 				lau->exchangeid	= launch["media_id"].GetInt();
 
