@@ -96,6 +96,13 @@ static inline long ads_string_to_long(const string& str)
 	return atol(str.c_str());
 }
 
+static inline string ads_int_to_string(int val)
+{
+	char ch[8];
+	snprintf(ch, 8, "%d", val);
+	return ch;
+}
+
 /**
  * url编码
  */

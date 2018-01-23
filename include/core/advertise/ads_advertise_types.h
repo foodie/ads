@@ -42,6 +42,11 @@ public:
 
 	/* 所属关系 */
 	list<AdsLaunch*> 	 launchs;
+
+	void addLaunch(AdsLaunch* launch) 
+	{
+		launchs.push_back(launch);
+	}
 };
 
 class AdsLaunch
@@ -49,6 +54,7 @@ class AdsLaunch
 public:
 	int id;
 
+	AdsBiddingSettlement settlement;
 	AdsBiddingType 	bidding_type;
 	unsigned int 	price;
 	string 			pmp_id;
@@ -76,6 +82,11 @@ public:
 	/* 所属关系 */
 	AdsCampaign *campaign;
 	list<AdsCreative*> creatives;
+
+	void addCreative(AdsCreative *creative)
+	{
+		creatives.push_back(creative);
+	}
 };
 
 class AdsCreative

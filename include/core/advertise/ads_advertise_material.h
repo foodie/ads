@@ -92,9 +92,9 @@ public:
 
 	AdsMaterialType type() const { return _type; }
 
-	AdsMaterialImage* image() const { return _image; }
-	AdsMaterialVideo* video() const { return _video; }
-	AdsMaterialNative* native() const { return _native; }
+	AdsMaterialImage* image() { return _image; }
+	AdsMaterialVideo* video() { return _video; }
+	AdsMaterialNative* native() { return _native; }
 
 private:
 	int _id;
