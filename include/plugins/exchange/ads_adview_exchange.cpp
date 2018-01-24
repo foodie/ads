@@ -1,10 +1,15 @@
 #include "plugins/exchange/ads_adview_exchange.h"
 
 #include "log.h"
+#include "ads_conf.h"
 #include "core/ads_core.h"
+#include "utils/ads_string.h"
 #include "utils/ads_json.h"
+#include "plugins/decrypter/ads_google_decrypter.h"
 
 #define ADVIEW_COMMON_ADZONE_ID  "adview_000000"
+
+#define ADVIEW_NBR_USER_UNMATCH 8
 
 bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request, 
 	AdsBiddingParam& param)
@@ -131,7 +136,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 					// minDuration
 					auto mindItr = video.FindMember("minduration");
 					if ( mindItr != video.MemberEnd() ) {
-						const rapidjson::Value& mind = mindItr->vlaue;
+						const rapidjson::Value& mind = mindItr->value;
 						if ( mind.IsInt() ) {
 							videoBuilder.setMinDuration( mind.GetInt() );
 						}
@@ -157,7 +162,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 				impBuilder.setBiddingType(AdsBiddingType::PDB);
 				const rapidjson::Value& pmp = pmpItr->value;
 				if ( pmp.IsObject() ) {
-					auto dealItr = pmp.FindMember("deals")
+					auto dealItr = pmp.FindMember("deals");
 					if ( dealItr != pmp.MemberEnd() ) {
 						const rapidjson::Value& deals = dealItr->value;
 						if ( deals.IsArray() && deals.Size() > 0 ) {
@@ -369,13 +374,33 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 	return true;
 }
 
+static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response)
+{
+	rapidjson::Document doc;
+	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+	rapidjson::Value root(rapidjson::kObjectType);
+
+	root.AddMember("id", rapidjson::StringRef(ads_str_data(&bid->id)), allocator); // BidRequest的唯一标识
+	root.AddMember("nbr", ADVIEW_NBR_USER_UNMATCH, allocator);
+	
+	ads_json_to_str(root, &request->data_out);
+	return ADS_OK;
+}
+
 void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param,
 	AdsAdvertise *ad, AdsHttpResponse *response)
 {
+	if ( ad == NULL ) {
+		packBiddingFailure(param, response);
+		return ;
+	}
+
+
 
 }
 
 int AdsAdviewExchange::decryptWinPrice(const string& str)
 {
+
 	return 0;	
 }
