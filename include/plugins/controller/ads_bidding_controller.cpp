@@ -72,10 +72,10 @@ static void log_bidding_param(AdsBiddingParam& param)
 	cout << "  [impression]" << endl;
 	cout << "  id: " 		 << imp.id() << endl;
 	cout << "  zoneid: " 	 << imp.zoneId() << endl;
-	cout << "  type: " 		 << imp.type() << endl;
-	cout << "  settlement: " << imp.settlement() << endl;
+	cout << "  type: " 		 << (int)imp.type() << endl;
+	cout << "  settlement: " << (int)imp.settlement() << endl;
 	cout << "  bidFloor: " 	 << imp.bidFloor() << endl;
-	cout << "  bidType: " 	 << imp.biddingType() << endl;
+	cout << "  bidType: " 	 << (int)imp.biddingType() << endl;
 	switch( imp.type() ) {
 		case AdsAdvertiseType::BANNER:
 		case AdsAdvertiseType::PLAQUE:
@@ -110,10 +110,10 @@ static void log_bidding_param(AdsBiddingParam& param)
 	
 	auto device = param.device();
 	cout << "  [device]" << endl;
-	cout << "  type: " 			 << device.type() << endl;
-	cout << "  os: " 			 << device.os() << endl;
-	cout << "  carrier: " 		 << device.carrier() << endl;
-	cout << "  connectionType: " << device.connectionType() << endl;
+	cout << "  type: " 			 << (int)device.type() << endl;
+	cout << "  os: " 			 << (int)device.os() << endl;
+	cout << "  carrier: " 		 << (int)device.carrier() << endl;
+	cout << "  connectionType: " << (int)device.connectionType() << endl;
 	cout << "  ip: " 			 << device.ip() << endl;
 	cout << "  ua: " 			 << device.ua() << endl;
 	cout << "  idfa: " 			 << device.idfa() << endl;
