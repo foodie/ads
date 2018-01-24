@@ -142,9 +142,9 @@ public:
 		cookie[k] = v;	
 	}
 
-	string getBody() const
+	void setBody(const string& b) const
 	{
-		return body;
+		body = b;
 	}
 
 private:

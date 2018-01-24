@@ -380,11 +380,12 @@ static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response
 	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
 	rapidjson::Value root(rapidjson::kObjectType);
 
-	root.AddMember("id", rapidjson::StringRef(ads_str_data(&bid->id)), allocator); // BidRequest的唯一标识
+
+	root.AddMember("id", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
 	root.AddMember("nbr", ADVIEW_NBR_USER_UNMATCH, allocator);
 	
-	ads_json_to_str(root, &request->data_out);
-	return ADS_OK;
+	response->setBody( ads_json_to_string(root) );
+
 }
 
 void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param,

@@ -14,6 +14,8 @@ using std::list;
 using std::cout;
 using std::endl;
 
+#define LOG_BIDDING_PARAM 0
+
 static void log_bidding_param(AdsBiddingParam& param);
 
 int AdsBiddingController::process(AdsThreadData* p_thd_data)
@@ -40,6 +42,10 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	auto deviceBuilder = param.device().getBuilder();
 	deviceBuilder.setAddressId(0);
 
+	if ( LOG_BIDDING_PARAM ) {
+		log_bidding_param(param);
+	}
+
 	// 获取可投放广告列表
 	list<AdsAdvertise*> adList;
 	AdsAdvertiseService& adService = getAdvertiseService();
@@ -65,7 +71,7 @@ static void log_bidding_param(AdsBiddingParam& param)
 	auto imp = param.impression();
 	cout << "  [impression]" << endl;
 	cout << "  id: " 		 << imp.id() << endl;
-	cout << "  zoneid: " 	 << imp.zoneid() << endl;
+	cout << "  zoneid: " 	 << imp.zoneId() << endl;
 	cout << "  type: " 		 << imp.type() << endl;
 	cout << "  settlement: " << imp.settlement() << endl;
 	cout << "  bidFloor: " 	 << imp.bidFloor() << endl;
@@ -74,13 +80,16 @@ static void log_bidding_param(AdsBiddingParam& param)
 		case AdsAdvertiseType::BANNER:
 		case AdsAdvertiseType::PLAQUE:
 		case AdsAdvertiseType::SPLASH:
+		{			
 			auto banner = imp.banner();
 	cout << "    [banner]" << endl;
 	cout << "    width: " 	<< banner.width() << endl;
 	cout << "    height: " 	<< banner.height() << endl;
 	cout << "    pos: " 	<< banner.pos() << endl;
 			break;
+		}
 		case AdsAdvertiseType::VIDEO:
+		{	
 			auto video = imp.video();
 	cout << "    [video]" << endl;
 	cout << "    width: " 	<< video.width() << endl;
@@ -88,6 +97,7 @@ static void log_bidding_param(AdsBiddingParam& param)
 	cout << "    minDuration: "	<< video.minDuration() << endl;
 	cout << "    maxDuration: " << video.maxDuration() << endl;
 			break;
+		}
 		case AdsAdvertiseType::NATIVE:
 	cout << "    [native]" << endl;
 			break;
@@ -119,5 +129,5 @@ static void log_bidding_param(AdsBiddingParam& param)
 	cout << "  [user]" << endl;
 	cout << "  exchangeId: " << user.exchangeId() << endl;
 
-	DEBUG("------------------------------------");
+	cout << "------------------------------------" << endl;
 }
