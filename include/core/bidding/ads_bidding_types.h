@@ -135,7 +135,7 @@ public:
 	AdsBiddingImpression() 
 		: _builder(*this),
 		  _id(),_zoneid(),
-		  _type(AdsImpressionType::BANNER),_settlement(AdsBiddingSettlement::CPM),
+		  _type(AdsAdvertiseType::BANNER),_settlement(AdsBiddingSettlement::CPM),
 		  _bidfloor(0), 
 		  _banner(),_video(),_native(),
 		  _biddingtype(AdsBiddingType::RTB),_pmp()
@@ -145,7 +145,7 @@ public:
 	const string& id() const { return _id; }
 	const string& zoneId() const { return _zoneid; }
 
-	AdsImpressionType type() const { return _type; }
+	AdsAdvertiseType type() const { return _type; }
 	AdsBiddingSettlement settlement() const { return _settlement; }
 	int bidFloor() const { return _bidfloor; }
 
@@ -168,7 +168,7 @@ private:
 	string _id;
 	string _zoneid; // 广告位
 	
-	AdsImpressionType _type; // 展示类型
+	AdsAdvertiseType _type; // 展示类型
 	AdsBiddingSettlement _settlement; // 计费类型
 	int _bidfloor; // 底价
 
@@ -210,6 +210,7 @@ private:
 
 		void setAddressId(int id) { dst._addressid = id; }
 		void setIp(const string& ip) { dst._ip = ip; }
+		void setUa(const string& ua) { dst._ua = ua; }
 		void setIdfa(const string& idfa) { dst._idfa = idfa; }
 		void setImei(const string& imei) { dst._imei = imei; }
 		void setMac(const string& mac) { dst._mac = mac; }
@@ -235,6 +236,7 @@ public:
 
 	int addressId() const { return _addressid; }
 	const string& ip() const { return _ip; }
+	const string& ua() const { return _ua; }
 	const string& idfa() const { return _idfa; }
 	const string& imei() const { return _imei; }
 	const string& mac() const { return _mac; }
@@ -250,6 +252,7 @@ private:
 
 	int    _addressid;
 	string _ip;
+	string _ua;
 	string _idfa;	// 原值
 	string _imei;	// 大写,md5
 	string _mac;	// 无分隔符,md5

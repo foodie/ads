@@ -36,6 +36,9 @@ static const unsigned int MAX_BUF_LEN = 2048;
 #define ADS_MONITOR_KEY_ADDRESS_ID 			"addr"
 #define ADS_MONITOR_KEY_APP_NAME 			"n"
 
+static const int MOJI = 1;
+static const int ADVIEW = 2;
+
 enum class AdsAdvertiseSchedule
 {
 	AVERAGE = 2,
