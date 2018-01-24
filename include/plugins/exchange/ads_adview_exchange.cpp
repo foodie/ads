@@ -21,7 +21,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 	// biddingid
 	auto biddingidItr = doc.FindMember("id");
 	if ( biddingidItr != doc.MemberEnd() ) {
-		builder.setBiddingId( biddingidItr->GetString() );
+		builder.setBiddingId( biddingidItr->value.GetString() );
 	}
 
 	// imp
@@ -34,7 +34,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 			// id
 			auto idItr = imp.FindMember("id");
 			if ( idItr != imp.MemberEnd() ) {
-				impBuilder.setId( idItr->GetString() );
+				impBuilder.setId( idItr->value.GetString() );
 			}
 			// zoneid
 			impBuilder.setZoneId( ADVIEW_COMMON_ADZONE_ID );
@@ -42,8 +42,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 			// type
 			auto typeItr = imp.FindMember("instl");
 			if ( typeItr != imp.MemberEnd() ) {
-				if ( typeItr->IsInt() ) {
-					switch(typeItr->GetInt()) {
+				const rapidjson::Value& type = typeItr->value;
+				if ( type.IsInt() ) {
+					switch( type.GetInt() ) {
 						case 0: // 横幅
 							impBuilder.setType(AdsAdvertiseType::BANNER); 
 							break;
@@ -66,8 +67,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 			// bidFloor
 			auto bfItr = imp.FindMember("bidfloor");
 			if ( bfItr != imp.MemberEnd() ) {
-				if ( bfItr->IsInt() ) {
-					impBuilder.setBidFloor( bfItr->GetInt() );
+				const rapidjson::Value& bidfloor = bfItr->value;
+				if ( bidfloor.IsInt() ) {
+					impBuilder.setBidFloor( bidfloor.GetInt() );
 				}
 			}
 
@@ -80,22 +82,25 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 					// width
 					auto widthItr = banner.FindMember("w");
 					if ( widthItr != banner.MemberEnd() ) {
-						if ( widthItr->IsInt() ) {
-							bannerBuilder.setWidth( widthItr->GetInt() );
+						const rapidjson::Value& width = widthItr->value;
+						if ( width.IsInt() ) {
+							bannerBuilder.setWidth( width.GetInt() );
 						}
 					}
 					// height
 					auto heightItr = banner.FindMember("h");
 					if ( heightItr != banner.MemberEnd() ) {
-						if ( heightItr->IsInt() ) {
-							bannerBuilder.setHeight( heightItr->GetInt() );
+						const rapidjson::Value& height = heightItr->value;
+						if ( height.IsInt() ) {
+							bannerBuilder.setHeight( height.GetInt() );
 						}
 					}
 					// pos
 					auto posItr = banner.FindMember("pos");
 					if ( posItr != banner.MemberEnd() ) {
-						if ( posItr->IsInt() ) {
-							bannerBuilder.setPos( posItr->GetInt() );
+						const rapidjson::Value& pos = posItr->value;
+						if ( pos.IsInt() ) {
+							bannerBuilder.setPos( pos.GetInt() );
 						}
 					}
 				}
@@ -110,29 +115,33 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 					// width
 					auto widthItr = video.FindMember("w");
 					if ( widthItr != video.MemberEnd() ) {
-						if ( widthItr->IsInt() ) {
-							videoBuilder.setWidth( widthItr->GetInt() );
+						const rapidjson::Value& width = widthItr->value;
+						if ( width.IsInt() ) {
+							videoBuilder.setWidth( width.GetInt() );
 						}
 					}
 					// height
 					auto heightItr = video.FindMember("h");
 					if ( heightItr != video.MemberEnd() ) {
-						if ( heightItr->IsInt() ) {
-							videoBuilder.setHeight( heightItr->GetInt() );
+						const rapidjson::Value& height = heightItr->value;
+						if ( height.IsInt() ) {
+							videoBuilder.setHeight( height.GetInt() );
 						}
 					}
 					// minDuration
 					auto mindItr = video.FindMember("minduration");
 					if ( mindItr != video.MemberEnd() ) {
-						if ( mindItr->IsInt() ) {
-							videoBuilder.setMinDuration( mindItr->GetInt() );
+						const rapidjson::Value& mind = mindItr->vlaue;
+						if ( mind.IsInt() ) {
+							videoBuilder.setMinDuration( mind.GetInt() );
 						}
 					}
 					// maxDuration
 					auto maxdItr = video.FindMember("maxduration");
 					if ( maxdItr != video.MemberEnd() ) {
-						if ( maxdItr->IsInt() ) {
-							videoBuilder.setMaxDuration( maxdItr->GetInt() );
+						const rapidjson::Value& maxd = maxdItr->value;
+						if ( maxd.IsInt() ) {
+							videoBuilder.setMaxDuration( maxd.GetInt() );
 						}
 					}
 				}
@@ -156,8 +165,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 							// id
 							auto dealidItr = deal.FindMember("id");
 							if ( dealidItr != deal.MemberEnd() ) {
-								if ( dealidItr->IsString() ) {
-									pmpBuilder.setId( dealidItr->GetString() );
+								const rapidjson::Value& dealid = dealidItr->value;
+								if ( dealid.IsString() ) {
+									pmpBuilder.setId( dealid.GetString() );
 								}
 							}
 						}
@@ -175,8 +185,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// type
 		auto typeItr = device.FindMember("devicetype");
 		if ( typeItr != device.MemberEnd() ) {
-			if ( typeItr->IsInt() ) {
-				switch(typeItr->GetInt()) {
+			const rapidjson::Value& type = typeItr->value;
+			if ( type.IsInt() ) {
+				switch( type.GetInt() ) {
 					case 1: // iPhone
 					case 2: // Android手机
 					case 4: // Windows Phone
@@ -197,11 +208,12 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// os
 		auto osItr = device.FindMember("os");
 		if ( osItr != device.MemberEnd() ) {
-			if ( osItr->IsString() ) {
-				string os = ads_string_toupper( osItr->GetString() );
-				if ( os == "IOS" ) {
+			const rapidjson::Value& os = osItr->value;
+			if ( os.IsString() ) {
+				string osStr = ads_string_toupper( os.GetString() );
+				if ( osStr == "IOS" ) {
 					deviceBuilder.setOs( AdsOs::IOS );
-				} else if ( os == "ANDROID" ) {
+				} else if ( osStr == "ANDROID" ) {
 					deviceBuilder.setOs( AdsOs::ANDROID );
 				} else {
 					deviceBuilder.setOs( AdsOs::UNKNOW );
@@ -211,9 +223,10 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// carrier
 		auto carrierItr = device.FindMember("carrier");
 		if ( carrierItr != device.MemberEnd() ) {
-			if ( carrierItr->IsString() ) {
-				int carrier = ads_string_to_int( carrierItr->GetString() );
-				switch( carrier ) {
+			const rapidjson::Value& carrier = carrierItr->value;
+			if ( carrier.IsString() ) {
+				int carrierInt = ads_string_to_int( carrier.GetString() );
+				switch( carrierInt ) {
 					case 46000:
 					case 46002:
 					case 46007:
@@ -233,8 +246,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// connection_type
 		auto ctItr = device.FindMember("connectiontype");
 		if ( ctItr != device.MemberEnd() ) {
-			if ( ctItr->IsInt() ) {
-				switch( ctItr->GetInt() ) {
+			const rapidjson::Value& connection_type = ctItr->value;
+			if ( connection_type.IsInt() ) {
+				switch( connection_type.GetInt() ) {
 					case 1: // PC
 						deviceBuilder.setConnectionType( AdsConnectionType::PC );
 						break;
@@ -263,15 +277,17 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// ip
 		auto ipItr = device.FindMember("ip");
 		if ( ipItr != device.MemberEnd() ) {
-			if ( ipItr->IsString() ) {
-				deviceBuilder.setIp( ipItr->GetString() );
+			const rapidjson::Value& ip = ipItr->value;
+			if ( ip.IsString() ) {
+				deviceBuilder.setIp( ip.GetString() );
 			}
 		}
 		// ua
 		auto uaItr = device.FindMember("ua");
 		if ( uaItr != device.MemberEnd() ) {
-			if ( uaItr->IsString() ) {
-				deviceBuilder.setUa( uaItr->GetString() );
+			const rapidjson::Value& ua = uaItr->value;
+			if ( ua.IsString() ) {
+				deviceBuilder.setUa( ua.GetString() );
 			}
 		}
 		// idfa
@@ -281,40 +297,40 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 			// idfa
 			auto idfaItr = device.FindMember("ifa");
 			if ( idfaItr != device.MemberEnd() ) {
-				if ( idfaItr->IsString() ) {
-					deviceBuilder.setIdfa( idfaItr->GetString() );
+				if ( idfaItr->value.IsString() ) {
+					deviceBuilder.setIdfa( idfaItr->value.GetString() );
 				}
 			} else if ( (idfaItr = device.FindMember("dpidmd5")) != device.MemberEnd() ) {
-				if ( idfaItr->IsString() ) {
-					deviceBuilder.setIdfa( idfaItr->GetString() );
+				if ( idfaItr->value.IsString() ) {
+					deviceBuilder.setIdfa( idfaItr->value.GetString() );
 				}
 			} else if ( (idfaItr = device.FindMember("dpidsha1")) != device.MemberEnd() ) {
-				if ( idfaItr->IsString() ) {
-					deviceBuilder.setIdfa( idfaItr->GetString() );
+				if ( idfaItr->value.IsString() ) {
+					deviceBuilder.setIdfa( idfaItr->value.GetString() );
 				}
 			}
 		} else if ( os == AdsOs::ANDROID ) {
 			// imei
 			auto imeiItr = device.FindMember("didmd5");
 			if ( imeiItr != device.MemberEnd() ) {
-				if ( imeiItr->IsString() ) {
-					deviceBuilder.setImei( imeiItr->GetString() );
+				if ( imeiItr->value.IsString() ) {
+					deviceBuilder.setImei( imeiItr->value.GetString() );
 				}
 			} else if ( (imeiItr = device.FindMember("didsha1")) != device.MemberEnd() ) {
-				if ( imeiItr->IsString() ) {
-					deviceBuilder.setImei( imeiItr->GetString() );
+				if ( imeiItr->value.IsString() ) {
+					deviceBuilder.setImei( imeiItr->value.GetString() );
 				}
 			}
 		}
 		// mac
 		auto macItr = device.FindMember("macmd5");
 		if ( macItr != device.MemberEnd() ) {
-			if ( macItr->IsString() ) {
-				deviceBuilder.setMac( macItr->GetString() );
+			if ( macItr->value.IsString() ) {
+				deviceBuilder.setMac( macItr->value.GetString() );
 			}
 		} else if ( (macItr = device.FindMember("macsha1")) != device.MemberEnd() ) {
-			if ( macItr->IsString() ) {
-				deviceBuilder.setMac( macItr->GetString() );
+			if ( macItr->value.IsString() ) {
+				deviceBuilder.setMac( macItr->value.GetString() );
 			}
 		}
 		// mac1
@@ -328,8 +344,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// name
 		auto nameItr = app.FindMember("name");
 		if ( nameItr != app.MemberEnd() ) {
-			if ( nameItr->IsString() ) {
-				appBuilder.setName( nameItr->GetString() );
+			const rapidjson::Value& name = nameItr->value;
+			if ( name.IsString() ) {
+				appBuilder.setName( name.GetString() );
 			}
 		}
 	}
@@ -342,8 +359,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		// id
 		auto idItr = user.FindMember("id");
 		if ( idItr != user.MemberEnd() ) {
-			if ( idItr->IsString() ) {
-				userBuilder.setExchangeId( idItr->GetString() );
+			const rapidjson::Value& id = idItr->value;
+			if ( id.IsString() ) {
+				userBuilder.setExchangeId( id.GetString() );
 			}
 		}
 	}
