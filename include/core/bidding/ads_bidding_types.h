@@ -122,7 +122,7 @@ private:
 		void setId(const string& id) { dst._id = id; }
 		void setZoneId(const string& id) { dst._zoneid = id; }
 		
-		void setType(AdsImpressionType type) { dst._type = type; }
+		void setType(AdsAdvertiseType type) { dst._type = type; }
 		void setSettlement(AdsBiddingSettlement settlement) { dst._settlement = settlement; }
 		void setBidFloor(int floor) { dst._bidfloor = floor; }
 
