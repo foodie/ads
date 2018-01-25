@@ -374,34 +374,113 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 	return true;
 }
 
-static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response)
-{
-	rapidjson::Document doc;
-	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
-	rapidjson::Value root(rapidjson::kObjectType);
+/***************************************************************/
 
+static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response);
 
-	root.AddMember("id", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
-	root.AddMember("nbr", ADVIEW_NBR_USER_UNMATCH, allocator);
-	
-	response->setBody( ads_json_to_string(root) );
+static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad, 
+	AdsHttpResponse *response);
 
-}
+static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid);
+static void packBiddingVideo(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid);
+static void packBiddingNative(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid);
 
 void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param,
 	AdsAdvertise *ad, AdsHttpResponse *response)
 {
 	if ( ad == NULL ) {
 		packBiddingFailure(param, response);
-		return ;
+	} else {
+		packBiddingSuccess(param, ad, response);
+	}
+}
+
+static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response)
+{
+	rapidjson::Document doc;
+	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+	rapidjson::Value root(rapidjson::kObjectType);
+
+	root.AddMember("id", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
+	root.AddMember("nbr", ADVIEW_NBR_USER_UNMATCH, allocator);
+
+	response->setBody( ads_json_to_string(root) );
+}
+
+static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad, 
+	AdsHttpResponse *response)
+{
+	rapidjson::Document doc;
+	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+	rapidjson::Value root(rapidjson::kObjectType);
+
+	// id string
+	root.AddMember("id", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
+	// bidid string
+	
+	// seatbid array
+	rapidjson::Value seatbid(rapidjson::kArrayType);
+	// [ SeatBid
+	rapidjson::Value SeatBid(rapidjson::kObjectType);
+	// 		bid array
+	rapidjson::Value bid(rapidjson::kArrayType);
+	//		[ Bid
+	rapidjson::Value Bid(rapidjson::kObjectType);
+	
+	auto imp = param.impression();
+	//			impid
+	Bid.AddMember("impid", rapidjson::StringRef( imp.id().c_str() ), allocator);
+	//			price
+	Bid.AddMember("price", ad->launch->price, allocator);
+	//			paymode
+	switch( ad->launch->settlement ) {
+		case AdsBiddingSettlement::CPM:
+			Bid.AddMember("paymode", 1, allocator);
+			break;
+		case AdsBiddingSettlement::CPC:
+			Bid.AddMember("paymode", 2, allocator);
+			break;
+	}
+	//			adct
+	switch( ad->action ) {
+		case AdsClickAction::OPEN_WEBPAGE:
+			Bid.AddMember("adct", 1, allocator);
+			break;
+		case AdsClickAction::DOWNLOAD_APP:
+			Bid.AddMember("adct", 2, allocator);
+			break;
 	}
 
+	packBiddingBanner(param, ad, Bid);
 
+	bid.PushBack(Bid, allocator);
+	//		]
+	SeatBid.AddMember("bid", bid, allocator);
+	// 		seat string
+	seatbid.PushBack(SeatBid, allocator);
+	// ]
+	root.AddMember("seatbid", seatbid, allocator);
+
+	response->setBody( ads_json_to_string(root) );
+}
+
+static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid)
+{
+	
 
 }
 
+/***************************************************************/
+
 int AdsAdviewExchange::decryptWinPrice(const string& str)
 {
-
-	return 0;	
+	if ( str == "%%WIN_PRICE%%" ) {
+		return 0;
+	}
+	int p = google_decrypt_winning_price(str.c_str(), g_conf->adview.ekey, g_conf->adview.ikey);
+	return p / 100;	
 }
