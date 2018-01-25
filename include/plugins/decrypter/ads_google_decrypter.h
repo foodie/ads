@@ -16,6 +16,7 @@ typedef unsigned int        uint32;
 typedef unsigned long long  uint64;
 typedef unsigned char       uchar;
 
-int google_decrypt_winning_price(const char *encodedValue, const char *kEncryptionKey, const char *kIntegrityKey);
+int google_decrypt_winning_price(const char *encodedValue, 
+	const char *kEncryptionKey, const char *kIntegrityKey);
 
 #endif

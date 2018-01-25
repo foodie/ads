@@ -214,8 +214,8 @@ bool DecryptWinningPrice(
 }  // namespace
 
 
-int google_decrypt_winning_price(const char *encodedValue, const char *kEncryptionKey, 
-  const char *kIntegrityKey) {
+int google_decrypt_winning_price(const char *encodedValue, 
+  const char *kEncryptionKey, const char *kIntegrityKey) {
 	string encryption_key(kEncryptionKey, kKeySize);
 	string integrity_key(kIntegrityKey, kKeySize);
 	
