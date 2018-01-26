@@ -44,7 +44,7 @@ string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad)
 	// address id
 	oss << "&" << ADS_MONITOR_KEY_ADDRESS_ID << "=" << param.device().addressId();
 	// app name
-	oss << "&" << ADS_MONITOR_KEY_APP_NAME << "=" << param.app().name();
+	oss << "&" << ADS_MONITOR_KEY_APP_NAME << "=" << ads_url_encode(param.app().name());
 
 	return oss.str();
 }
@@ -67,5 +67,6 @@ string AdsExchange::getClickUrl(AdsBiddingParam& param, AdsAdvertise *ad)
 {
 	ostringstream oss;
 	oss << g_conf->ads.ads_host << "/monitor/clk?" << this->getUrlBaseInfo(param, ad);
+	oss << "&" << ADS_MONITOR_KEY_REDIRECT << "=" << ads_url_encode(ad->landing);
 	return oss.str();
 }

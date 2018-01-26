@@ -515,10 +515,11 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 	Bid.AddMember("nurl", nurl, allocator);
 	// 			curl 点击
 	rapidjson::Value curl(rapidjson::kArrayType);
-	for ( size_t i = 1; i < ad->clk_track.size(); i++ ) {
+	for ( size_t i = 0; i < ad->clk_track.size(); i++ ) {
 		string& clkt = ad->clk_track.at(i);
 		curl.PushBack(rapidjson::StringRef( clkt.c_str() ), allocator);
 	}
+	string clkUrl = this->getClickUrl();
 	Bid.AddMember("curl", curl, allocator);
 	//			dealid
 	if ( param.impression().biddingType() == AdsBiddingType::PDB ) {

@@ -332,3 +332,17 @@ void ads_url_decode(const char *src, char *dst)
     }
 	dst[n] = '\0';
 }
+
+string ads_url_encode(const string& url, int upper)
+{
+	char buf[4096];
+	ads_url_encode(url.c_str(), buf, upper);
+	return buf;
+}
+
+string ads_url_decode(const string& url)
+{
+	char buf[4096];
+	ads_url_decode(url.c_str(), buf);
+	return buf;
+}

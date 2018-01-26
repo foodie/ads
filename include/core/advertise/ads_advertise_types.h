@@ -151,7 +151,7 @@ public:
 	AdsMaterial* addMaterial(int id, AdsMaterialType type)
 	{
 		AdsMaterial* material = new (std::nothrow) AdsMaterial(type);
-		material->id = id;
+		material->setId(id);
 		materials.emplace(id, material);
 		return material;
 	}

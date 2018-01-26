@@ -109,5 +109,8 @@ static inline string ads_int_to_string(int val)
 void ads_url_encode(const char *src, char *dst, int upper=1);
 void ads_url_decode(const char *src, char *dst);
 
+string ads_url_encode(const string& url, int upper=1);
+string ads_url_decode(const string& url);
+
 #endif
 /* vim: set ts=4 sw=4 noet: */
