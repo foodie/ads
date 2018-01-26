@@ -1,11 +1,14 @@
 #include "plugins/exchange/ads_adview_exchange.h"
 
+#include <sstream>
 #include "log.h"
 #include "ads_conf.h"
 #include "core/ads_core.h"
 #include "utils/ads_string.h"
 #include "utils/ads_json.h"
 #include "plugins/decrypter/ads_google_decrypter.h"
+
+using std::ostringstream;
 
 #define ADVIEW_COMMON_ADZONE_ID  "adview_000000"
 
@@ -375,6 +378,25 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 }
 
 /***************************************************************/
+string AdsAdviewExchange::getWinnoticeUrl(AdsBiddingParam& param, 
+		AdsAdvertise *ad)
+{
+	string url = Exchange::getWinnoticeUrl(param, ad);
+	ostringstream oss;
+	oss << url << "&" << ADS_MONITOR_KEY_PRICE << "=" << "%%WIN_PRICE%%";
+	return oss.str();
+}
+
+string AdsAdviewExchange::getImpressionUrl(AdsBiddingParam& param, 
+		AdsAdvertise *ad)
+{
+	string url = Exchange::getImpressionUrl(param, ad);
+	ostringstream oss;
+	oss << url << "&" << ADS_MONITOR_KEY_PRICE << "=" << "%%WIN_PRICE%%";
+	return oss.str();
+}
+
+/***************************************************************/
 
 static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response);
 
@@ -382,11 +404,11 @@ static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad,
 	AdsHttpResponse *response);
 
 static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid);
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
 static void packBiddingVideo(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid);
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
 static void packBiddingNative(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid);
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
 
 void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param,
 	AdsAdvertise *ad, AdsHttpResponse *response)
@@ -453,8 +475,63 @@ static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad,
 			Bid.AddMember("adct", 2, allocator);
 			break;
 	}
+	//			adid
+	//string adid = ads_int_to_string(ad->id);
+	//Bid.AddMember("adid", rapidjson::StringRef( adid.c_str() ), allocator);
 
-	packBiddingBanner(param, ad, Bid);
+	switch( imp.type() ) {
+		case AdsAdvertiseType::BANNER:
+		case AdsAdvertiseType::PLAQUE:
+		case AdsAdvertiseType::SPLASH:
+			packBiddingBanner(param, ad, Bid, allocator);
+			break;
+		case AdsAdvertiseType::VIDEO:
+			packBiddingVideo(param, ad, Bid, allocator);
+		case AdsAdvertiseType::NATIVE:
+			packBiddingNative(param, ad, Bid, allocator);
+			break;
+	}
+
+	// 			adLogo
+	Bid.AddMember("adLogo", rapidjson::StringRef( g_conf->adview.logo ), allocator);
+	//			adurl
+	if ( ad->imp_track.size() > 0 ) {
+		string& adurl = ad->imp_track.at(0);
+		Bid.AddMember("adurl", rapidjson::StringRef( adurl.c_str() ), allocator);
+	} else {
+		Bid.AddMember("adurl", rapidjson::StringRef( ad->landing.c_str() ), allocator);
+	}
+	//			wurl 赢价
+	string winUrl = this->getWinnoticeUrl(param, ad);
+	Bid.AddMember("wurl", rapidjson::StringRef( winUrl.c_str() ), allocator);
+	//			nurl 展示
+	rapidjson::Value nurl(rapidjson::kObjectType);
+	rapidjson::Value nurl_0(rapidjson::kArrayType);
+	if ( ad->imp_track.size() > 1 ) {
+		for ( size_t i = 1; i < ad->imp_track.size(); i++ ) {
+			string& impt = ad->imp_track.at(i);
+			nurl_0.PushBack(rapidjson::StringRef( impt.c_str() ), allocator);
+		}
+	}
+	string impUrl = this->getImpressionUrl(param, ad);
+	nurl_0.PushBack(rapidjson::StringRef( impUrl.c_str() ), allocator);
+	nurl.AddMember("0", nurl_0, allocator);
+	Bid.AddMember("nurl", nurl, allocator);
+	// 			curl 点击
+	rapidjson::Value curl(rapidjson::kArrayType);
+	for ( size_t i = 1; i < ad->clk_track.size(); i++ ) {
+		string& clkt = ad->clk_track.at(i);
+		curl.PushBack(rapidjson::StringRef( clkt.c_str() ), allocator);
+	}
+	Bid.AddMember("curl", curl, allocator);
+	//			dealid
+	if ( param.impression().biddingType() == AdsBiddingType:: )
+	//			cid 创意id
+	string cid = ads_int_to_string(ad->id);
+	Bid.AddMember("cid", rapidjson::StringRef( cid.c_str() ), allocator);
+	//			crid 物料id
+	string crid = ads_int_to_string(ad->material->id);
+	Bid.AddMember("crid", rapidjson::StringRef( crid.c_str() ), allocator);
 
 	bid.PushBack(Bid, allocator);
 	//		]
@@ -468,9 +545,29 @@ static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad,
 }
 
 static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid)
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
 {
-	
+	AdsMaterialImage *img = ad->material->image();
+
+	// admt
+	Bid.AddMember("admt", 1, allocator);
+	// adi
+	Bid.AddMember("adi", rapidjson::StringRef( img->source.c_str() ));
+	// adw
+	Bid.AddMember("adw", img->width, allocator);
+	// adh
+	Bid.AddMember("adh", img->height, allocator);
+}
+
+static void packBiddingVideo(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
+{
+
+}
+
+static void packBiddingNative(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
+{
 
 }
 
@@ -481,6 +578,7 @@ int AdsAdviewExchange::decryptWinPrice(const string& str)
 	if ( str == "%%WIN_PRICE%%" ) {
 		return 0;
 	}
-	int p = google_decrypt_winning_price(str.c_str(), g_conf->adview.ekey, g_conf->adview.ikey);
+	int p = google_decrypt_winning_price(str.c_str(), 
+		g_conf->adview.ekey, g_conf->adview.ikey);
 	return p / 100;	
 }

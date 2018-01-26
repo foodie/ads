@@ -20,6 +20,17 @@ public:
 	{
 		return atoi( str.c_str() );
 	}
+
+protected:
+
+	virtual string getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad);
+
+	virtual string getWinnoticeUrl(AdsBiddingParam& param, AdsAdvertise *ad);
+
+	virtual string getImpressionUrl(AdsBiddingParam& param, AdsAdvertise *ad);
+
+	virtual string getClickUrl(AdsBiddingParam& param, AdsAdvertise *ad);
+
 };
 
 inline static bool initExchange()
@@ -31,6 +42,8 @@ inline static AdsExchange* getExchange(const string& name)
 {
 	return AdsExchangeFactory::getInstance().getExchange(name);
 }
+
+
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

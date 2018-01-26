@@ -14,6 +14,14 @@ public:
 		AdsAdvertise *ad, AdsHttpResponse *response) override;
 
 	virtual int decryptWinPrice(const string& str) override;
+
+protected:
+	virtual string getWinnoticeUrl(AdsBiddingParam& param, 
+		AdsAdvertise *ad) override;
+
+	virtual string getImpressionUrl(AdsBiddingParam& param, 
+		AdsAdvertise *ad) override;
+
 };
 
 #endif
