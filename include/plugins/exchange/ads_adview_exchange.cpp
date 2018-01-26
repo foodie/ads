@@ -528,7 +528,7 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 	string cid = ads_int_to_string(ad->id);
 	Bid.AddMember("cid", rapidjson::StringRef( cid.c_str() ), allocator);
 	//			crid 物料id
-	string crid = ads_int_to_string(ad->material->id);
+	string crid = ads_int_to_string(ad->material->id());
 	Bid.AddMember("crid", rapidjson::StringRef( crid.c_str() ), allocator);
 
 	bid.PushBack(Bid, allocator);
@@ -550,7 +550,7 @@ static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad,
 	// admt
 	Bid.AddMember("admt", 1, allocator);
 	// adi
-	Bid.AddMember("adi", rapidjson::StringRef( img->source.c_str() ));
+	Bid.AddMember("adi", rapidjson::StringRef( img->source.c_str() ), allocator);
 	// adw
 	Bid.AddMember("adw", img->width, allocator);
 	// adh
