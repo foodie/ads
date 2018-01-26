@@ -77,7 +77,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 			if ( bfItr != imp.MemberEnd() ) {
 				const rapidjson::Value& bidfloor = bfItr->value;
 				if ( bidfloor.IsInt() ) {
-					impBuilder.setBidFloor( bidfloor.GetInt() );
+					impBuilder.setBidFloor( bidfloor.GetInt() / 100 );
 				}
 			}
 
@@ -452,7 +452,7 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 	//			impid
 	Bid.AddMember("impid", rapidjson::StringRef( imp.id().c_str() ), allocator);
 	//			price
-	Bid.AddMember("price", ad->launch->price, allocator);
+	Bid.AddMember("price", ad->launch->price * 100, allocator);
 	//			paymode
 	switch( ad->launch->settlement ) {
 		case AdsBiddingSettlement::CPM:

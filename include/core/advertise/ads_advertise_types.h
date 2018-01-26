@@ -127,6 +127,7 @@ public:
 	AdsCampaign* addCampaign(int id)
 	{
 		AdsCampaign *campaign = new (std::nothrow) AdsCampaign;
+		campaign->id = id;
 		campaigns.emplace(id, campaign);
 		return campaign;
 	}
@@ -134,6 +135,7 @@ public:
 	AdsLaunch* addLaunch(int id)
 	{
 		AdsLaunch* launch = new (std::nothrow) AdsLaunch;
+		launch->id = id;
 		launchs.emplace(id, launch);
 		return launch;
 	}
@@ -141,6 +143,7 @@ public:
 	AdsCreative* addCreative(int id)
 	{
 		AdsCreative* creative = new (std::nothrow) AdsCreative;
+		creative->id = id;
 		creatives.emplace(id, creative);
 		return creative;
 	}
@@ -148,6 +151,7 @@ public:
 	AdsMaterial* addMaterial(int id, AdsMaterialType type)
 	{
 		AdsMaterial* material = new (std::nothrow) AdsMaterial(type);
+		material->id = id;
 		materials.emplace(id, material);
 		return material;
 	}
