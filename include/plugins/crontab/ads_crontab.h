@@ -2,10 +2,12 @@
 #define _ADS_CRONTAB_H
 
 #include <string>
+#include <utility>
 #include <list>
 #include "core/ads_singleton.h"
 
 using std::string;
+using std::pair;
 using std::list;
 
 class AdsCrontabTask;
@@ -29,6 +31,11 @@ private:
 
 	pthread_t master;
 };
+
+static inline bool initCrontab()
+{
+	return AdsCrontab::getInstance().init();
+}
 
 static inline void registerCrontabTask(const string& format, AdsCrontabTask *task)
 {

@@ -184,7 +184,11 @@ static int plugins_init()
     }
 
     // crontab
-    
+    ret = initCrontab();
+    if ( !ret ) {
+        FATAL("Crontab plugins init failed");
+        return -1;
+    }
 
     // controller
     ret = initController();

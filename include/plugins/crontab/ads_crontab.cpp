@@ -2,6 +2,14 @@
 
 #include <tr1/functional>
 #include "log.h"
+#include "plugins/crontab/ads_crontab_task.h"
+
+
+static void* crontabprocess(void *arg)
+{
+	((AdsCrontab*) arg)->process();
+	return NULL;
+}
 
 AdsCrontab::AdsCrontab()
 {
@@ -18,9 +26,8 @@ AdsCrontab::~AdsCrontab()
 
 bool AdsCrontab::init()
 {
-	std::tr1::function<void(void*)> f = std::tr1::bind(&AdsCrontab::process, 
-		this, std::tr1::placeholders::_1);
-    if (pthread_create(&master, NULL, f, NULL)) {
+
+    if (pthread_create(&master, NULL, crontabprocess, this)) {
         WARN("[Crontab] create master thread failed");
         return -1;
     }
