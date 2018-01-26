@@ -521,7 +521,9 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 	}
 	Bid.AddMember("curl", curl, allocator);
 	//			dealid
-	if ( param.impression().biddingType() == AdsBiddingType:: )
+	if ( param.impression().biddingType() == AdsBiddingType::PDB ) {
+		Bid.AddMember("dealid", rapidjson::StringRef( param.impression().pmp().id().c_str() ), allocator);
+	}
 	//			cid 创意id
 	string cid = ads_int_to_string(ad->id);
 	Bid.AddMember("cid", rapidjson::StringRef( cid.c_str() ), allocator);
