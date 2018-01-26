@@ -519,7 +519,8 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 		string& clkt = ad->clk_track.at(i);
 		curl.PushBack(rapidjson::StringRef( clkt.c_str() ), allocator);
 	}
-	string clkUrl = this->getClickUrl();
+	string clkUrl = this->getClickUrl(param, ad);
+	curl.PushBack(rapidjson::StringRef( clkUrl.c_str() ), allocator);
 	Bid.AddMember("curl", curl, allocator);
 	//			dealid
 	if ( param.impression().biddingType() == AdsBiddingType::PDB ) {

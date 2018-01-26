@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include "ads_conf.h"
+#include "utils/ads_string.h"
 
 using std::ostringstream;
 
