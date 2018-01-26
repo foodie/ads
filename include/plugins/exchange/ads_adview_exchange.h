@@ -22,6 +22,12 @@ protected:
 	virtual string getImpressionUrl(AdsBiddingParam& param, 
 		AdsAdvertise *ad) override;
 
+private:
+	void packBiddingFailure(AdsBiddingParam& param, 
+		AdsHttpResponse *response);
+
+	void packBiddingSuccess(AdsBiddingParam& param, 
+		AdsAdvertise *ad, AdsHttpResponse *response);
 };
 
 #endif

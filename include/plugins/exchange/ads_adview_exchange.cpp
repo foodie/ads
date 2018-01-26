@@ -381,7 +381,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 string AdsAdviewExchange::getWinnoticeUrl(AdsBiddingParam& param, 
 		AdsAdvertise *ad)
 {
-	string url = Exchange::getWinnoticeUrl(param, ad);
+	string url = AdsExchange::getWinnoticeUrl(param, ad);
 	ostringstream oss;
 	oss << url << "&" << ADS_MONITOR_KEY_PRICE << "=" << "%%WIN_PRICE%%";
 	return oss.str();
@@ -390,18 +390,13 @@ string AdsAdviewExchange::getWinnoticeUrl(AdsBiddingParam& param,
 string AdsAdviewExchange::getImpressionUrl(AdsBiddingParam& param, 
 		AdsAdvertise *ad)
 {
-	string url = Exchange::getImpressionUrl(param, ad);
+	string url = AdsExchange::getImpressionUrl(param, ad);
 	ostringstream oss;
 	oss << url << "&" << ADS_MONITOR_KEY_PRICE << "=" << "%%WIN_PRICE%%";
 	return oss.str();
 }
 
 /***************************************************************/
-
-static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response);
-
-static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad, 
-	AdsHttpResponse *response);
 
 static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
 	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
@@ -414,13 +409,14 @@ void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param,
 	AdsAdvertise *ad, AdsHttpResponse *response)
 {
 	if ( ad == NULL ) {
-		packBiddingFailure(param, response);
+		this->packBiddingFailure(param, response);
 	} else {
-		packBiddingSuccess(param, ad, response);
+		this->packBiddingSuccess(param, ad, response);
 	}
 }
 
-static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response)
+void AdsAdviewExchange::packBiddingFailure(AdsBiddingParam& param, 
+	AdsHttpResponse *response)
 {
 	rapidjson::Document doc;
 	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
@@ -432,8 +428,8 @@ static void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response
 	response->setBody( ads_json_to_string(root) );
 }
 
-static void packBiddingSuccess(AdsBiddingParam& param, AdsAdvertise *ad, 
-	AdsHttpResponse *response)
+void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param, 
+	AdsAdvertise *ad, AdsHttpResponse *response)
 {
 	rapidjson::Document doc;
 	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();

@@ -14,7 +14,7 @@ string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad)
 	// launch_id
 	oss << "&" << ADS_MONITOR_KEY_LAUNCH_ID << "=" << ad->launch->id;
 	// creative_id
-	oss << "&" << ADS_MONITOR_KEY_CREATIVE_ID << "=" << ad->creative->id;
+	oss << "&" << ADS_MONITOR_KEY_CREATIVE_ID << "=" << ad->id;
 	// material_id
 	oss << "&" << ADS_MONITOR_KEY_MATERIAL_ID << "=" << ad->material->id;
 	// exchange
