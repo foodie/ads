@@ -69,25 +69,37 @@ static bool check_time_rule(const string& rule, int val)
         return true;
     }
 
-    string cp(rule);
+    string tmp(rule);
     string valStr = ads_int_to_string(val);
-    size_t p1,p2;
+    size_t p;
 
     // a
     if ( rule == valStr ) {
         return true;
     }
     // a,b,...
-    p2 = rule.find(',');
-    if ( p2 != string::npos ) {
-        cp.append(",");
-        return cp.find( valStr + ',' ) == string::npos;
+    p = rule.find(',');
+    if ( p != string::npos ) {
+        tmp.append(",");
+        return tmp.find( valStr + ',' ) == string::npos;
     }
-    // - / 待实现
+    // - / 
     int step = 1;
-    p2 = rule.find('/');
-    if ( p2 != string::npos ) {
-        step = ads_string_to_int( rule.substr(p2+1) );
+    p = rule.find('/');
+    if ( p != string::npos ) {
+        step = ads_string_to_int( rule.substr(p+1) );
+        tmp = rule.substr(0, p);
+    }
+    p = tmp.find('-');
+    if ( p != string::npos ) {
+        int min = ads_string_to_int( tmp.substr(0, p) );
+        int max = ads_string_to_int( tmp.substr(p+1) );
+        if ( val < min || val > max ) {
+            return false;
+        }
+    }
+    if ( val % step == 0 ) {
+        return true;
     }
 
     return false;

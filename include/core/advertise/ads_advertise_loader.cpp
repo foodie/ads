@@ -173,7 +173,7 @@ void AdsAdvertiseApiLoader::load(AdsAdvertiseCollection* collection)
 		}
 	}
 
-	INFO("[Advertise] api load advertise success");
+	//INFO("[Advertise] api load advertise success");
 }
 
 static void _split_vi(const string& str, vector<int>& vec, char sep)
