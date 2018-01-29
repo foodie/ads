@@ -16,7 +16,7 @@ class AdsCrontab : public AdsSingleton<AdsCrontab>
 {
 	friend class AdsSingleton<AdsCrontab>;
 public:
-	typedef pair<string, AdsCrontabTask*> _Task;
+	typedef pair<string, AdsCrontabTask*> _Tasker;
 
 	~AdsCrontab();
 
@@ -27,9 +27,9 @@ public:
 
 private:
 	AdsCrontab();
-	list<_Task> tasks;
+	list<_Tasker> _tasks;
 
-	pthread_t master;
+	bool checkTime(const string& format, time_t ts);
 };
 
 static inline bool initCrontab()

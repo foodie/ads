@@ -34,7 +34,7 @@ time_t ads_first_day_of_month()
 	return monday;
 }
 
-void date(time_t ts)
+string date(time_t ts)
 {
 	struct tm *t = localtime(&ts);
 	ostringstream oss;
