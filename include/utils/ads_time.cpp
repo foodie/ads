@@ -1,5 +1,9 @@
 #include "utils/ads_time.h"
 
+#include <sstream>
+
+using std::ostringstream;
+
 time_t ads_nowtime()
 {
 	return time(NULL);
@@ -30,3 +34,15 @@ time_t ads_first_day_of_month()
 	return monday;
 }
 
+void date(time_t ts)
+{
+	struct tm *t = localtime(&ts);
+	ostringstream oss;
+	oss << t->tm_year + 1900 << "-";
+	oss << t->tm_mon + 1 << "-";
+	oss << t->tm_mday << " ";
+	oss << t->tm_hour << ":";
+	oss << t->tm_min << ":";
+	oss << t->tm_sec;
+	return oss.str();
+}
