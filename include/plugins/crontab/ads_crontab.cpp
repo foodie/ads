@@ -69,7 +69,7 @@ static bool check_time_rule(const string& rule, int val)
         return true;
     }
 
-    string tmp(rule);
+    string tmp;
     string valStr = ads_int_to_string(val);
     size_t p;
 
@@ -80,8 +80,9 @@ static bool check_time_rule(const string& rule, int val)
     // a,b,...
     p = rule.find(',');
     if ( p != string::npos ) {
-        tmp.append(",");
-        return tmp.find( valStr + ',' ) == string::npos;
+        tmp = string(",") + rule + ",";
+        valStr = string(",") + valStr + ",";
+        return tmp.find( valStr ) != string::npos;
     }
     // - / 
     int step = 1;
