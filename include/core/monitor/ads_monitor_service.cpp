@@ -3,6 +3,8 @@
 #include "log.h"
 #include "core/monitor/ads_monitor_param.h"
 #include "core/monitor/ads_monitor_manager.h"
+#include "core/monitor/ads_monitor_crontab.h"
+#include "plugins/crontab/ads_crontab.h"
 
 static string getMonitorDeviceId(const AdsMonitorParam *param);
 
@@ -23,6 +25,9 @@ bool AdsMonitorService::init()
 		WARN("monitor manager is null");
 		return false;
 	}
+
+	// 添加定时任务
+	registerCrontabTask("0 0 * * 1", new AdsAdvertiseRecycleTask);
 
 	INFO("[Monitor] Monitor Service init success");
 	return true;
