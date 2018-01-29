@@ -14,6 +14,7 @@ public:
 	{
 		AdsAdvertiseService& service = AdsAdvertiseService::getInstance();
 		service.reload();
+		INFO("[Advertise] Advertise reload data success");
 	}
 };
 

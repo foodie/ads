@@ -20,10 +20,10 @@ AdsCrontab::AdsCrontab()
 
 AdsCrontab::~AdsCrontab()
 {
-	for ( auto itr = tasks.begin(); itr != tasks.end(); itr++ ) {
+	for ( auto itr = _tasks.begin(); itr != _tasks.end(); itr++ ) {
 		delete itr->second;
 	}
-	tasks.clear();
+	_tasks.clear();
 }
 
 bool AdsCrontab::init()
@@ -69,8 +69,9 @@ static bool check_time_rule(const string& rule, int val)
         return true;
     }
 
-    size_t p1,p2;
+    string cp(rule);
     string valStr = ads_int_to_string(val);
+    size_t p1,p2;
 
     // a
     if ( rule == valStr ) {
@@ -79,8 +80,8 @@ static bool check_time_rule(const string& rule, int val)
     // a,b,...
     p2 = rule.find(',');
     if ( p2 != string::npos ) {
-        rule.append(',');
-        return rule.find( valStr + ',' ) == string::npos;
+        cp.append(",");
+        return cp.find( valStr + ',' ) == string::npos;
     }
     // - / 待实现
     int step = 1;
