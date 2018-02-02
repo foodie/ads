@@ -61,6 +61,52 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	return ADS_HTTP_OK;
 }
 
+int AdsBiddingController::process2(AdsThreadData* p_thd_data)
+{
+	AdsHttpRequest *request = p_thd_data->request;
+	AdsHttpResponse *response = p_thd_data->response;
+	
+	// 获取exchange实例
+	AdsExchange* exchange = getExchange( request->getUri(1) );
+	if ( exchange == NULL ) {
+		return ADS_HTTP_NOT_FOUND;
+	}
+
+	char mBuffer[2048]; 	// 广告信息
+	AdsBiddingParam param; 	// 设备信息
+	
+	// 解析
+	bool ret = exchange->parseBiddingRequest2(request, param, mBuffer);
+	if ( !ret ) {
+		// 解析失败
+		exchange->packBiddingResponse2(param, mBuffer, NULL, response);
+		return ADS_HTTP_BAD_REQUEST;
+	}
+
+	// 检索广告
+	list<AdsAdvertise*> al;
+	AdsAdvertiseService& adService = getAdvertiseService();
+	adService.search(al);
+
+	// 广告过滤
+	exchange->biddingFilter2(mBuffer, al);
+
+
+	// 通过ip获取地域id
+	auto deviceBuilder = param.device().getBuilder();
+	deviceBuilder.setAddressId(0);
+
+	// 竞价处理
+	AdsBiddingService& biddingService = getBiddingService();
+	AdsAdvertise* ad = biddingService.bidding(param, al);
+
+	// 封装响应数据
+	exchange->packBiddingResponse2(param, mBuffer, ad, response);
+
+	return ADS_HTTP_OK;
+}
+
+
 static void log_bidding_param(AdsBiddingParam& param)
 {
 	DEBUG("Log Bidding Param");

@@ -1,11 +1,15 @@
-#ifndef _ADS_ADVIEW_H
-#define _ADS_ADVIEW_H
+#ifndef _ADS_ADVIEW_EXCHANGE_H
+#define _ADS_ADVIEW_EXCHANGE_H
 
 #include "plugins/exchange/ads_exchange.h"
+#include "plugins/exchange/ads_adview_param.h"
+
 
 class AdsAdviewExchange : public AdsExchange
 {
 public:
+	AdsAdviewExchange();
+	~AdsAdviewExchange();
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
 		AdsBiddingParam& param) override;
@@ -28,7 +32,18 @@ private:
 
 	void packBiddingSuccess(AdsBiddingParam& param, 
 		AdsAdvertise *ad, AdsHttpResponse *response);
+
+/* new */
+public:
+	virtual bool parseBiddingRequest2(AdsHttpRequest *request, 
+		AdsBiddingParam& param, void *buf) override;
+
+	virtual void packBiddingResponse2(AdsBiddingParam& param, void *buf,
+		AdsAdvertise *ad, AdsHttpResponse *response) override;
+
+	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) override;
 };
+
 
 #endif
 /* vim: set ts=4 sw=4 noet: */

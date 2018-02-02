@@ -14,6 +14,16 @@ using std::ostringstream;
 
 #define ADVIEW_NBR_USER_UNMATCH 8
 
+AdsAdviewExchange::AdsAdviewExchange()
+{
+	_filter = new AdsAdviewFilter;
+}
+
+AdsAdviewExchange::~AdsAdviewExchange()
+{
+	delete _filter;
+}
+
 bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request, 
 	AdsBiddingParam& param)
 {
@@ -377,6 +387,40 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 	return true;
 }
 
+/**
+ * @brief      new
+ */
+
+bool AdsAdviewExchange::parseBiddingRequest2(AdsHttpRequest *request, 
+		AdsBiddingParam& param, void *buf)
+{
+	AdsAdviewBidRequest *bid = new (buf) AdsAdviewBidRequest;
+
+	rapidjson::Document doc;
+	if (doc.Parse( request->getBody().c_str() ).HasParseError()) {
+		WARN("[Exchange] AdviewExchange parse bidding request failed");
+		return false;
+	}
+
+	
+
+	return true;
+}
+
+void AdsAdviewExchange::packBiddingResponse2(AdsBiddingParam& param, void *buf,
+		AdsAdvertise *ad, AdsHttpResponse *response)
+{
+	AdsAdviewBidRequest *bid = (AdsAdviewBidRequest*) buf;
+
+
+	bid->~AdsAdviewBidRequest();
+}
+
+virtual void AdsAdviewExchange::biddingFilter2(void *buf, list<AdsAdvertise*>& al)
+{
+	AdsAdviewBidRequest *bid = (AdsAdviewBidRequest*) buf;
+}
+
 /***************************************************************/
 string AdsAdviewExchange::getWinnoticeUrl(AdsBiddingParam& param, 
 		AdsAdvertise *ad)
@@ -582,3 +626,8 @@ int AdsAdviewExchange::decryptWinPrice(const string& str)
 		g_conf->adview.ekey, g_conf->adview.ikey);
 	return p / 100;	
 }
+
+
+/***************************************************************
+*
+****************************************************************/

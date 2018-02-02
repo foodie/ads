@@ -21,7 +21,6 @@ static bool filter_carrier_func(const AdsBiddingParam& param, AdsAdvertise* ad);
 static bool filter_zone_func(const AdsBiddingParam& param, AdsAdvertise* ad);
 // 素材
 
-
 AdsBiddingFilterFunc[] rtb_funcs = {
 	filter_price_func,
 	filter_area_func,

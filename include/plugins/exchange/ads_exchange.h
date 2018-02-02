@@ -6,9 +6,13 @@
 #include "core/bidding/ads_bidding_param.h"
 #include "plugins/exchange/ads_exchange_factory.h"
 
+class AdsExchangeFilter;
+
 class AdsExchange
 {
 public:
+	AdsExchange() : _filter(NULL) {}
+	virtual ~AdsExchange() {}
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
 		AdsBiddingParam& param) = 0;
@@ -21,6 +25,12 @@ public:
 		return atoi( str.c_str() );
 	}
 
+	virtual void biddingFilter(const AdsBiddingParam& param, 
+		list<AdsAdvertise*>& al)
+	{
+		
+	}
+
 protected:
 
 	virtual string getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad);
@@ -30,6 +40,17 @@ protected:
 	virtual string getImpressionUrl(AdsBiddingParam& param, AdsAdvertise *ad);
 
 	virtual string getClickUrl(AdsBiddingParam& param, AdsAdvertise *ad);
+
+	/* new */
+public:
+
+	virtual bool parseBiddingRequest2(AdsHttpRequest *request, 
+		AdsBiddingParam& param, void *buf) = 0;
+
+	virtual void packBiddingResponse2(AdsBiddingParam& param, void *buf,
+		AdsAdvertise *ad, AdsHttpResponse *response) = 0;
+
+	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) = 0;
 
 };
 
@@ -42,8 +63,6 @@ inline static AdsExchange* getExchange(const string& name)
 {
 	return AdsExchangeFactory::getInstance().getExchange(name);
 }
-
-
 
 #endif
 /* vim: set ts=4 sw=4 noet: */
