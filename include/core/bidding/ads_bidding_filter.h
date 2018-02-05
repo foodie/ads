@@ -20,11 +20,6 @@ class AdsBiddingFilter
 {
 public:
 	void filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
-
-	void rtb_filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
-	void pdb_filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
-	
-	void user_filter(const AdsBiddingParam& param, list<AdsAdvertise*>& list);
 };
 
 static inline void ads_bidding_filter(const AdsBiddingParam& param, 

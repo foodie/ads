@@ -48,7 +48,7 @@ void AdsAdvertiseService::reload()
 	_manager->reload();
 }
 
-void AdsAdvertiseService::search(list<AdsAdvertise*>& adList)
+void AdsAdvertiseService::search(list<AdsAdvertise*>& al, int eid)
 {
 	AdsAdvertiseCollection *collection = _manager->get();
 
@@ -69,13 +69,17 @@ void AdsAdvertiseService::search(list<AdsAdvertise*>& adList)
 			if ( !checkLaunch(launch) ) {
 				continue;
 			}
+
+			if ( launch->exchangeid != eid ) {
+				continue;
+			}
 			
 			for ( AdsCreative* creative : launch->creatives ) {
 				if ( !checkCreative(creative) ) {
 					continue;
 				}
 
-				adList.push_back(creative);
+				al.push_back(creative);
 			}
 		}
 	}

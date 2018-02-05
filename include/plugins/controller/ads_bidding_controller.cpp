@@ -18,7 +18,7 @@ using std::endl;
 
 static void log_bidding_param(AdsBiddingParam& param);
 
-int AdsBiddingController::process(AdsThreadData* p_thd_data)
+int AdsBiddingController::process2(AdsThreadData* p_thd_data)
 {
 	AdsHttpRequest *request = p_thd_data->request;
 	AdsHttpResponse *response = p_thd_data->response;
@@ -61,7 +61,7 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	return ADS_HTTP_OK;
 }
 
-int AdsBiddingController::process2(AdsThreadData* p_thd_data)
+int AdsBiddingController::process(AdsThreadData* p_thd_data)
 {
 	AdsHttpRequest *request = p_thd_data->request;
 	AdsHttpResponse *response = p_thd_data->response;
@@ -86,11 +86,10 @@ int AdsBiddingController::process2(AdsThreadData* p_thd_data)
 	// 检索广告
 	list<AdsAdvertise*> al;
 	AdsAdvertiseService& adService = getAdvertiseService();
-	adService.search(al);
+	adService.search(al, param.exchangeId());
 
 	// 广告过滤
 	exchange->biddingFilter2(mBuffer, al);
-
 
 	// 通过ip获取地域id
 	auto deviceBuilder = param.device().getBuilder();
