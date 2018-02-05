@@ -685,7 +685,7 @@ static bool parseDevice(const rapidjson::Value& rdoc,
 
 	// idfa
 	// imei
-	AdsOs os = param.device().os();
+	AdsOs os = rdevice.os();
 	if ( os == AdsOs::IOS ) {
 		// idfa
 		auto idfaItr = device.FindMember("ifa");
@@ -771,7 +771,7 @@ void AdsAdviewExchange::packBiddingResponse2(AdsBiddingParam& param, void *buf,
 
 static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad);
 
-virtual void AdsAdviewExchange::biddingFilter2(void *buf, list<AdsAdvertise*>& al)
+void AdsAdviewExchange::biddingFilter2(void *buf, list<AdsAdvertise*>& al)
 {
 	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
 
