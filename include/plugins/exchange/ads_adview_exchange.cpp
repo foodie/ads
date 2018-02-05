@@ -754,6 +754,8 @@ static bool parseApp(const rapidjson::Value& rdoc,
 	return true;
 }
 
+/***************************************************************/
+
 void AdsAdviewExchange::packBiddingResponse2(AdsBiddingParam& param, void *buf,
 		AdsAdvertise *ad, AdsHttpResponse *response)
 {
@@ -763,9 +765,30 @@ void AdsAdviewExchange::packBiddingResponse2(AdsBiddingParam& param, void *buf,
 	bidRequest->~AdsAdviewBidRequest();
 }
 
+
+/***************************************************************/
+
+static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad);
+
 virtual void AdsAdviewExchange::biddingFilter2(void *buf, list<AdsAdvertise*>& al)
 {
 	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
+
+	for (auto itr = al.begin(); itr != al.end(); ) {
+		if ( checkAdvertise(*bidRequest, *itr) ) {
+			itr++;
+		} else {
+			itr = al.erase(itr);
+		}
+	}
+
+}
+
+static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad)
+{
+	
+
+	return true;
 }
 
 /***************************************************************/

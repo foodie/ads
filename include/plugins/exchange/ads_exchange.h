@@ -6,8 +6,6 @@
 #include "core/bidding/ads_bidding_param.h"
 #include "plugins/exchange/ads_exchange_factory.h"
 
-class AdsExchangeFilter;
-
 class AdsExchange
 {
 public:
@@ -43,7 +41,6 @@ protected:
 
 	/* new */
 public:
-
 	virtual bool parseBiddingRequest2(AdsHttpRequest *request, 
 		AdsBiddingParam& param, void *buf) = 0;
 
