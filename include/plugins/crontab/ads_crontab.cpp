@@ -84,23 +84,24 @@ static bool check_time_rule(const string& rule, int val)
         valStr = string(",") + valStr + ",";
         return tmp.find( valStr ) != string::npos;
     }
-    // - / 
-    int step = 1;
+    // / 
     p = rule.find('/');
     if ( p != string::npos ) {
-        step = ads_string_to_int( rule.substr(p+1) );
+        int step = ads_string_to_int( rule.substr(p+1) );
         tmp = rule.substr(0, p);
+
+        if ( val % step != 0 ) {
+            return false;
+        }
     }
+    // -
     p = tmp.find('-');
     if ( p != string::npos ) {
         int min = ads_string_to_int( tmp.substr(0, p) );
         int max = ads_string_to_int( tmp.substr(p+1) );
-        if ( val < min || val > max ) {
-            return false;
+        if ( val >= min && val <= max ) {
+            return true;
         }
-    }
-    if ( val % step == 0 ) {
-        return true;
     }
 
     return false;
