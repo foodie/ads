@@ -49,7 +49,7 @@ int AdsBiddingController::process2(AdsThreadData* p_thd_data)
 	// 获取可投放广告列表
 	list<AdsAdvertise*> adList;
 	AdsAdvertiseService& adService = getAdvertiseService();
-	adService.search(adList);
+	adService.search(adList, param.exchangeId());
 
 	// 竞价处理
 	AdsBiddingService& biddingService = getBiddingService();

@@ -13,8 +13,7 @@ static bool filter_device_func(const AdsBiddingParam& param, AdsAdvertise* ad);
 static bool filter_connectiontype_func(const AdsBiddingParam& param, AdsAdvertise* ad);
 static bool filter_carrier_func(const AdsBiddingParam& param, AdsAdvertise* ad);
 
-AdsBiddingFilterFunc[] filter_funcs = {
-	filter_exchange_func,
+AdsBiddingFilterFunc filter_funcs[] = {
 	filter_area_func,
 	filter_os_func,
 	filter_device_func,
@@ -50,18 +49,6 @@ static int filter_helper(const AdsBiddingParam& param, list<AdsAdvertise*>& list
 /**
  * cmp func
  */
-static bool filter_exchange_func(const AdsBiddingParam& param, AdsAdvertise* ad)
-{
-	AdsLaunch *launch = ad->launch;
-	if ( launch == NULL ) {
-		return false;
-	}
-	if ( param.exchangeId() != launch->exchangeid ) {
-		return false;
-	}
-	return true;
-}
-
 static bool filter_area_func(const AdsBiddingParam& param, AdsAdvertise* ad)
 {
 	auto device = param.device();
