@@ -42,6 +42,9 @@ public:
 		AdsAdvertise *ad, AdsHttpResponse *response) override;
 
 	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) override;
+private:
+	void packBiddingSuccess2(AdsBiddingParam& param, AdsAdviewBidRequest *req, 
+		AdsAdvertise *ad, AdsHttpResponse *response);
 };
 
 
