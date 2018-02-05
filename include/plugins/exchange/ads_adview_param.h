@@ -37,36 +37,21 @@ class AdsAdviewImpression
 {
 public:
 	string id;
+	int instl; // 0-横幅 1-插屏 4-开屏 5-视频 6-原生
+	string tagid;
+	int bidfloor;
 	AdsAdviewBanner banner;
 	AdsAdviewNative native;
 	AdsAdviewVideo video;
 	AdsAdviewPmp pmp;
-	int instl; // 0-横幅 1-插屏 4-开屏 5-视频 6-原生
-	string tagid;
-	int bidfloor;
-};
-
-
-class AdsAdviewApp
-{
-public:
-	string name;
-};
-
-class AdsAdviewUser
-{
-public:
-	string id;
 };
 
 class AdsAdviewBidRequest
 {
 public:
 	string id; // 广告请求id
-	AdsAdviewImpression imp; // 广告描述(只取1个)
-	AdsAdviewApp app;
-	AdsAdviewUser user;
 	int at; // 0-最高价成交 1-次高价成交 2-优先购买
+	AdsAdviewImpression imp; // 广告描述(只取1个)
 };
 
 

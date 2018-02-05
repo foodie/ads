@@ -16,12 +16,10 @@ using std::ostringstream;
 
 AdsAdviewExchange::AdsAdviewExchange()
 {
-	_filter = new AdsAdviewFilter;
 }
 
 AdsAdviewExchange::~AdsAdviewExchange()
 {
-	delete _filter;
 }
 
 bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request, 
@@ -391,10 +389,18 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
  * @brief      new
  */
 
+static bool parseImpression(const rapidjson::Value& rdoc, 
+	AdsAdviewImpression& rimp);
+static bool parseDevice(const rapidjson::Value& rdoc, 
+	AdsBiddingDevice& rdevice);
+static bool parseApp(const rapidjson::Value& rdoc, 
+	AdsBiddingApp& rapp);
+
+
 bool AdsAdviewExchange::parseBiddingRequest2(AdsHttpRequest *request, 
 		AdsBiddingParam& param, void *buf)
 {
-	AdsAdviewBidRequest *bid = new (buf) AdsAdviewBidRequest;
+	AdsAdviewBidRequest *bidRequest = new (buf) AdsAdviewBidRequest;
 
 	rapidjson::Document doc;
 	if (doc.Parse( request->getBody().c_str() ).HasParseError()) {
@@ -402,7 +408,348 @@ bool AdsAdviewExchange::parseBiddingRequest2(AdsHttpRequest *request,
 		return false;
 	}
 
+	// id
+	auto idItr = doc.FindMember("id");
+	if ( idItr != doc.MemberEnd() ) {
+		bidRequest->id = idItr->value.GetString();
+	}
+
+	// at
+	auto atItr = doc.FindMember("at");
+	if ( atItr != doc.MemberEnd() ) {
+		bidRequest->at = atItr->value.GetInt();
+	}
+
+	// imp
+	if ( !parseImpression(doc, bidRequest->imp) ) {
+		return false;
+	}
+
+	// device
+	parseDevice(doc, param.device());
+
+	// app
+	parseApp(doc, param.app());
+
+	// user
+
+	return true;
+}
+
+static bool parseImpression(const rapidjson::Value& rdoc, 
+	AdsAdviewImpression& rimp)
+{
+	auto impItr = rdoc.FindMember("imp");
+	if ( impItr == rdoc.MemberEnd() ) {
+		return false;
+	}
+
+	const rapidjson::Value& imps = impItr->value;
+	if ( !imps.IsArray() || imps.Size() == 0 ) {
+		return false;
+	}
 	
+	const rapidjson::Value& imp = imps[0];
+
+	// id
+	auto idItr = imp.FindMember("id");
+	if ( idItr != imp.MemberEnd() ) {
+		rimp.id = idItr->value.GetString();
+	}
+
+	// instl
+	auto instlItr = imp.FindMember("instl");
+	if ( instlItr != imp.MemberEnd() ) {
+		rimp.instl = instlItr->value.GetInt();
+	}
+
+	// tagid
+	auto tagidItr = imp.FindMember("tagid");
+	if ( tagidItr != imp.MemberEnd() ) {
+		rimp.tagid = tagidItr->value.GetString();
+	}
+	
+	// bidfloor
+	auto bidfloorItr = imp.FindMember("bidfloor");
+	if ( bidfloorItr != imp.MemberEnd() ) {
+		rimp.bidfloor = bidfloorItr->value.GetInt();
+	}
+	
+	// banner
+	AdsAdviewBanner& rbanner = rimp.banner;
+	auto bannerItr = imp.FindMember("banner");
+	if ( bannerItr != imp.MemberEnd() ) {
+		const rapidjson::Value& banner = bannerItr->value;
+		// w
+		auto wItr = banner.FindMember("w");
+		if ( wItr != banner.MemberEnd() ) {
+			rbanner.w = wItr->value.GetInt();
+		}
+		// h
+		auto hItr = banner.FindMember("h");
+		if ( hItr != banner.MemberEnd() ) {
+			rbanner.h = hItr->value.GetInt();
+		}
+		// pos
+		auto posItr = banner.FindMember("pos");
+		if ( posItr != banner.MemberEnd() ) {
+			rbanner.pos = posItr->value.GetInt();
+		}
+	}
+
+	// video
+	AdsAdviewVideo& rvideo = rimp.video;
+	auto videoItr = imp.FindMember("video");
+	if ( videoItr != imp.MemberEnd() ) {
+		const rapidjson::Value& video = videoItr->value;
+		// w
+		auto wItr = video.FindMember("w");
+		if ( wItr != video.MemberEnd() ) {
+			rvideo.w = wItr->value.GetInt();
+		}
+		// h
+		auto hItr = video.FindMember("h");
+		if ( hItr != video.MemberEnd() ) {
+			rvideo.h = hItr->value.GetInt();
+		}
+		// minduration
+		auto mindurationItr = video.FindMember("minduration");
+		if ( mindurationItr != video.MemberEnd() ) {
+			rvideo.minduration = mindurationItr->value.GetInt();
+		}
+		// maxduration
+		auto maxdurationItr = video.FindMember("maxduration");
+		if ( maxdurationItr != video.MemberEnd() ) {
+			rvideo.maxduration = maxdurationItr->value.GetInt();
+		}
+	}
+
+	// native
+
+	// pmp
+	AdsAdviewPmp& rpmp = rimp.pmp;
+	auto pmpItr = imp.FindMember("pmp");
+	if ( pmpItr != imp.MemberEnd() ) {
+		const rapidjson::Value& pmp = pmpItr->value;
+		auto dealsItr = pmp.FindMember("deals");
+		if ( dealsItr != pmp.MemberEnd() ) {
+			const rapidjson::Value& deals = dealsItr->value;
+			if ( deals.IsArray() && deals.size() > 0 ) {
+				const rapidjson::Value& deal = deals[0];
+				// id
+				auto idItr = deal.FindMember("id");
+				if ( idItr != deal.MemberEnd() ) {
+					rpmp.id = idItr->value.GetString();
+				}
+				// bidfloor
+				auto bidfloorItr = deal.FindMember("bidfloor");
+				if ( bidfloorItr != deal.MemberEnd() ) {
+					rpmp.bidfloor = bidfloorItr->value.GetInt();
+				}
+				// at
+				auto atItr = deal.FindMember("at");
+				if ( atItr != deal.MemberEnd() ) {
+					rpmp.at = atItr->value.GetInt();
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+static bool parseDevice(const rapidjson::Value& rdoc, 
+	AdsBiddingDevice& rdevice)
+{
+	auto deviceItr = rdoc.FindMember("device");
+	if ( deviceItr == rdoc.MemberEnd() ) {
+		return false;
+	}
+
+	const rapidjson::Value& device = deviceItr->value;
+
+	// type
+	auto typeItr = device.FindMember("devicetype");
+	if ( typeItr != device.MemberEnd() ) {
+		const rapidjson::Value& type = typeItr->value;
+		if ( type.IsInt() ) {
+			switch( type.GetInt() ) {
+				case 1: // iPhone
+				case 2: // Android手机
+				case 4: // Windows Phone
+					deviceBuilder.setType( AdsDeviceType::MOBILE );
+					break;
+				case 3: // iPad
+				case 5: // Android平板
+					deviceBuilder.setType( AdsDeviceType::PAD );
+					break;
+				case 6: // 智能TV
+				case 7: // PC
+				default:
+					deviceBuilder.setType( AdsDeviceType::UNKNOW );
+					break;
+			}
+		}
+	}
+
+	// os
+	auto osItr = device.FindMember("os");
+	if ( osItr != device.MemberEnd() ) {
+		const rapidjson::Value& os = osItr->value;
+		if ( os.IsString() ) {
+			string osStr = ads_string_toupper( os.GetString() );
+			if ( osStr == "IOS" ) {
+				deviceBuilder.setOs( AdsOs::IOS );
+			} else if ( osStr == "ANDROID" ) {
+				deviceBuilder.setOs( AdsOs::ANDROID );
+			} else {
+				deviceBuilder.setOs( AdsOs::UNKNOW );
+			}
+		}
+	}
+	
+	// carrier
+	auto carrierItr = device.FindMember("carrier");
+	if ( carrierItr != device.MemberEnd() ) {
+		const rapidjson::Value& carrier = carrierItr->value;
+		if ( carrier.IsString() ) {
+			int carrierInt = ads_string_to_int( carrier.GetString() );
+			switch( carrierInt ) {
+				case 46000:
+				case 46002:
+				case 46007:
+					deviceBuilder.setCarrier( AdsCarrier::CHINA_MOBILE );
+					break;
+				case 46001:
+				case 46006:
+					deviceBuilder.setCarrier( AdsCarrier::CHINA_UNICOM );
+					break;
+				case 46003:
+				case 46005:
+					deviceBuilder.setCarrier( AdsCarrier::CHINA_TELECOM );
+					break;
+			}
+		}
+	}
+	
+	// connection_type
+	auto ctItr = device.FindMember("connectiontype");
+	if ( ctItr != device.MemberEnd() ) {
+		const rapidjson::Value& connection_type = ctItr->value;
+		if ( connection_type.IsInt() ) {
+			switch( connection_type.GetInt() ) {
+				case 1: // PC
+					deviceBuilder.setConnectionType( AdsConnectionType::PC );
+					break;
+				case 2: // WIFI
+					deviceBuilder.setConnectionType( AdsConnectionType::WIFI );
+					break;
+				case 3: // 蜂窝-未知
+					deviceBuilder.setConnectionType( AdsConnectionType::GSM_UNKNOW );
+					break;
+				case 4: // 蜂窝-2G
+					deviceBuilder.setConnectionType( AdsConnectionType::GSM_2G );
+					break;
+				case 5: // 蜂窝-3G
+					deviceBuilder.setConnectionType( AdsConnectionType::GSM_3G );
+					break;
+				case 6: // 蜂窝-4G
+					deviceBuilder.setConnectionType( AdsConnectionType::GSM_4G );
+					break;
+				case 0: // 未知
+				default:
+					deviceBuilder.setConnectionType( AdsConnectionType::UNKNOW );
+					break;
+			}
+		}
+	}
+	
+	// ip
+	auto ipItr = device.FindMember("ip");
+	if ( ipItr != device.MemberEnd() ) {
+		const rapidjson::Value& ip = ipItr->value;
+		if ( ip.IsString() ) {
+			deviceBuilder.setIp( ip.GetString() );
+		}
+	}
+
+	// ua
+	auto uaItr = device.FindMember("ua");
+	if ( uaItr != device.MemberEnd() ) {
+		const rapidjson::Value& ua = uaItr->value;
+		if ( ua.IsString() ) {
+			deviceBuilder.setUa( ua.GetString() );
+		}
+	}
+
+	// idfa
+	// imei
+	AdsOs os = param.device().os();
+	if ( os == AdsOs::IOS ) {
+		// idfa
+		auto idfaItr = device.FindMember("ifa");
+		if ( idfaItr != device.MemberEnd() ) {
+			if ( idfaItr->value.IsString() ) {
+				deviceBuilder.setIdfa( idfaItr->value.GetString() );
+			}
+		} else if ( (idfaItr = device.FindMember("dpidmd5")) != device.MemberEnd() ) {
+			if ( idfaItr->value.IsString() ) {
+				deviceBuilder.setIdfa( idfaItr->value.GetString() );
+			}
+		} else if ( (idfaItr = device.FindMember("dpidsha1")) != device.MemberEnd() ) {
+			if ( idfaItr->value.IsString() ) {
+				deviceBuilder.setIdfa( idfaItr->value.GetString() );
+			}
+		}
+	} else if ( os == AdsOs::ANDROID ) {
+		// imei
+		auto imeiItr = device.FindMember("didmd5");
+		if ( imeiItr != device.MemberEnd() ) {
+			if ( imeiItr->value.IsString() ) {
+				deviceBuilder.setImei( imeiItr->value.GetString() );
+			}
+		} else if ( (imeiItr = device.FindMember("didsha1")) != device.MemberEnd() ) {
+			if ( imeiItr->value.IsString() ) {
+				deviceBuilder.setImei( imeiItr->value.GetString() );
+			}
+		}
+	}
+
+	// mac
+	auto macItr = device.FindMember("macmd5");
+	if ( macItr != device.MemberEnd() ) {
+		if ( macItr->value.IsString() ) {
+			deviceBuilder.setMac( macItr->value.GetString() );
+		}
+	} else if ( (macItr = device.FindMember("macsha1")) != device.MemberEnd() ) {
+		if ( macItr->value.IsString() ) {
+			deviceBuilder.setMac( macItr->value.GetString() );
+		}
+	}
+	// mac1
+
+	return true;
+}
+
+static bool parseApp(const rapidjson::Value& rdoc, 
+	AdsBiddingApp& rapp)
+{
+	auto appItr = rdoc.FindMember("app");
+	if ( appItr == rdoc.MemberEnd() ) {
+		return false;
+	}
+
+	const rapidjson::Value& app = appItr->value;
+	auto appBuilder = rapp.getBuilder();
+
+	// name
+	auto nameItr = app.FindMember("name");
+	if ( nameItr != app.MemberEnd() ) {
+		const rapidjson::Value& name = nameItr->value;
+		if ( name.IsString() ) {
+			appBuilder.setName( name.GetString() );
+		}
+	}
 
 	return true;
 }
@@ -410,15 +757,15 @@ bool AdsAdviewExchange::parseBiddingRequest2(AdsHttpRequest *request,
 void AdsAdviewExchange::packBiddingResponse2(AdsBiddingParam& param, void *buf,
 		AdsAdvertise *ad, AdsHttpResponse *response)
 {
-	AdsAdviewBidRequest *bid = (AdsAdviewBidRequest*) buf;
+	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
 
 
-	bid->~AdsAdviewBidRequest();
+	bidRequest->~AdsAdviewBidRequest();
 }
 
 virtual void AdsAdviewExchange::biddingFilter2(void *buf, list<AdsAdvertise*>& al)
 {
-	AdsAdviewBidRequest *bid = (AdsAdviewBidRequest*) buf;
+	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
 }
 
 /***************************************************************/
