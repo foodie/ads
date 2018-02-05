@@ -534,7 +534,7 @@ static bool parseImpression(const rapidjson::Value& rdoc,
 		auto dealsItr = pmp.FindMember("deals");
 		if ( dealsItr != pmp.MemberEnd() ) {
 			const rapidjson::Value& deals = dealsItr->value;
-			if ( deals.IsArray() && deals.size() > 0 ) {
+			if ( deals.IsArray() && deals.Size() > 0 ) {
 				const rapidjson::Value& deal = deals[0];
 				// id
 				auto idItr = deal.FindMember("id");
@@ -567,6 +567,7 @@ static bool parseDevice(const rapidjson::Value& rdoc,
 	}
 
 	const rapidjson::Value& device = deviceItr->value;
+	auto deviceBuilder = rdevice.getBuilder();
 
 	// type
 	auto typeItr = device.FindMember("devicetype");

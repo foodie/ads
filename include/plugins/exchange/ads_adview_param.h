@@ -28,6 +28,7 @@ public:
 
 class AdsAdviewPmp
 {
+public:
 	string id;
 	int bidfloor;
 	int at;

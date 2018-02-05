@@ -9,7 +9,7 @@
 class AdsExchange
 {
 public:
-	AdsExchange() : _filter(NULL) {}
+	AdsExchange() {}
 	virtual ~AdsExchange() {}
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
