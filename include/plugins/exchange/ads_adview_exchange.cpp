@@ -414,7 +414,39 @@ void AdsAdviewExchange::biddingFilter(void *buf, list<AdsAdvertise*>& al)
 
 static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad)
 {
-	
+	AdsAdviewImpression& imp = req->imp;
+	AdsLaunch *launch = ad->launch;
+
+	string& pmp_id = imp.pmp.id;
+	if ( !pmp_id.empty() ) {
+		// pdb
+		if ( pmp_id != launch->pmp_id ) {
+			return false;
+		}
+	} else {
+		// rtb
+		if ( imp.bidfloor > launch->price ) {
+			return false;
+		}
+		switch (imp.instl) {
+			case 0:
+			case 1:
+			case 4:
+			{
+				if ( ad->material->type() != AdsMaterialType::IMAGE ) {
+					return false;
+				}
+
+				AdsAdviewBanner& banner = imp.banner;
+				AdsMaterialImage* img = ad->material->image();
+				if ( banner.w != img->width || banner.h != img->height ) {
+					return false;
+				}
+
+			}
+			break;
+		}
+	}
 
 	return true;
 }
