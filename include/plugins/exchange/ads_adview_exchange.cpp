@@ -432,7 +432,7 @@ static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad,
 		}
 	} else {
 		// rtb
-		if ( imp.bidfloor > launch->price ) {
+		if ( imp.bidfloor > launch->price * 100 ) {
 			oss << ad->id << ":" << "price" << "\x03";
 			return false;
 		}
