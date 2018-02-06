@@ -9,7 +9,6 @@ public:
 
 	virtual int process(AdsThreadData* pdata) override;
 
-	virtual int process2(AdsThreadData* pdata);
 };
 
 #endif

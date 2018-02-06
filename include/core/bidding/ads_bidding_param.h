@@ -22,19 +22,19 @@ public:
 	AdsBiddingParam() 
 		: _builder(*this),
 		  _exchangeid(0),_biddingid(),
-		  _impression(),_device(),_app(),_user()
+		  _device(),_app(),_user()
 	{}
 	Builder& getBuilder() { return _builder; }
 
 	int exchangeId() const { return _exchangeid; }
 	const string& biddingId() const { return _biddingid; }
 
-	AdsBiddingImpression& impression() { return _impression; }
+	//AdsBiddingImpression& impression() { return _impression; }
 	AdsBiddingDevice& device() { return _device; }
 	AdsBiddingApp& app() { return _app; }
 	AdsBiddingUser& user() { return _user; }
 
-	const AdsBiddingImpression& impression() const { return _impression; }
+	//const AdsBiddingImpression& impression() const { return _impression; }
 	const AdsBiddingDevice& device() const { return _device; }
 	const AdsBiddingApp& app() const { return _app; }
 	const AdsBiddingUser& user() const { return _user; }
@@ -45,7 +45,7 @@ private:
 	int 			_exchangeid;  	// exchange id
 	string 			_biddingid;		// 竞价请求id
 
-	AdsBiddingImpression 	_impression;
+	//AdsBiddingImpression 	_impression;
 	AdsBiddingDevice 		_device;
 	AdsBiddingApp 			_app;
 	AdsBiddingUser 			_user;

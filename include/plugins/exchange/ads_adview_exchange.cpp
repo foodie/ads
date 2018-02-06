@@ -22,372 +22,7 @@ AdsAdviewExchange::~AdsAdviewExchange()
 {
 }
 
-bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request, 
-	AdsBiddingParam& param)
-{
-	rapidjson::Document doc;
-	if (doc.Parse( request->getBody().c_str() ).HasParseError()) {
-		WARN("[Exchange] AdviewExchange parse bidding request failed");
-		return false;
-	}
-
-	auto builder = param.getBuilder();
-	// exchangeid
-	builder.setExchangeId( ADVIEW );
-	// biddingid
-	auto biddingidItr = doc.FindMember("id");
-	if ( biddingidItr != doc.MemberEnd() ) {
-		builder.setBiddingId( biddingidItr->value.GetString() );
-	}
-
-	// imp
-	auto impBuilder = param.impression().getBuilder();
-	auto impItr = doc.FindMember("imp");
-	if ( impItr != doc.MemberEnd() ) {
-		const rapidjson::Value& imps = impItr->value;
-		if ( imps.IsArray() && imps.Size() > 0 ) {
-			const rapidjson::Value& imp = imps[0];
-			// id
-			auto idItr = imp.FindMember("id");
-			if ( idItr != imp.MemberEnd() ) {
-				impBuilder.setId( idItr->value.GetString() );
-			}
-			// zoneid
-			impBuilder.setZoneId( ADVIEW_COMMON_ADZONE_ID );
-
-			// type
-			auto typeItr = imp.FindMember("instl");
-			if ( typeItr != imp.MemberEnd() ) {
-				const rapidjson::Value& type = typeItr->value;
-				if ( type.IsInt() ) {
-					switch( type.GetInt() ) {
-						case 0: // 横幅
-							impBuilder.setType(AdsAdvertiseType::BANNER); 
-							break;
-						case 1: // 插屏
-							impBuilder.setType(AdsAdvertiseType::PLAQUE); 
-							break;
-						case 4: // 开屏
-							impBuilder.setType(AdsAdvertiseType::SPLASH); 
-							break;
-						case 5: // 视频
-							impBuilder.setType(AdsAdvertiseType::VIDEO); 
-							break;
-						case 6: // 原生
-							impBuilder.setType(AdsAdvertiseType::NATIVE); 
-							break;
-					}
-				}
-			}
-			// settlement
-			// bidFloor
-			auto bfItr = imp.FindMember("bidfloor");
-			if ( bfItr != imp.MemberEnd() ) {
-				const rapidjson::Value& bidfloor = bfItr->value;
-				if ( bidfloor.IsInt() ) {
-					impBuilder.setBidFloor( bidfloor.GetInt() / 100 );
-				}
-			}
-
-			// banner
-			auto bannerBuilder = param.impression().banner().getBuilder();
-			auto bannerItr = imp.FindMember("banner");
-			if ( bannerItr != imp.MemberEnd() ) {
-				const rapidjson::Value& banner = bannerItr->value;
-				if ( banner.IsObject() ) {
-					// width
-					auto widthItr = banner.FindMember("w");
-					if ( widthItr != banner.MemberEnd() ) {
-						const rapidjson::Value& width = widthItr->value;
-						if ( width.IsInt() ) {
-							bannerBuilder.setWidth( width.GetInt() );
-						}
-					}
-					// height
-					auto heightItr = banner.FindMember("h");
-					if ( heightItr != banner.MemberEnd() ) {
-						const rapidjson::Value& height = heightItr->value;
-						if ( height.IsInt() ) {
-							bannerBuilder.setHeight( height.GetInt() );
-						}
-					}
-					// pos
-					auto posItr = banner.FindMember("pos");
-					if ( posItr != banner.MemberEnd() ) {
-						const rapidjson::Value& pos = posItr->value;
-						if ( pos.IsInt() ) {
-							bannerBuilder.setPos( pos.GetInt() );
-						}
-					}
-				}
-			}
-
-			// video
-			auto videoBuilder = param.impression().video().getBuilder();
-			auto videoItr = imp.FindMember("video");
-			if ( videoItr != imp.MemberEnd() ) {
-				const rapidjson::Value& video = videoItr->value;
-				if ( video.IsObject() ) {
-					// width
-					auto widthItr = video.FindMember("w");
-					if ( widthItr != video.MemberEnd() ) {
-						const rapidjson::Value& width = widthItr->value;
-						if ( width.IsInt() ) {
-							videoBuilder.setWidth( width.GetInt() );
-						}
-					}
-					// height
-					auto heightItr = video.FindMember("h");
-					if ( heightItr != video.MemberEnd() ) {
-						const rapidjson::Value& height = heightItr->value;
-						if ( height.IsInt() ) {
-							videoBuilder.setHeight( height.GetInt() );
-						}
-					}
-					// minDuration
-					auto mindItr = video.FindMember("minduration");
-					if ( mindItr != video.MemberEnd() ) {
-						const rapidjson::Value& mind = mindItr->value;
-						if ( mind.IsInt() ) {
-							videoBuilder.setMinDuration( mind.GetInt() );
-						}
-					}
-					// maxDuration
-					auto maxdItr = video.FindMember("maxduration");
-					if ( maxdItr != video.MemberEnd() ) {
-						const rapidjson::Value& maxd = maxdItr->value;
-						if ( maxd.IsInt() ) {
-							videoBuilder.setMaxDuration( maxd.GetInt() );
-						}
-					}
-				}
-			}
-
-			// native
-
-			// biddingType
-			// pmp
-			auto pmpBuilder = param.impression().pmp().getBuilder();
-			auto pmpItr = imp.FindMember("pmp");
-			if ( pmpItr != imp.MemberEnd() ) {
-				impBuilder.setBiddingType(AdsBiddingType::PDB);
-				const rapidjson::Value& pmp = pmpItr->value;
-				if ( pmp.IsObject() ) {
-					auto dealItr = pmp.FindMember("deals");
-					if ( dealItr != pmp.MemberEnd() ) {
-						const rapidjson::Value& deals = dealItr->value;
-						if ( deals.IsArray() && deals.Size() > 0 ) {
-							const rapidjson::Value& deal = deals[0];
-							// id
-							auto dealidItr = deal.FindMember("id");
-							if ( dealidItr != deal.MemberEnd() ) {
-								const rapidjson::Value& dealid = dealidItr->value;
-								if ( dealid.IsString() ) {
-									pmpBuilder.setId( dealid.GetString() );
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// device
-	auto deviceBuilder = param.device().getBuilder();
-	auto deviceItr = doc.FindMember("device");
-	if ( deviceItr != doc.MemberEnd() ) {
-		const rapidjson::Value& device = deviceItr->value;
-		// type
-		auto typeItr = device.FindMember("devicetype");
-		if ( typeItr != device.MemberEnd() ) {
-			const rapidjson::Value& type = typeItr->value;
-			if ( type.IsInt() ) {
-				switch( type.GetInt() ) {
-					case 1: // iPhone
-					case 2: // Android手机
-					case 4: // Windows Phone
-						deviceBuilder.setType( AdsDeviceType::MOBILE );
-						break;
-					case 3: // iPad
-					case 5: // Android平板
-						deviceBuilder.setType( AdsDeviceType::PAD );
-						break;
-					case 6: // 智能TV
-					case 7: // PC
-					default:
-						deviceBuilder.setType( AdsDeviceType::UNKNOW );
-						break;
-				}
-			}
-		}
-		// os
-		auto osItr = device.FindMember("os");
-		if ( osItr != device.MemberEnd() ) {
-			const rapidjson::Value& os = osItr->value;
-			if ( os.IsString() ) {
-				string osStr = ads_string_toupper( os.GetString() );
-				if ( osStr == "IOS" ) {
-					deviceBuilder.setOs( AdsOs::IOS );
-				} else if ( osStr == "ANDROID" ) {
-					deviceBuilder.setOs( AdsOs::ANDROID );
-				} else {
-					deviceBuilder.setOs( AdsOs::UNKNOW );
-				}
-			}
-		}
-		// carrier
-		auto carrierItr = device.FindMember("carrier");
-		if ( carrierItr != device.MemberEnd() ) {
-			const rapidjson::Value& carrier = carrierItr->value;
-			if ( carrier.IsString() ) {
-				int carrierInt = ads_string_to_int( carrier.GetString() );
-				switch( carrierInt ) {
-					case 46000:
-					case 46002:
-					case 46007:
-						deviceBuilder.setCarrier( AdsCarrier::CHINA_MOBILE );
-						break;
-					case 46001:
-					case 46006:
-						deviceBuilder.setCarrier( AdsCarrier::CHINA_UNICOM );
-						break;
-					case 46003:
-					case 46005:
-						deviceBuilder.setCarrier( AdsCarrier::CHINA_TELECOM );
-						break;
-				}
-			}
-		}
-		// connection_type
-		auto ctItr = device.FindMember("connectiontype");
-		if ( ctItr != device.MemberEnd() ) {
-			const rapidjson::Value& connection_type = ctItr->value;
-			if ( connection_type.IsInt() ) {
-				switch( connection_type.GetInt() ) {
-					case 1: // PC
-						deviceBuilder.setConnectionType( AdsConnectionType::PC );
-						break;
-					case 2: // WIFI
-						deviceBuilder.setConnectionType( AdsConnectionType::WIFI );
-						break;
-					case 3: // 蜂窝-未知
-						deviceBuilder.setConnectionType( AdsConnectionType::GSM_UNKNOW );
-						break;
-					case 4: // 蜂窝-2G
-						deviceBuilder.setConnectionType( AdsConnectionType::GSM_2G );
-						break;
-					case 5: // 蜂窝-3G
-						deviceBuilder.setConnectionType( AdsConnectionType::GSM_3G );
-						break;
-					case 6: // 蜂窝-4G
-						deviceBuilder.setConnectionType( AdsConnectionType::GSM_4G );
-						break;
-					case 0: // 未知
-					default:
-						deviceBuilder.setConnectionType( AdsConnectionType::UNKNOW );
-						break;
-				}
-			}
-		}
-		// ip
-		auto ipItr = device.FindMember("ip");
-		if ( ipItr != device.MemberEnd() ) {
-			const rapidjson::Value& ip = ipItr->value;
-			if ( ip.IsString() ) {
-				deviceBuilder.setIp( ip.GetString() );
-			}
-		}
-		// ua
-		auto uaItr = device.FindMember("ua");
-		if ( uaItr != device.MemberEnd() ) {
-			const rapidjson::Value& ua = uaItr->value;
-			if ( ua.IsString() ) {
-				deviceBuilder.setUa( ua.GetString() );
-			}
-		}
-		// idfa
-		// imei
-		AdsOs os = param.device().os();
-		if ( os == AdsOs::IOS ) {
-			// idfa
-			auto idfaItr = device.FindMember("ifa");
-			if ( idfaItr != device.MemberEnd() ) {
-				if ( idfaItr->value.IsString() ) {
-					deviceBuilder.setIdfa( idfaItr->value.GetString() );
-				}
-			} else if ( (idfaItr = device.FindMember("dpidmd5")) != device.MemberEnd() ) {
-				if ( idfaItr->value.IsString() ) {
-					deviceBuilder.setIdfa( idfaItr->value.GetString() );
-				}
-			} else if ( (idfaItr = device.FindMember("dpidsha1")) != device.MemberEnd() ) {
-				if ( idfaItr->value.IsString() ) {
-					deviceBuilder.setIdfa( idfaItr->value.GetString() );
-				}
-			}
-		} else if ( os == AdsOs::ANDROID ) {
-			// imei
-			auto imeiItr = device.FindMember("didmd5");
-			if ( imeiItr != device.MemberEnd() ) {
-				if ( imeiItr->value.IsString() ) {
-					deviceBuilder.setImei( imeiItr->value.GetString() );
-				}
-			} else if ( (imeiItr = device.FindMember("didsha1")) != device.MemberEnd() ) {
-				if ( imeiItr->value.IsString() ) {
-					deviceBuilder.setImei( imeiItr->value.GetString() );
-				}
-			}
-		}
-		// mac
-		auto macItr = device.FindMember("macmd5");
-		if ( macItr != device.MemberEnd() ) {
-			if ( macItr->value.IsString() ) {
-				deviceBuilder.setMac( macItr->value.GetString() );
-			}
-		} else if ( (macItr = device.FindMember("macsha1")) != device.MemberEnd() ) {
-			if ( macItr->value.IsString() ) {
-				deviceBuilder.setMac( macItr->value.GetString() );
-			}
-		}
-		// mac1
-	}
-
-	// app
-	auto appBuilder = param.app().getBuilder();
-	auto appItr = doc.FindMember("app");
-	if ( appItr != doc.MemberEnd() ) {
-		const rapidjson::Value& app = appItr->value;
-		// name
-		auto nameItr = app.FindMember("name");
-		if ( nameItr != app.MemberEnd() ) {
-			const rapidjson::Value& name = nameItr->value;
-			if ( name.IsString() ) {
-				appBuilder.setName( name.GetString() );
-			}
-		}
-	}
-
-	// user
-	auto userBuilder = param.user().getBuilder();
-	auto userItr = doc.FindMember("user");
-	if ( userItr != doc.MemberEnd() ) {
-		const rapidjson::Value& user = userItr->value;
-		// id
-		auto idItr = user.FindMember("id");
-		if ( idItr != user.MemberEnd() ) {
-			const rapidjson::Value& id = idItr->value;
-			if ( id.IsString() ) {
-				userBuilder.setExchangeId( id.GetString() );
-			}
-		}
-	}
-
-	return true;
-}
-
-/**
- * @brief      new
- */
+/***************************************************************/
 
 static bool parseImpression(const rapidjson::Value& rdoc, 
 	AdsAdviewImpression& rimp);
@@ -397,7 +32,7 @@ static bool parseApp(const rapidjson::Value& rdoc,
 	AdsBiddingApp& rapp);
 
 
-bool AdsAdviewExchange::parseBiddingRequest2(AdsHttpRequest *request, 
+bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request, 
 		AdsBiddingParam& param, void *buf)
 {
 	AdsAdviewBidRequest *bidRequest = new (buf) AdsAdviewBidRequest;
@@ -803,19 +438,19 @@ string AdsAdviewExchange::getImpressionUrl(AdsBiddingParam& param,
 
 static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
 	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
-static void packBiddingVideo(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
-static void packBiddingNative(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
 
-void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param,
-	AdsAdvertise *ad, AdsHttpResponse *response)
+void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param, void *buf,
+		AdsAdvertise *ad, AdsHttpResponse *response)
 {
+	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
+
 	if ( ad == NULL ) {
 		this->packBiddingFailure(param, response);
 	} else {
-		this->packBiddingSuccess(param, ad, response);
+		this->packBiddingSuccess(param, bidRequest, ad, response);
 	}
+
+	bidRequest->~AdsAdviewBidRequest();
 }
 
 void AdsAdviewExchange::packBiddingFailure(AdsBiddingParam& param, 
@@ -832,166 +467,6 @@ void AdsAdviewExchange::packBiddingFailure(AdsBiddingParam& param,
 }
 
 void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param, 
-	AdsAdvertise *ad, AdsHttpResponse *response)
-{
-	rapidjson::Document doc;
-	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
-	rapidjson::Value root(rapidjson::kObjectType);
-
-	// id string
-	root.AddMember("id", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
-	// bidid string
-	
-	// seatbid array
-	rapidjson::Value seatbid(rapidjson::kArrayType);
-	// [ SeatBid
-	rapidjson::Value SeatBid(rapidjson::kObjectType);
-	// 		bid array
-	rapidjson::Value bid(rapidjson::kArrayType);
-	//		[ Bid
-	rapidjson::Value Bid(rapidjson::kObjectType);
-	
-	auto imp = param.impression();
-	//			impid
-	Bid.AddMember("impid", rapidjson::StringRef( imp.id().c_str() ), allocator);
-	//			price
-	Bid.AddMember("price", ad->launch->price * 100, allocator);
-	//			paymode
-	switch( ad->launch->settlement ) {
-		case AdsBiddingSettlement::CPM:
-			Bid.AddMember("paymode", 1, allocator);
-			break;
-		case AdsBiddingSettlement::CPC:
-			Bid.AddMember("paymode", 2, allocator);
-			break;
-	}
-	//			adct
-	switch( ad->action ) {
-		case AdsClickAction::OPEN_WEBPAGE:
-			Bid.AddMember("adct", 1, allocator);
-			break;
-		case AdsClickAction::DOWNLOAD_APP:
-			Bid.AddMember("adct", 2, allocator);
-			break;
-	}
-	//			adid
-	//string adid = ads_int_to_string(ad->id);
-	//Bid.AddMember("adid", rapidjson::StringRef( adid.c_str() ), allocator);
-
-	switch( imp.type() ) {
-		case AdsAdvertiseType::BANNER:
-		case AdsAdvertiseType::PLAQUE:
-		case AdsAdvertiseType::SPLASH:
-			packBiddingBanner(param, ad, Bid, allocator);
-			break;
-		case AdsAdvertiseType::VIDEO:
-			packBiddingVideo(param, ad, Bid, allocator);
-		case AdsAdvertiseType::NATIVE:
-			packBiddingNative(param, ad, Bid, allocator);
-			break;
-	}
-
-	// 			adLogo
-	Bid.AddMember("adLogo", rapidjson::StringRef( g_conf->adview.logo ), allocator);
-	//			adurl
-	if ( ad->imp_track.size() > 0 ) {
-		string& adurl = ad->imp_track.at(0);
-		Bid.AddMember("adurl", rapidjson::StringRef( adurl.c_str() ), allocator);
-	} else {
-		Bid.AddMember("adurl", rapidjson::StringRef( ad->landing.c_str() ), allocator);
-	}
-	//			wurl 赢价
-	string winUrl = this->getWinnoticeUrl(param, ad);
-	Bid.AddMember("wurl", rapidjson::StringRef( winUrl.c_str() ), allocator);
-	//			nurl 展示
-	rapidjson::Value nurl(rapidjson::kObjectType);
-	rapidjson::Value nurl_0(rapidjson::kArrayType);
-	if ( ad->imp_track.size() > 1 ) {
-		for ( size_t i = 1; i < ad->imp_track.size(); i++ ) {
-			string& impt = ad->imp_track.at(i);
-			nurl_0.PushBack(rapidjson::StringRef( impt.c_str() ), allocator);
-		}
-	}
-	string impUrl = this->getImpressionUrl(param, ad);
-	nurl_0.PushBack(rapidjson::StringRef( impUrl.c_str() ), allocator);
-	nurl.AddMember("0", nurl_0, allocator);
-	Bid.AddMember("nurl", nurl, allocator);
-	// 			curl 点击
-	rapidjson::Value curl(rapidjson::kArrayType);
-	for ( size_t i = 0; i < ad->clk_track.size(); i++ ) {
-		string& clkt = ad->clk_track.at(i);
-		curl.PushBack(rapidjson::StringRef( clkt.c_str() ), allocator);
-	}
-	string clkUrl = this->getClickUrl(param, ad);
-	curl.PushBack(rapidjson::StringRef( clkUrl.c_str() ), allocator);
-	Bid.AddMember("curl", curl, allocator);
-	//			dealid
-	if ( param.impression().biddingType() == AdsBiddingType::PDB ) {
-		Bid.AddMember("dealid", rapidjson::StringRef( param.impression().pmp().id().c_str() ), allocator);
-	}
-	//			cid 创意id
-	string cid = ads_int_to_string(ad->id);
-	Bid.AddMember("cid", rapidjson::StringRef( cid.c_str() ), allocator);
-	//			crid 物料id
-	string crid = ads_int_to_string(ad->material->id());
-	Bid.AddMember("crid", rapidjson::StringRef( crid.c_str() ), allocator);
-
-	bid.PushBack(Bid, allocator);
-	//		]
-	SeatBid.AddMember("bid", bid, allocator);
-	// 		seat string
-	seatbid.PushBack(SeatBid, allocator);
-	// ]
-	root.AddMember("seatbid", seatbid, allocator);
-
-	response->setBody( ads_json_to_string(root) );
-}
-
-static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
-{
-	AdsMaterialImage *img = ad->material->image();
-
-	// admt
-	Bid.AddMember("admt", 1, allocator);
-	// adi
-	Bid.AddMember("adi", rapidjson::StringRef( img->source.c_str() ), allocator);
-	// adw
-	Bid.AddMember("adw", img->width, allocator);
-	// adh
-	Bid.AddMember("adh", img->height, allocator);
-}
-
-static void packBiddingVideo(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
-{
-
-}
-
-static void packBiddingNative(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
-{
-
-}
-
-/***************************************************************/
-
-
-void AdsAdviewExchange::packBiddingResponse2(AdsBiddingParam& param, void *buf,
-		AdsAdvertise *ad, AdsHttpResponse *response)
-{
-	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
-
-	if ( ad == NULL ) {
-		this->packBiddingFailure(param, response);
-	} else {
-		this->packBiddingSuccess2(param, bidRequest, ad, response);
-	}
-
-	bidRequest->~AdsAdviewBidRequest();
-}
-
-void AdsAdviewExchange::packBiddingSuccess2(AdsBiddingParam& param, 
 	AdsAdviewBidRequest *req, AdsAdvertise *ad, AdsHttpResponse *response)
 {
 	rapidjson::Document doc;
@@ -1001,7 +476,7 @@ void AdsAdviewExchange::packBiddingSuccess2(AdsBiddingParam& param,
 	// id string
 	root.AddMember("id", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
 	// bidid string
-	
+	root.AddMember("bidid", rapidjson::StringRef( param.biddingId().c_str() ), allocator); // BidRequest的唯一标识
 	// seatbid array
 	rapidjson::Value seatbid(rapidjson::kArrayType);
 	// [ SeatBid
@@ -1100,6 +575,21 @@ void AdsAdviewExchange::packBiddingSuccess2(AdsBiddingParam& param,
 	root.AddMember("seatbid", seatbid, allocator);
 
 	response->setBody( ads_json_to_string(root) );
+}
+
+static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
+	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
+{
+	AdsMaterialImage *img = ad->material->image();
+
+	// admt
+	Bid.AddMember("admt", 1, allocator);
+	// adi
+	Bid.AddMember("adi", rapidjson::StringRef( img->source.c_str() ), allocator);
+	// adw
+	Bid.AddMember("adw", img->width, allocator);
+	// adh
+	Bid.AddMember("adh", img->height, allocator);
 }
 
 /***************************************************************/

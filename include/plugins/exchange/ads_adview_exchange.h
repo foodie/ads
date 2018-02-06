@@ -12,10 +12,12 @@ public:
 	~AdsAdviewExchange();
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
-		AdsBiddingParam& param) override;
+		AdsBiddingParam& param, void *buf) override;
 
-	virtual void packBiddingResponse(AdsBiddingParam& param, 
+	virtual void packBiddingResponse(AdsBiddingParam& param, void *buf,
 		AdsAdvertise *ad, AdsHttpResponse *response) override;
+
+	virtual void biddingFilter(void *buf, list<AdsAdvertise*>& al) override;
 
 	virtual int decryptWinPrice(const string& str) override;
 
@@ -27,23 +29,9 @@ protected:
 		AdsAdvertise *ad) override;
 
 private:
-	void packBiddingFailure(AdsBiddingParam& param, 
-		AdsHttpResponse *response);
+	void packBiddingFailure(AdsBiddingParam& param, AdsHttpResponse *response);
 
-	void packBiddingSuccess(AdsBiddingParam& param, 
-		AdsAdvertise *ad, AdsHttpResponse *response);
-
-/* new */
-public:
-	virtual bool parseBiddingRequest2(AdsHttpRequest *request, 
-		AdsBiddingParam& param, void *buf) override;
-
-	virtual void packBiddingResponse2(AdsBiddingParam& param, void *buf,
-		AdsAdvertise *ad, AdsHttpResponse *response) override;
-
-	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) override;
-private:
-	void packBiddingSuccess2(AdsBiddingParam& param, AdsAdviewBidRequest *req, 
+	void packBiddingSuccess(AdsBiddingParam& param, AdsAdviewBidRequest *req, 
 		AdsAdvertise *ad, AdsHttpResponse *response);
 };
 

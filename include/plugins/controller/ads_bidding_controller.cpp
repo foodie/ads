@@ -18,49 +18,6 @@ using std::endl;
 
 static void log_bidding_param(AdsBiddingParam& param);
 
-int AdsBiddingController::process2(AdsThreadData* p_thd_data)
-{
-	AdsHttpRequest *request = p_thd_data->request;
-	AdsHttpResponse *response = p_thd_data->response;
-	AdsBiddingParam param;
-	
-	// 获取exchange实例
-	AdsExchange* exchange = getExchange( request->getUri(1) );
-	if ( exchange == NULL ) {
-		return ADS_HTTP_NOT_FOUND;
-	}
-
-	// 解析请求数据
-	bool ret = exchange->parseBiddingRequest(request, param);
-	if ( !ret ) {
-		// 解析失败
-		exchange->packBiddingResponse(param, NULL, response);
-		return ADS_HTTP_BAD_REQUEST;
-	}
-
-	// 通过ip获取地域id
-	auto deviceBuilder = param.device().getBuilder();
-	deviceBuilder.setAddressId(0);
-
-	if ( LOG_BIDDING_PARAM ) {
-		log_bidding_param(param);
-	}
-
-	// 获取可投放广告列表
-	list<AdsAdvertise*> adList;
-	AdsAdvertiseService& adService = getAdvertiseService();
-	adService.search(adList, param.exchangeId());
-
-	// 竞价处理
-	AdsBiddingService& biddingService = getBiddingService();
-	AdsAdvertise* ad = biddingService.bidding(param, adList);
-
-	// 封装响应数据
-	exchange->packBiddingResponse(param, ad, response);
-
-	return ADS_HTTP_OK;
-}
-
 int AdsBiddingController::process(AdsThreadData* p_thd_data)
 {
 	AdsHttpRequest *request = p_thd_data->request;
@@ -76,11 +33,19 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	AdsBiddingParam param; 	// 设备信息
 	
 	// 解析
-	bool ret = exchange->parseBiddingRequest2(request, param, mBuffer);
+	bool ret = exchange->parseBiddingRequest(request, param, mBuffer);
 	if ( !ret ) {
 		// 解析失败
-		exchange->packBiddingResponse2(param, mBuffer, NULL, response);
+		exchange->packBiddingResponse(param, mBuffer, NULL, response);
 		return ADS_HTTP_BAD_REQUEST;
+	}
+
+	// 通过ip获取地域id
+	auto deviceBuilder = param.device().getBuilder();
+	deviceBuilder.setAddressId(0);
+
+	if ( LOG_BIDDING_PARAM ) {
+		log_bidding_param(param);
 	}
 
 	// 检索广告
@@ -89,18 +54,14 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 	adService.search(al, param.exchangeId());
 
 	// 广告过滤
-	exchange->biddingFilter2(mBuffer, al);
-
-	// 通过ip获取地域id
-	auto deviceBuilder = param.device().getBuilder();
-	deviceBuilder.setAddressId(0);
+	exchange->biddingFilter(mBuffer, al);
 
 	// 竞价处理
 	AdsBiddingService& biddingService = getBiddingService();
 	AdsAdvertise* ad = biddingService.bidding(param, al);
 
 	// 封装响应数据
-	exchange->packBiddingResponse2(param, mBuffer, ad, response);
+	exchange->packBiddingResponse(param, mBuffer, ad, response);
 
 	return ADS_HTTP_OK;
 }

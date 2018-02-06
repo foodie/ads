@@ -9,7 +9,7 @@ using std::ostringstream;
 string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad)
 {
 	ostringstream oss;
-	oss << ADS_MONITOR_KEY_BIDDING_ID << "=" << param.impression().id();
+	oss << ADS_MONITOR_KEY_BIDDING_ID << "=" << param.biddingId();
 	// campaign_id
 	oss << "&" << ADS_MONITOR_KEY_CAMPAIGN_ID << "=" << ad->campaign->id;
 	// launch_id
@@ -25,7 +25,7 @@ string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad)
 	// settlement (CPM | CPC)
 	oss << "&" << ADS_MONITOR_KEY_SETTLEMENT << "=" << (int)ad->launch->settlement;
 	// ad_type
-	oss << "&" << ADS_MONITOR_KEY_AD_TYPE << "=" << (int)param.impression().type();
+	//oss << "&" << ADS_MONITOR_KEY_AD_TYPE << "=" << (int)param.impression().type();
 	// os
 	oss << "&" << ADS_MONITOR_KEY_OS << "=" << (int)param.device().os();
 	// device

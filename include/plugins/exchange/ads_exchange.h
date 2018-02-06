@@ -13,9 +13,9 @@ public:
 	virtual ~AdsExchange() {}
 
 	virtual bool parseBiddingRequest(AdsHttpRequest *request, 
-		AdsBiddingParam& param) = 0;
+		AdsBiddingParam& param, void *buf) = 0;
 
-	virtual void packBiddingResponse(AdsBiddingParam& param, 
+	virtual void packBiddingResponse(AdsBiddingParam& param, void *buf,
 		AdsAdvertise *ad, AdsHttpResponse *response) = 0;
 
 	virtual int decryptWinPrice(const string& str)
@@ -23,11 +23,7 @@ public:
 		return atoi( str.c_str() );
 	}
 
-	virtual void biddingFilter(const AdsBiddingParam& param, 
-		list<AdsAdvertise*>& al)
-	{
-		
-	}
+	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) = 0;
 
 protected:
 
@@ -38,17 +34,6 @@ protected:
 	virtual string getImpressionUrl(AdsBiddingParam& param, AdsAdvertise *ad);
 
 	virtual string getClickUrl(AdsBiddingParam& param, AdsAdvertise *ad);
-
-	/* new */
-public:
-	virtual bool parseBiddingRequest2(AdsHttpRequest *request, 
-		AdsBiddingParam& param, void *buf) = 0;
-
-	virtual void packBiddingResponse2(AdsBiddingParam& param, void *buf,
-		AdsAdvertise *ad, AdsHttpResponse *response) = 0;
-
-	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) = 0;
-
 };
 
 inline static bool initExchange()
