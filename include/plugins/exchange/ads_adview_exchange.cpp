@@ -462,7 +462,7 @@ static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad,
 }
 
 /***************************************************************/
-string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, 
+string AdsAdviewExchange::getUrlBaseInfo(AdsBiddingParam& param, 
 		AdsAdvertise *ad)
 {
 	string url = AdsExchange::getUrlBaseInfo(param, ad);

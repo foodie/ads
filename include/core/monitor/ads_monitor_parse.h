@@ -84,8 +84,9 @@ public:
 		param->imei = request->getQuery(ADS_MONITOR_KEY_IMEI);
 
 		// ip
-		long ip = ads_string_to_long( request->getQuery(ADS_MONITOR_KEY_IP) );
-		param->ip = AdsIpLocation::long2Ip(ip);
+		//long ip = ads_string_to_long( request->getQuery(ADS_MONITOR_KEY_IP) );
+		//param->ip = AdsIpLocation::long2Ip(ip);
+		param->ip = request->getQuery(ADS_MONITOR_KEY_IP);
 		// address_id
 		param->address_id = ads_string_to_int( request->getQuery(ADS_MONITOR_KEY_ADDRESS_ID) );
 

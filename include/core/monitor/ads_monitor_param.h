@@ -9,7 +9,7 @@
 
 using std::string;
 
-enum class AdsMonitorType { WINNOTICE, IMPRESSION, CLICK };
+enum class AdsMonitorType { WINNOTICE=1, IMPRESSION, CLICK };
 
 class AdsMonitorParam
 {
@@ -24,7 +24,7 @@ public:
 	int creative_id;		// 创意id
 	int material_id;		// 素材id
 
-	int 	exchange;		// 媒体
+	string 	exchange;		// 媒体
 	int 	price;
 
 	AdsBiddingType 		 bidding_type; 	// 竞价类型 rtb pdb
