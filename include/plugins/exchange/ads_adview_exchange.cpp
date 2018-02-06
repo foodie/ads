@@ -36,6 +36,9 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 		AdsBiddingParam& param, void *buf)
 {
 	AdsAdviewBidRequest *bidRequest = new (buf) AdsAdviewBidRequest;
+	auto builder = param.getBuilder();
+
+	builder.setExchangeId( ADVIEW );
 
 	rapidjson::Document doc;
 	if (doc.Parse( request->getBody().c_str() ).HasParseError()) {
@@ -46,6 +49,7 @@ bool AdsAdviewExchange::parseBiddingRequest(AdsHttpRequest *request,
 	// id
 	auto idItr = doc.FindMember("id");
 	if ( idItr != doc.MemberEnd() ) {
+		builder.setBiddingId( idItr->value.GetString() );
 		bidRequest->id = idItr->value.GetString();
 	}
 
@@ -585,7 +589,8 @@ static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad,
 	// admt
 	Bid.AddMember("admt", 1, allocator);
 	// adi
-	Bid.AddMember("adi", rapidjson::StringRef( img->source.c_str() ), allocator);
+	string adi = getMaterialSourceUrl( img->source.c_str() );
+	Bid.AddMember("adi", rapidjson::StringRef( adi.c_str() ), allocator);
 	// adw
 	Bid.AddMember("adw", img->width, allocator);
 	// adh

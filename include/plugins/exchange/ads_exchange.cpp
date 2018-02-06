@@ -71,3 +71,10 @@ string AdsExchange::getClickUrl(AdsBiddingParam& param, AdsAdvertise *ad)
 	oss << "&" << ADS_MONITOR_KEY_REDIRECT << "=" << ads_url_encode(ad->landing);
 	return oss.str();
 }
+
+string AdsExchange::getMaterialSourceUrl(const char *baseUrl)
+{
+	ostringstream oss;
+	oss << g_conf->ads.material_host << baseUrl;
+	return oss.str();
+}

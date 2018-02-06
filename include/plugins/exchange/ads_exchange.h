@@ -34,6 +34,8 @@ protected:
 	virtual string getImpressionUrl(AdsBiddingParam& param, AdsAdvertise *ad);
 
 	virtual string getClickUrl(AdsBiddingParam& param, AdsAdvertise *ad);
+
+	virtual string getMaterialSourceUrl(AdsAdvertise *ad);
 };
 
 inline static bool initExchange()
