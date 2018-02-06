@@ -394,7 +394,7 @@ static bool parseApp(const rapidjson::Value& rdoc,
 
 static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad);
 
-void AdsAdviewExchange::biddingFilter2(void *buf, list<AdsAdvertise*>& al)
+void AdsAdviewExchange::biddingFilter(void *buf, list<AdsAdvertise*>& al)
 {
 	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
 
@@ -556,8 +556,8 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 	curl.PushBack(rapidjson::StringRef( clkUrl.c_str() ), allocator);
 	Bid.AddMember("curl", curl, allocator);
 	//			dealid
-	if ( param.impression().biddingType() == AdsBiddingType::PDB ) {
-		Bid.AddMember("dealid", rapidjson::StringRef( param.impression().pmp().id().c_str() ), allocator);
+	if ( !imp.pmp.id.empty() ) {
+		Bid.AddMember("dealid", rapidjson::StringRef( imp.pmp.id.c_str() ), allocator);
 	}
 	//			cid 创意id
 	string cid = ads_int_to_string(ad->id);

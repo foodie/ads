@@ -74,6 +74,7 @@ static void log_bidding_param(AdsBiddingParam& param)
 	cout << "ExchangeId: " << param.exchangeId() << endl;
 	cout << "RequestId: " << param.biddingId() << endl;
 	
+/*
 	auto imp = param.impression();
 	cout << "  [impression]" << endl;
 	cout << "  id: " 		 << imp.id() << endl;
@@ -113,6 +114,7 @@ static void log_bidding_param(AdsBiddingParam& param)
 	cout << "    [pmp]" << endl;
 	cout << "    id: " << pmp.id() << endl;
 	}
+*/
 	
 	auto device = param.device();
 	cout << "  [device]" << endl;

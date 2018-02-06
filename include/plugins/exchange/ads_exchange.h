@@ -23,7 +23,7 @@ public:
 		return atoi( str.c_str() );
 	}
 
-	virtual void biddingFilter2(void *buf, list<AdsAdvertise*>& al) = 0;
+	virtual void biddingFilter(void *buf, list<AdsAdvertise*>& al) = 0;
 
 protected:
 
