@@ -440,9 +440,6 @@ string AdsAdviewExchange::getImpressionUrl(AdsBiddingParam& param,
 
 /***************************************************************/
 
-static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator);
-
 void AdsAdviewExchange::packBiddingResponse(AdsBiddingParam& param, void *buf,
 		AdsAdvertise *ad, AdsHttpResponse *response)
 {
@@ -521,8 +518,20 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 		case 0:
 		case 1:
 		case 4:
-			packBiddingBanner(param, ad, Bid, allocator);
-			break;
+		{
+			AdsMaterialImage *img = ad->material->image();
+
+			// admt
+			Bid.AddMember("admt", 1, allocator);
+			// adi
+			string adi = this->getMaterialSourceUrl( img->source.c_str() );
+			Bid.AddMember("adi", rapidjson::StringRef( adi.c_str() ), allocator);
+			// adw
+			Bid.AddMember("adw", img->width, allocator);
+			// adh
+			Bid.AddMember("adh", img->height, allocator);
+		}
+		break;
 	}
 
 	// 			adLogo
@@ -579,22 +588,6 @@ void AdsAdviewExchange::packBiddingSuccess(AdsBiddingParam& param,
 	root.AddMember("seatbid", seatbid, allocator);
 
 	response->setBody( ads_json_to_string(root) );
-}
-
-static void packBiddingBanner(AdsBiddingParam& param, AdsAdvertise *ad, 
-	rapidjson::Value& Bid, rapidjson::Document::AllocatorType& allocator)
-{
-	AdsMaterialImage *img = ad->material->image();
-
-	// admt
-	Bid.AddMember("admt", 1, allocator);
-	// adi
-	string adi = getMaterialSourceUrl( img->source.c_str() );
-	Bid.AddMember("adi", rapidjson::StringRef( adi.c_str() ), allocator);
-	// adw
-	Bid.AddMember("adw", img->width, allocator);
-	// adh
-	Bid.AddMember("adh", img->height, allocator);
 }
 
 /***************************************************************/
