@@ -44,8 +44,8 @@ public:
 		// material_id
 		param->material_id = ads_string_to_int( request->getQuery(ADS_MONITOR_KEY_MATERIAL_ID) );
 		
-		// exchange_id
-		param->exchange_id = ads_string_to_int( request->getQuery(ADS_MONITOR_KEY_EXCHANGE) );
+		// exchange
+		param->exchange = request->getQuery(ADS_MONITOR_KEY_EXCHANGE);
 		// price
 		AdsExchange* exchange = getExchange( param->exchange );
 		if ( exchange != NULL ) {

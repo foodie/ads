@@ -19,7 +19,7 @@ string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, AdsAdvertise *ad)
 	// material_id
 	oss << "&" << ADS_MONITOR_KEY_MATERIAL_ID << "=" << ad->material->id();
 	// exchange
-	oss << "&" << ADS_MONITOR_KEY_EXCHANGE << "=" << param.exchangeId();
+	//oss << "&" << ADS_MONITOR_KEY_EXCHANGE << "=" << param.exchangeId();
 	// bidding_type (RTB | PDB)
 	oss << "&" << ADS_MONITOR_KEY_BIDDING_TYPE << "=" << (int)ad->launch->bidding_type;
 	// settlement (CPM | CPC)

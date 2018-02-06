@@ -462,6 +462,16 @@ static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad,
 }
 
 /***************************************************************/
+string AdsExchange::getUrlBaseInfo(AdsBiddingParam& param, 
+		AdsAdvertise *ad)
+{
+	string url = AdsExchange::getUrlBaseInfo(param, ad);
+	ostringstream oss;
+	oss << url;
+	oss << "&" << ADS_MONITOR_KEY_EXCHANGE << "=" << "adview";
+	return oss.str();
+}
+
 string AdsAdviewExchange::getWinnoticeUrl(AdsBiddingParam& param, 
 		AdsAdvertise *ad)
 {

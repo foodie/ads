@@ -45,7 +45,7 @@ static void log_monitor_param(AdsMonitorParam& param)
 	cout << "creative_id: " 	<< param.creative_id << endl;
 	cout << "material_id: " 	<< param.material_id << endl;
 
-	cout << "exchange_id: " 	<< param.exchange_id << endl;
+	cout << "exchange: " 		<< param.exchange << endl;
 	cout << "price: " 		 	<< param.price << endl;
 
 	cout << "bidding_type: " 	<< (int)param.bidding_type << endl;

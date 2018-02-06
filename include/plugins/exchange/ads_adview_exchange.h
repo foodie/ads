@@ -22,6 +22,9 @@ public:
 	virtual int decryptWinPrice(const string& str) override;
 
 protected:
+	virtual string getUrlBaseInfo(AdsBiddingParam& param, 
+		AdsAdvertise *ad) override;
+
 	virtual string getWinnoticeUrl(AdsBiddingParam& param, 
 		AdsAdvertise *ad) override;
 

@@ -24,7 +24,7 @@ public:
 	int creative_id;		// 创意id
 	int material_id;		// 素材id
 
-	int 	exchange_id;		// 媒体id
+	int 	exchange;		// 媒体
 	int 	price;
 
 	AdsBiddingType 		 bidding_type; 	// 竞价类型 rtb pdb
