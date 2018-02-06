@@ -10,9 +10,8 @@
 
 using std::ostringstream;
 
-#define ADVIEW_COMMON_ADZONE_ID  "adview_000000"
-
 #define ADVIEW_NBR_USER_UNMATCH 8
+#define LOG_FILTER_INFO 0
 
 AdsAdviewExchange::AdsAdviewExchange()
 {
@@ -396,36 +395,45 @@ static bool parseApp(const rapidjson::Value& rdoc,
 
 /***************************************************************/
 
-static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad);
+static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad, 
+	ostringstream& oss);
 
 void AdsAdviewExchange::biddingFilter(void *buf, list<AdsAdvertise*>& al)
 {
 	AdsAdviewBidRequest *bidRequest = (AdsAdviewBidRequest*) buf;
 
+	ostringstream oss;
+
 	for (auto itr = al.begin(); itr != al.end(); ) {
-		if ( checkAdvertise(*bidRequest, *itr) ) {
+		if ( checkAdvertise(*bidRequest, *itr, oss) ) {
 			itr++;
 		} else {
 			itr = al.erase(itr);
 		}
 	}
 
+	if ( LOG_FILTER_INFO ) {
+		INFO("[Exchange] filter: %s", oss.str().c_str());
+	}
 }
 
-static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad)
+static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad,
+	ostringstream& oss)
 {
-	AdsAdviewImpression& imp = req->imp;
+	AdsAdviewImpression& imp = req.imp;
 	AdsLaunch *launch = ad->launch;
 
 	string& pmp_id = imp.pmp.id;
 	if ( !pmp_id.empty() ) {
 		// pdb
 		if ( pmp_id != launch->pmp_id ) {
+			oss << ad->id << ":" << "dealid" << "\x03";
 			return false;
 		}
 	} else {
 		// rtb
 		if ( imp.bidfloor > launch->price ) {
+			oss << ad->id << ":" << "price" << "\x03";
 			return false;
 		}
 		switch (imp.instl) {
@@ -434,12 +442,14 @@ static bool checkAdvertise(AdsAdviewBidRequest& req, AdsAdvertise *ad)
 			case 4:
 			{
 				if ( ad->material->type() != AdsMaterialType::IMAGE ) {
+					oss << ad->id << ":" << "type" << "\x03";
 					return false;
 				}
 
 				AdsAdviewBanner& banner = imp.banner;
 				AdsMaterialImage* img = ad->material->image();
 				if ( banner.w != img->width || banner.h != img->height ) {
+					oss << ad->id << ":" << "size" << "\x03";
 					return false;
 				}
 
