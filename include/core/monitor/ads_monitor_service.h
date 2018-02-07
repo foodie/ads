@@ -16,6 +16,17 @@ class AdsMonitorParam;
 class AdsMonitorService : public AdsSingleton<AdsMonitorService>
 {
 	friend class AdsSingleton<AdsMonitorService>;
+	friend class Api;
+public:
+	class Api
+	{
+	public:
+		static AdsMonitorManager* getManager(AdsMonitorService *serv)
+		{
+			return serv->_manager;
+		}
+	};
+
 public:
 	~AdsMonitorService();
 

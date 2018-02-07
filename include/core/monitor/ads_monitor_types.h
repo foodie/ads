@@ -190,6 +190,16 @@ public:
 		return sum;
 	}
 
+	AdsMonitorRecord& getImpRecord()
+	{
+		return _imp_record;
+	}
+
+	AdsMonitorRecord& getClkRecord()
+	{
+		return _clk_record;
+	}
+
 private:
 	time_t _write_ts; // 最后修改时间
 	time_t _read_ts; // 最后读取时间

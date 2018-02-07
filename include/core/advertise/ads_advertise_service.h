@@ -21,7 +21,7 @@ public:
 	class Api
 	{
 	public:
-		AdsAdvertiseManager* getManager(AdsAdvertiseService* serv)
+		static AdsAdvertiseManager* getManager(AdsAdvertiseService* serv)
 		{
 			return serv->_manager;
 		}

@@ -4,6 +4,7 @@
 #include "utils/ads_string.h"
 #include "plugins/controller/ads_bidding_controller.h"
 #include "plugins/controller/ads_monitor_controller.h"
+#include "plugins/controller/ads_api_controller.h"
 
 AdsControllerFactory::AdsControllerFactory()
 {
@@ -31,6 +32,7 @@ bool AdsControllerFactory::init()
 	// 添加controller实例
 	controllers->emplace("bidding", new AdsBiddingController);
 	controllers->emplace("monitor", new AdsMonitorController);
+	controllers->emplace("api", new AdsApiController);
 
 	INFO("[Controller] Controller plugin init success");
 	return true;
