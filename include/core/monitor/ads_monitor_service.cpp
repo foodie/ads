@@ -130,8 +130,8 @@ unsigned int AdsMonitorService::getLaunchClkFreq(int id,
  */
 void AdsMonitorService::update(const AdsMonitorParam* param)
 {
-	AdsMonitorDataBase *campaign = _manager->findCampaignData(param->campaign_id);
-	AdsMonitorDataBase *launch = _manager->findLaunchData(param->launch_id);
+	AdsMonitorDataBase *campaign = _manager->getCampaignData(param->campaign_id);
+	AdsMonitorDataBase *launch = _manager->getLaunchData(param->launch_id);
 
 	string device_id = getMonitorDeviceId(param);
 	time_t nowtime = ads_nowtime();
@@ -139,13 +139,15 @@ void AdsMonitorService::update(const AdsMonitorParam* param)
 	if ( param->type == AdsMonitorType::WINNOTICE ) {
 		// 赢价
 
-	} else if ( param->type == AdsMonitorType::WINNOTICE ) {
+	} else if ( param->type == AdsMonitorType::IMPRESSION ) {
 		// 展示
 
 		campaign->setImpInc();
+		campaign->setCostInc(param->price);
 		campaign->addImpRecord(device_id, nowtime);
 
 		launch->setImpInc();
+		launch->setCostInc(param->price);
 		launch->addImpRecord(device_id, nowtime);
 
 	} else if ( param->type == AdsMonitorType::CLICK ) {

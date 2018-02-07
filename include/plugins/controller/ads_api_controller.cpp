@@ -5,6 +5,8 @@
 #include "log.h"
 #include "core/advertise/ads_advertise_service.h"
 #include "core/advertise/ads_advertise_manager.h"
+#include "core/monitor/ads_monitor_types.h"
+#include "core/monitor/ads_monitor_manager.h"
 #include "core/monitor/ads_monitor_service.h"
 #include "utils/ads_string.h"
 
@@ -19,6 +21,7 @@ static void act_list(AdsThreadData* pdata);
 static void act_view(AdsThreadData* pdata);
 
 static void view_campaign(AdsCampaign *campaign);
+static void view_monitor_db(AdsMonitorDataBase *db);
 
 int AdsApiController::process(AdsThreadData* pdata)
 {
@@ -105,9 +108,9 @@ static void view_monitor_db(AdsMonitorDataBase *db)
 
 	cout << "Imp Record:" << endl;
 	AdsMonitorRecord& ir = db->getImpRecord();
-	for ( auto itr : ir ) {
-		cout << itr->first << "\t" << endl;
-		for ( auto t : itr->second ) {
+	for ( auto itr& : ir ) {
+		cout << itr.first << "\t" << endl;
+		for ( auto t : itr.second ) {
 			cout << "\t" << t << endl;
 		}
 	}
