@@ -59,6 +59,9 @@ public:
 		// settlement
 		string settlement = request->getQuery(ADS_MONITOR_KEY_SETTLEMENT);
 		param->settlement = AdsBiddingSettlement( ads_string_to_int(bidding_type) );
+		if ( param->settlement == AdsBiddingSettlement::CPC ) {
+			param->price = param->price * 1000;
+		}
 		// ad_type
 		string ad_type = request->getQuery(ADS_MONITOR_KEY_AD_TYPE);
 		param->ad_type = AdsAdvertiseType( ads_string_to_int(ad_type) );

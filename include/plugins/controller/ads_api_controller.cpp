@@ -83,7 +83,15 @@ static void act_view(AdsThreadData* pdata)
 		view_monitor_db(db);
 
 	} else if ( arg2 == "launch" ) {
-
+		int id = ads_string_to_int( request->getUri(3) );
+		AdsLaunch *launch = collection->getLaunch(id);
+		if (launch == NULL) {
+			cout << "launch is not exists" << endl;
+			return;
+		}
+		view_campaign(launch);
+		AdsMonitorDataBase *db = monitorManager->findLaunchData(id);
+		view_monitor_db(db);
 	}
 }
 
@@ -108,9 +116,9 @@ static void view_monitor_db(AdsMonitorDataBase *db)
 
 	cout << "Imp Record:" << endl;
 	AdsMonitorRecord& ir = db->getImpRecord();
-	for ( auto itr& : ir ) {
+	for ( auto& itr : ir ) {
 		cout << itr.first << "\t" << endl;
-		for ( auto t : itr.second ) {
+		for ( auto t : *(itr.second) ) {
 			cout << "\t" << t << endl;
 		}
 	}

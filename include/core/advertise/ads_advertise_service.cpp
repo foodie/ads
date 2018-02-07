@@ -97,7 +97,7 @@ static bool checkCampaign(AdsCampaign* campaign)
 	AdsMonitorService& monitorServ = getMonitorService();
 	// 预算
 	unsigned int cost = monitorServ.getCampaignTotalCost(campaign->id);
-	if ( cost >= campaign->budget ) {
+	if ( cost >= campaign->budget * 1000 ) {
 		return false;
 	}
 	// 展示上限
@@ -149,7 +149,7 @@ static bool checkLaunch(AdsLaunch* launch)
 	*/
 	AdsMonitorService& monitorServ = getMonitorService();
 	unsigned int cost = monitorServ.getLaunchTodayCost(launch->id);
-	if ( cost >= budget ) {
+	if ( cost >= budget * 1000 ) {
 		return false;
 	}
 
