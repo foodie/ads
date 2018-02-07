@@ -21,6 +21,7 @@ static void act_list(AdsThreadData* pdata);
 static void act_view(AdsThreadData* pdata);
 
 static void view_campaign(AdsCampaign *campaign);
+static void view_launch(AdsLaunch *launch);
 static void view_monitor_db(AdsMonitorDataBase *db);
 
 int AdsApiController::process(AdsThreadData* pdata)
@@ -89,13 +90,18 @@ static void act_view(AdsThreadData* pdata)
 			cout << "launch is not exists" << endl;
 			return;
 		}
-		view_campaign(launch);
+		view_launch(launch);
 		AdsMonitorDataBase *db = monitorManager->findLaunchData(id);
 		view_monitor_db(db);
 	}
 }
 
 static void view_campaign(AdsCampaign *campaign)
+{
+
+}
+
+static void view_launch(AdsLaunch *launch)
 {
 
 }
