@@ -16,6 +16,18 @@ class AdsAdvertiseManager;
 class AdsAdvertiseService : public AdsSingleton<AdsAdvertiseService>
 {
 	friend class AdsSingleton<AdsAdvertiseService>;
+	friend class Api;
+public:
+	class Api
+	{
+	public:
+		AdsAdvertiseManager* getManager(AdsAdvertiseService* serv)
+		{
+			return serv->_manager;
+		}
+
+	};
+
 private:
 	AdsAdvertiseService();
 

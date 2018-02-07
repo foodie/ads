@@ -165,10 +165,10 @@ public:
 		}
 		return itr->second;
 	}
-	void getAllCampaigns(list<AdsCampaign*>& list)
+	void getAllCampaigns(list<AdsCampaign*>& l)
 	{
 		for (auto itr : campaigns) {
-			list.push_back(itr.second);
+			l.push_back(itr.second);
 		}
 	}
 
@@ -180,6 +180,12 @@ public:
 		}
 		return itr->second;
 	}
+	void getAllLaunchs(list<AdsLaunch*>& l)
+	{
+		for (auto itr : launchs) {
+			l.push_back(itr.second);
+		}
+	}
 
 	AdsCreative* getCreative(int id)
 	{
@@ -189,6 +195,12 @@ public:
 		}
 		return itr->second;
 	}
+	void getAllCreatives(list<AdsCreative*>& l)
+	{
+		for (auto itr : creatives) {
+			l.push_back(itr.second);
+		}
+	}
 
 	AdsMaterial* getMaterial(int id)
 	{
@@ -197,6 +209,12 @@ public:
 			return NULL;
 		}
 		return itr->second;
+	}
+	void getAllMaterials(list<AdsMaterial*>& l)
+	{
+		for (auto itr : materials) {
+			l.push_back(itr.second);
+		}
 	}
 
 
