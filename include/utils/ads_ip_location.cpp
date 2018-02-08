@@ -67,7 +67,8 @@ long AdsIpLocation::ip2Long(const char *ip)
 /***************static****************/
 
 
-uint32_t AdsIpLocation::_search_ip(uint32_t ip, uint32_t start=0, uint32_t end=0) const {
+uint32_t AdsIpLocation::_search_ip(uint32_t ip, uint32_t start, uint32_t end)
+{
 	if (0 == start) {
 		start = _index_start;
 	}
@@ -107,7 +108,7 @@ bool AdsIpLocation::open(const char *fpath)
 
 bool AdsIpLocation::init()
 {
-	bool ret = open( g_conf->ipdat_fpath );
+	bool ret = open( g_conf->ads.ipdat_fpath );
 	if ( !ret ) {
 		WARN("[IpLocation] open dat failed");
         return false;

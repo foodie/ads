@@ -1,8 +1,8 @@
 #ifndef _ADS_IP_LOCATION_H
 #define _ADS_IP_LOCATION_H
 
-#include <stdlib>
-#include <stdio>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string>
 #include <string.h>
 #include "core/ads_singleton.h"
@@ -43,12 +43,17 @@ private:
 	}
 	uint32_t _get_value_4(uint32_t offset) const {
 		uint32_t v = 0;
-		ads_memcpy((char*)&v, this->_get_char_p(offset), 4);
+		memcpy((char*)&v, this->_get_char_p(offset), 4);
 		return v;
 	}
 
-	uint32_t _search_ip(uint32_t ip, uint32_t start=0, uint32_t end=0) const;
+	uint32_t _search_ip(uint32_t ip, uint32_t start=0, uint32_t end=0);
 };
+
+static inline bool initIpLocation()
+{
+	return AdsIpLocation::getInstance().init();
+}
 
 static inline int getLocationId(const char *ip)
 {

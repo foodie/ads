@@ -28,6 +28,8 @@
 #include "core/bidding/ads_bidding_service.h"
 #include "core/monitor/ads_monitor_service.h"
 
+#include "utils/ads_ip_location.h"
+
 DEFINE_string(p, CONF_FPATH, "conf path, string");
 DEFINE_string(f, CONF_FNAME, "conf file, string");
 DECLARE_string(flagfile);
@@ -194,6 +196,13 @@ static int plugins_init()
     ret = initController();
     if ( !ret ) {
         FATAL("Controller plugins init failed");
+        return -1;
+    }
+
+    // iplocation
+    ret = initIpLocation();
+    if ( !ret ) {
+        FATAL("iplocation utils init failed");
         return -1;
     }
 

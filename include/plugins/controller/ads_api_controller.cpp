@@ -9,6 +9,7 @@
 #include "core/monitor/ads_monitor_manager.h"
 #include "core/monitor/ads_monitor_service.h"
 #include "utils/ads_string.h"
+#include "utils/ads_ip_location.h"
 
 using std::string;
 using std::cout;
@@ -32,6 +33,10 @@ int AdsApiController::process(AdsThreadData* pdata)
 		act_list(pdata);
 	} else if ( arg1 == "view" ) {
 		act_view(pdata);
+	} else if ( arg1 == "ip" ) {
+		string ip = request->getUri(2);
+		int id = getLocationId( ip.c_str() );
+		cout << ip << " => " << id << endl;
 	}
 
 	return ADS_HTTP_OK;
