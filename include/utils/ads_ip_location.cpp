@@ -1,6 +1,7 @@
 #include "utils/ads_ip_location.h"
 
 #include "log.h"
+#include "ads_conf.h"
 
 /***************static****************/
 
@@ -101,6 +102,18 @@ bool AdsIpLocation::open(const char *fpath)
 	this->_index_start = this->_get_value_4(0);
 	this->_index_end = this->_get_value_4(4);
 		
+	return true;
+}
+
+bool AdsIpLocation::init()
+{
+	bool ret = open( g_conf->ipdat_fpath );
+	if ( !ret ) {
+		WARN("[IpLocation] open dat failed");
+        return false;
+	}
+
+	INFO("[IpLocation] IpLcation init success");
 	return true;
 }
 

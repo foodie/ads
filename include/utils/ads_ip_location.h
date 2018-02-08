@@ -24,6 +24,7 @@ public:
 
 public:
 	~AdsIpLocation() {}
+	bool init();
 	bool open(const char *fpath);
 	int getLocationId(const char *ip);
 
