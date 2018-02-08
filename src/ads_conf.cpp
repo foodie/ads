@@ -115,10 +115,10 @@ int AdsConf::loadAdsConf(struct collection_item *config)
 		return ADS_ERROR;
 	}
 
-	ret = conf_string(config, "ads", "hywry_fpath",
-			"", ads.hywry_fpath, MAX_FPATH_LEN);
+	ret = conf_string(config, "ads", "ipdat_fpath",
+			"", ads.ipdat_fpath, MAX_FPATH_LEN);
 	if ( ret ) {
-		FATAL("config hywry_fpath failed");
+		FATAL("config ipdat_fpath failed");
 		return ADS_ERROR;
 	}
 
