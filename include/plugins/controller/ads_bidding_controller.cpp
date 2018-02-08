@@ -42,7 +42,8 @@ int AdsBiddingController::process(AdsThreadData* p_thd_data)
 
 	// 通过ip获取地域id
 	auto deviceBuilder = param.device().getBuilder();
-	deviceBuilder.setAddressId(0);
+	int addrid = getLocationId( param.device().ip().c_str() );
+	deviceBuilder.setAddressId( addrid );
 
 	if ( LOG_BIDDING_PARAM ) {
 		log_bidding_param(param);
